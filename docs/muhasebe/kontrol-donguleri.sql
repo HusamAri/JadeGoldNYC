@@ -9,7 +9,7 @@
 -- sorgunun kendi yorum satırındadır.
 -- Üreteç: docs/muhasebe/kaynak/render.py (elle düzenleme yapma).
 
--- 0) Canlı kontroller tek çağrıda (0178, 0179): yalnız başarısızlar
+-- 0) Canlı kontroller tek çağrıda (0178, 0181): yalnız başarısızlar
 select o.name, c.check_key, c.severity, c.count_n, c.amount_cents, c.title
 from organizations o cross join lateral accounting_checks(o.id) c
 where not c.ok
@@ -1263,12 +1263,12 @@ join product_variants pv on pv.org_id = (select id from organizations where name
 join products p on p.id = pv.product_id;
 
 -- MAL-12 Stoğa dönen iade parçası: taşıma değeri, yeniden satışta stoktan tüketim ve yıl sonu stok | kaynak EK-03 | kontrol: öneri: return_stock_unvalued | ölçüm 2026-11-09: Orijinal SQL çalıştı: Jade 169 kalem, cogs_still_booked 4.328.182, disposition 0, recovered 0, unresolved_resale_items 58, üst sınır 1.442.854; Ophir 2 kalem 19.260; Artifact 1 kalem 50.904; EON 1 kalem 0; Seselka 0 (senaryoyla birebir). Düzeltilmiş SQL: Jade 169 kalem 4.328.182 (iptal 126 / 3.541.048, tam iade 43 / 787.134), akıbetsiz COGS'lu 112 kalem 4.328.182, 2025 sipariş yılı 3.257.013; Ophir 2 kalem 19.260 (akıbetsiz 1); Artifact 1 kalem 50.904 (akıbetsiz 1); EON 1 kalem 0; Seselka 0.
--- EK-03 kontrol (düzeltilmiş): kargolandığına dair kanıtı olan (0179 K5 ile aynı kanıt: is_shipped, shipped_at,
+-- EK-03 kontrol (düzeltilmiş): kargolandığına dair kanıtı olan (0181 K5 ile aynı kanıt: is_shipped, shipped_at,
 -- kalem shipped_at, sale_shipments ya da iptal edilmemiş ShipStation gönderisi) ve iptal ya da tam iade edilmiş
 -- kalemde akıbeti girilmemiş satış maliyeti. Aynı SKU'nun yeniden satışı kanıt sayılmaz (sıradan kalemlerde yüzde 73,1).
 -- Kuyruk MAL-09 ile ortaktır; stok partisi eşitlikleri inventory_lots kurulunca eklenir.
 -- Beklenen: no_disposition_items = 0.
--- Bugün (2026-11-09): Jade 169 kalem 4.328.182 cent (iptal 126 / 3.541.048 = 0179 K5 shipped_excluded tutarı,
+-- Bugün (2026-11-09): Jade 169 kalem 4.328.182 cent (iptal 126 / 3.541.048 = 0181 K5 shipped_excluded tutarı,
 -- tam iade 43 / 787.134), akıbetsiz COGS'lu 112 kalem 4.328.182, 2025 sipariş yılı 3.257.013;
 -- Ophir 2 kalem 19.260 (akıbetsiz 1), Artifact 1 kalem 50.904, EON 1 kalem 0, Seselka 0.
 with ss as materialized (
@@ -1604,7 +1604,7 @@ order by o.name
 -- beklenen: her org için mismatched_months = 0, diff_cents = 0, dropped_months = 0 (cari ay dahil)
 ;
 
--- SIS-02 Ledger bakiye zinciri ve tazeliği: K1 0179 ile düzeldi, aylık ekstre ikinci kaynak | kaynak PAY-01 | kontrol: canlı: K1 ledger_balance_break, K12 ledger_stale | ölçüm 2026-11-08: Orijinal SQL hatasız: months 57, months_with_gap 0, gap_months null (Jade). amended_control_sql (tüm org, ledger_backfilled): Artifact 3 ay 0 boşluk, EON 16/0, Jade 57/0, Ophir 5/0, Seselka Home 0 ay.
+-- SIS-02 Ledger bakiye zinciri ve tazeliği: K1 0181 ile düzeldi, aylık ekstre ikinci kaynak | kaynak PAY-01 | kontrol: canlı: K1 ledger_balance_break, K12 ledger_stale | ölçüm 2026-11-08: Orijinal SQL hatasız: months 57, months_with_gap 0, gap_months null (Jade). amended_control_sql (tüm org, ledger_backfilled): Artifact 3 ay 0 boşluk, EON 16/0, Jade 57/0, Ophir 5/0, Seselka Home 0 ay.
 -- beklenen: ledger_backfilled org'larda months_with_gap = 0; açılış bakiyesi 0 (tam geri doldurulmuş ledger mağazanın ilk kaydından başlar); kapanış ayın son saniyesindeki HERHANGİ bir satırla karşılaştırılır, çünkü aynı saniyede entry_id sırası Etsy'nin bakiye sırası değildir; ölçülen 2026-11-08: Jade 57/0, EON 16/0, Ophir 5/0, Artifact 3/0
 with e as materialized (
   select le.org_id, date_trunc('month', le.entry_date)::date mo, le.created_timestamp, le.amount_cents, le.balance_cents
@@ -1622,7 +1622,7 @@ select o.name, count(chk.mo) months, count(*) filter (where not chk.ok) months_w
 from organizations o left join chk on chk.org_id = o.id
 group by o.name order by o.name;
 
--- SIS-02 Ledger bakiye zinciri ve tazeliği: K1 0179 ile düzeldi, aylık ekstre ikinci kaynak | kaynak PAY-13 | kontrol: canlı: K1 ledger_balance_break, K12 ledger_stale | ölçüm 2026-11-08: Hatasız: statement_month 2026-10, ledger_rows 463, amount_total_cents 134.614, net_excluding_listing_fees_cents 136.514, gross_cents 2.680.409, refund_cents -647.632, payout_cents -1.753.328 (Jade, UTC ayı). amended_control_sql: utc_rows 463, utc_amount_cents 134.614, ny_rows 459, ny_amount_cents 170.509.
+-- SIS-02 Ledger bakiye zinciri ve tazeliği: K1 0181 ile düzeldi, aylık ekstre ikinci kaynak | kaynak PAY-13 | kontrol: canlı: K1 ledger_balance_break, K12 ledger_stale | ölçüm 2026-11-08: Hatasız: statement_month 2026-10, ledger_rows 463, amount_total_cents 134.614, net_excluding_listing_fees_cents 136.514, gross_cents 2.680.409, refund_cents -647.632, payout_cents -1.753.328 (Jade, UTC ayı). amended_control_sql: utc_rows 463, utc_amount_cents 134.614, ny_rows 459, ny_amount_cents 170.509.
 -- beklenen: ekstre CSV satır sayısı ve Amount toplamı iki saat dilimi adayından BİRİYLE birebir (tolerans 0 cent); ilk içe aktarımda tutan dilim org'a kaydedilir; ölçülen 2026-11-08 Jade Ekim: UTC 463 / 134.614, New York 459 / 170.509
 with b as (select date_trunc('month', now()) - interval '1 month' m0, date_trunc('month', now()) m1)
 select to_char((select m0 from b), 'YYYY-MM') statement_month,

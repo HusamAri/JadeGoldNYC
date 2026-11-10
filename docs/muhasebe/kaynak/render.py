@@ -180,19 +180,19 @@ for s in EK:
     })
 CANON_BY_CID = {c["cid"]: c for c in canonical}
 
-# 0179 canlıya çıktıktan sonra değişen durum: çürütme 0178 zamanında yapıldı,
+# 0181 canlıya çıktıktan sonra değişen durum: çürütme 0178 zamanında yapıldı,
 # bu notlar o kararın üstüne bugünkü gerçeği ekler (ölçüm 2026-11-09).
-NOTES_0179 = {
-    "SIS-02": ("Ledger bakiye zinciri ve tazeliği: K1 0179 ile düzeldi, aylık ekstre ikinci kaynak",
+NOTES_0181 = {
+    "SIS-02": ("Ledger bakiye zinciri ve tazeliği: K1 0181 ile düzeldi, aylık ekstre ikinci kaynak",
                "K1 açılış ve kapanışı ilk ve son saniyedeki zincir ucundan seçiyor: sağlam veride sahte kırılma 0 (Jade son 91 gün: 0178 kuralı 13 gün), kayıp satır artık maskelenmiyor (taslaktaki aday kümesi kuralı EON'da her gün maskeliyordu). K12 `ledger_stale` eklendi: sipariş tarihi ledger'ın son kaydından 3 günden sonra olan ve panele en az bir gün önce yazılmış Etsy satışı ya da son 30 günün en az 20'sinde ledger kaydı alan mağazada ledger'ın son kaydından 5 günden ileri mağaza fotoğrafı yanar; 5 org'da yeşil. Kalan iş aylık ekstre içe aktarımı ve bakiye yüzeyi."),
     "IAD-01": (None, "K3 vergi iadesi bir saniye sonra yazılan siparişi de sayıyor; vergili siparişte tek başına işlem ücreti iadesi bir ücret kredisidir, iade sayılmaz (Jade 4062133504). Bugün Jade 5 sipariş $1.803,65, EON 4 sipariş $2.448,80. Bu siparişleri yeniden okuyan buton yok: \"İade verisini çek\" yalnız iade statüsündeki siparişleri okur. LED-15 satırındaki K5 varsayımı da kalktı: K5 kargo kanıtını pozitif arıyor (MAL-02)."),
-    "MAL-02": (None, "K5 kargo kanıtını pozitif arıyor ve tahsil edilmiş siparişi yalnız kanıtın aranabildiği dönemde sayıyor: Jade 516 sipariş $280.517,60; 319'u hiç tahsil edilmedi ($162.391,17), 197'si tahsil edilip ShipStation penceresinde kargo kaydı yok ($118.126,43). Kargo kaydı tutulmayan dönemde (2024-12-07 öncesi ve 2026-07-09 sonrası) 225 sipariş $98.964,40 bilinmiyor, sayılmaz; kargolu 74 iptal ($35.410,48) de sayılmaz. İşletme Karı kartının 6 aylık penceresine düşen kısım $8.785,66. 0179 Etsy kargo kaydı tablosunun (sale_shipments) kısmi tekil indeksini düzeltti: senkron yazımı 42P10 ile düşüyordu, tablo 0 satırdı."),
+    "MAL-02": (None, "K5 kargo kanıtını pozitif arıyor ve tahsil edilmiş siparişi yalnız kanıtın aranabildiği dönemde sayıyor: Jade 516 sipariş $280.517,60; 319'u hiç tahsil edilmedi ($162.391,17), 197'si tahsil edilip ShipStation penceresinde kargo kaydı yok ($118.126,43). Kargo kaydı tutulmayan dönemde (2024-12-07 öncesi ve 2026-07-09 sonrası) 225 sipariş $98.964,40 bilinmiyor, sayılmaz; kargolu 74 iptal ($35.410,48) de sayılmaz. İşletme Karı kartının 6 aylık penceresine düşen kısım $8.785,66. 0181 Etsy kargo kaydı tablosunun (sale_shipments) kısmi tekil indeksini düzeltti: senkron yazımı 42P10 ile düşüyordu, tablo 0 satırdı."),
     "RKL-01": (None, "K8 ledger günü d+1 = CSV günü d kaymasını ve yarım son CSV gününü birlikte modelliyor: Jade $4.706,21, EON $595,26 ölçülmemiş harcama; Ophir ve Artifact'ta CSV hiç yok."),
     "SEV-02": (None, "K13 `postage_double_count` eklendi (kritik): Jade ShipStation gider satırları $24.882,40, iptal edilmemiş gönderilerin postaj ve sigorta toplamı $12.605,14, fark $12.277,26. ShipStation bağlantısı düzelince ilk başarılı senkron aylık özeti yeniden kurar ve fark kapanır."),
     "MAL-01": (None, "K14 `cogs_source_conflict` eklendi (kritik): EON 10 kalemde (8 faturalı, 2 elle; 16 fatura ve 4 elle tür çifti) motor maliyeti de sayılıyor, $2.297,32; 18 fatura satırının türü boş."),
-    "SEV-01": (None, "0179 Etsy kargo kaydı tablosunun (sale_shipments) tekil indeksini düzeltti; senkron receipt'i yeniden okudukça gönderi kayıtları dolar ve etiket bağı için ikinci kaynak olur."),
+    "SEV-01": (None, "0181 Etsy kargo kaydı tablosunun (sale_shipments) tekil indeksini düzeltti; senkron receipt'i yeniden okudukça gönderi kayıtları dolar ve etiket bağı için ikinci kaynak olur."),
 }
-for cid, (title, _) in NOTES_0179.items():
+for cid, (title, _) in NOTES_0181.items():
     if title and cid in CANON_BY_CID:
         CANON_BY_CID[cid]["title"] = title
 
@@ -283,8 +283,8 @@ def render_block(c):
         lines.append(ref)
     lines.append("- **Çürütme:** " + verdict_line(sid))
     lines.append("- **Neden bu öncelik:** " + clean(c["why"]))
-    if c["cid"] in NOTES_0179:
-        lines.append("- **0179 sonrası (%s):** %s" % (DOC_DATE, NOTES_0179[c["cid"]][1]))
+    if c["cid"] in NOTES_0181:
+        lines.append("- **0181 sonrası (%s):** %s" % (DOC_DATE, NOTES_0181[c["cid"]][1]))
     for o in others:
         ov = V.get(o, {})
         extra = []
@@ -355,7 +355,7 @@ sql_out = [
     "-- sorgunun kendi yorum satırındadır.",
     "-- Üreteç: docs/muhasebe/kaynak/render.py (elle düzenleme yapma).",
     "",
-    "-- 0) Canlı kontroller tek çağrıda (0178, 0179): yalnız başarısızlar",
+    "-- 0) Canlı kontroller tek çağrıda (0178, 0181): yalnız başarısızlar",
     "select o.name, c.check_key, c.severity, c.count_n, c.amount_cents, c.title",
     "from organizations o cross join lateral accounting_checks(o.id) c",
     "where not c.ok",
@@ -420,7 +420,7 @@ def today_cell(key):
 
 INDEX_HEAD = """# Muhasebe senaryo matrisi: Etsy'den gelmeyen bilgi
 
-_{date} · ölçümler canlı Supabase'de {mdate} ve {date} · canlı kontroller `accounting_checks` (0178, 0179) · üreteç `kaynak/render.py`_
+_{date} · ölçümler canlı Supabase'de {mdate} ve {date} · canlı kontroller `accounting_checks` (0178, 0181) · üreteç `kaynak/render.py`_
 
 ## Neden bu belge
 
@@ -455,13 +455,13 @@ FACTS = [
     ("İade zamanı", "1.901 iadeli siparişin 687'si (yüzde 36) sonraki ayda, 82'si (yüzde 4,3) sonraki yılda; medyan 8,9 gün, p90 31,5 gün", "Dönem görünümü iadeyi iade tarihine yazmalı."),
     ("İptal statüsü", "İadeli 1.901 siparişin 1.388'i cancelled", "İptal çoğunlukla tahsil edilip iade edilmiş siparişlerdir."),
     ("Ledger kimliği", "4 Etsy org'unda toplam tutar = son bakiye (açılış 0)", "Ledger'da boşluk yok; günlük ucuz kontrol (K1)."),
-    ("Aynı saniyede çok satır", "Jade son 91 gün: 39 gün sonu son saniyesi çok satırlı; 0178 kuralı 13 günde sahte kırılma verirdi, 0179 kuralı 0", "K1 açılış ve kapanışı ilk ve son saniyedeki zincir ucundan seçer; uç tekil değilse o saniyenin adayları denenir."),
+    ("Aynı saniyede çok satır", "Jade son 91 gün: 39 gün sonu son saniyesi çok satırlı; 0178 kuralı 13 günde sahte kırılma verirdi, 0181 kuralı 0", "K1 açılış ve kapanışı ilk ve son saniyedeki zincir ucundan seçer; uç tekil değilse o saniyenin adayları denenir."),
     ("Ücret kapsamı", "Jade canlı 8.314 siparişin 7.461'inde etsy_payment_id boş", "Sipariş ücreti motoru işleme ücretini siparişe bağlayamıyor (K4)."),
     ("having tuzağı", "Net maliyeti 0 ya da altı olan ay aylık özetten düşer: Jade 2 ay $10,08, Artifact 1 ay $5,70", "Kredi ayları sessizce kaybolur (SIS-01)."),
     ("Eşlenmeyen ledger türleri", "Jade 25.657 satır, 16 tür, net +$437.541,33", "Çoğu gider değil nakit ve emanettir; sözlük bunları sınıflar."),
     ("Offsite oranı", "Jade receipt tipli ücretlerde ortalama yüzde 12,04 ve 15 tavan (tüm 757 ücrette 34 tavan); EON 6/6, Artifact 1/1 tavanda", "Oran ve tavan org ayarı olmalı (RKL-04)."),
     ("İptal siparişte COGS", "Jade 815 iptal siparişte $414.892,48 motor maliyeti; kargo kanıtı olmayan ve kanıtın aranabildiği 516 sipariş $280.517,60, bunun 319'u hiç tahsil edilmedi ($162.391,17); kargo kaydı tutulmayan dönemde 225 sipariş $98.964,40 bilinmiyor", "Geçmiş yılların karı bu tutar kadar düşük; İşletme Karı kartının 6 aylık penceresine düşen kısım $8.785,66 (K5, MAL-02)."),
-    ("Etsy kargo kaydı boştu", "sale_shipments 5 org'da 0 satır: 0174'ün kısmi tekil indeksi senkron upsert'ünü her seferinde 42P10 ile düşürüyordu", "0179 indeksi düzeltti; receipt yeniden okundukça gönderi kaydı dolar (SEV-01, MAL-02)."),
+    ("Etsy kargo kaydı boştu", "sale_shipments 5 org'da 0 satır: 0174'ün kısmi tekil indeksi senkron upsert'ünü her seferinde 42P10 ile düşürüyordu", "0181 indeksi düzeltti; receipt yeniden okundukça gönderi kaydı dolar (SEV-01, MAL-02)."),
     ("ShipStation çift sayım", "Jade ShipStation gider satırları $24.882,40, iptal edilmemiş gönderilerin postaj ve sigorta toplamı $12.605,14", "İşletme Karı'nda $12.277,26 fazla kargo gideri (K13, SEV-02)."),
     ("Kaynak çakışması", "EON 10 kalemde motor maliyeti fatura ya da elle maliyetin yanında duruyor: $2.297,32", "İşletme Karı'nda hayalet maliyet (K14, MAL-01)."),
     ("Vergi gelirde", "Jade iptal dışı satış vergisi $141.721,03 (tüm dönem) panel kar kartı gelirinde; operating_profit_monthly'nin 6 aylık penceresinde $6.456,86", "Panel kar kartı ve İşletme Karı vergiyi kar sayıyor (GEL-01)."),
@@ -544,7 +544,8 @@ LIMITS_MD = """## Kabul edilen sınırlar
 
 SOURCES_MD = """## Kaynaklar
 
-- Kod: `supabase/migrations/0174_sale_item_pnl.sql`, `0178_accounting_checks.sql`, `0179_accounting_checks_fixes.sql`, `lib/db/queries/alerts.ts`, `lib/etsy/sync.ts`, `lib/etsy/refunds.ts`, `lib/gold-cost-entry.ts`, `lib/shipstation/sync.ts`.
+- Kod: `supabase/migrations/0174_sale_item_pnl.sql`, `0178_accounting_checks.sql`, `0181_accounting_checks_fixes.sql`, `lib/db/queries/alerts.ts`, `lib/etsy/sync.ts`, `lib/etsy/refunds.ts`, `lib/gold-cost-entry.ts`, `lib/shipstation/sync.ts`.
+- Numara notu: `0181_accounting_checks_fixes.sql` canlıya 2026-11-09'da MCP ile `0179_accounting_checks_fixes` adıyla uygulandı; main 0179 ve 0180 numaralarını EON-FR6'ya verdiği için dosya 0181'e taşındı. Fonksiyon gövdesindeki notlarda ve canlı fonksiyon yorumunda geçen `0179` bu dosyadır; gövde canlıyla bayt bayt aynıdır (md5 `007910a1fb56c9d82a0630bac00825d5`).
 - Belgeler: `docs/satis-maliyet-takip.md` (muhasebe kuralları ve dış kaynaklar: IRS Pub 334 ve 538, Schedule C talimatları, Etsy Help, Etsy OpenAPI), `docs/etsy-playbook/INDEX.md`.
 - Ham kayıtlar: `docs/muhasebe/kaynak/` (analiz, çürütme, ayıklama, bağımsız ölçümler; otomatik okunmaz).
 """
@@ -566,6 +567,15 @@ for path in [os.path.join(ROOT, "senaryo-matrisi.md"), os.path.join(ROOT, "kontr
     en_money = re.findall(r"\$\d{1,3}(?:,\d{3})+(?:\.\d{2})?(?!\d)|\$\d+\.\d{2}(?!\d)", t)
     if en_money:
         bad.append((os.path.basename(path), "İngilizce para biçimi ($1,234.56 yerine $1.234,56)", en_money[:5]))
+# Sorgu kapısı: her blok tek ve sonlanmış ifade olmalı ki dosya sırayla da koşulabilsin
+# (yorumla biten sorguda ';' yorumun içinde kalınca sonraki blokla birleşiyordu).
+sql_text = open(os.path.join(ROOT, "kontrol-donguleri.sql"), encoding="utf-8").read()
+starts = [m.start() for m in re.finditer(r"^-- [A-Z]{3}-\d\d .*\| kaynak ", sql_text, flags=re.M)] + [len(sql_text)]
+for a, b in zip(starts, starts[1:]):
+    code = "\n".join(line.split("--")[0] for line in sql_text[a:b].split("\n"))
+    code = re.sub(r"'(?:[^']|'')*'", "''", code).strip()
+    if code.count(";") != 1 or not code.endswith(";"):
+        bad.append(("kontrol-donguleri.sql", "blok tek ve sonlanmış ifade değil", sql_text[a:b].split("\n", 1)[0][:70]))
 if bad:
     raise SystemExit("biçim kapısı: %r" % bad)
 all_fixes = FIX.get("text", []) + FIX.get("sql", []) + FIX.get("measure", []) + FIX_POST

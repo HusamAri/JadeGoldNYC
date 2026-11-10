@@ -63,7 +63,7 @@ Jade Gold NYC Etsy mağazası için uçtan uca yönetim/raporlama paneli. Tüm s
   `node scripts/theme-lab/compile.mjs` + `shoot.mjs` ile derle ve ölç.
 - **Etsy yönetimi (her mağaza):** Etsy'ye dokunan her işte önce `docs/etsy-playbook/INDEX.md`
   (konu → dosya tablosu), sonra YALNIZ o işin konu dosyası okunur; `source/` okunmaz.
-- **Muhasebe kontrol döngüleri (0178 + 0179, 2026-11-09):** `accounting_checks(org)` 14 salt
+- **Muhasebe kontrol döngüleri (0178 + 0181, 2026-11-09; 0181 canlıda MCP adı `0179_accounting_checks_fixes`):** `accounting_checks(org)` 14 salt
   okunur kontrolü Uyarı Merkezi'ne düşer (ledger bakiye zinciri ve tazeliği, iade kuyruğu,
   sipariş ücreti farkı, iptalde COGS, ShipStation, reklam verisi, postaj çift sayımı,
   maliyet kaynağı çakışması). Fonksiyon security invoker: okuduğu her tablonun

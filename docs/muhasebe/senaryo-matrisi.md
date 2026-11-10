@@ -1,6 +1,6 @@
 # Muhasebe senaryo matrisi: Etsy'den gelmeyen bilgi
 
-_2026-11-09 · ölçümler canlı Supabase'de 2026-11-08 ve 2026-11-09 · canlı kontroller `accounting_checks` (0178, 0179) · üreteç `kaynak/render.py`_
+_2026-11-09 · ölçümler canlı Supabase'de 2026-11-08 ve 2026-11-09 · canlı kontroller `accounting_checks` (0178, 0181) · üreteç `kaynak/render.py`_
 
 ## Neden bu belge
 
@@ -37,13 +37,13 @@ Sahibin isteği: Etsy API'sinin hiç vermediği ya da eksik verdiği her bilgi (
 | İade zamanı | 1.901 iadeli siparişin 687'si (yüzde 36) sonraki ayda, 82'si (yüzde 4,3) sonraki yılda; medyan 8,9 gün, p90 31,5 gün | Dönem görünümü iadeyi iade tarihine yazmalı. |
 | İptal statüsü | İadeli 1.901 siparişin 1.388'i cancelled | İptal çoğunlukla tahsil edilip iade edilmiş siparişlerdir. |
 | Ledger kimliği | 4 Etsy org'unda toplam tutar = son bakiye (açılış 0) | Ledger'da boşluk yok; günlük ucuz kontrol (K1). |
-| Aynı saniyede çok satır | Jade son 91 gün: 39 gün sonu son saniyesi çok satırlı; 0178 kuralı 13 günde sahte kırılma verirdi, 0179 kuralı 0 | K1 açılış ve kapanışı ilk ve son saniyedeki zincir ucundan seçer; uç tekil değilse o saniyenin adayları denenir. |
+| Aynı saniyede çok satır | Jade son 91 gün: 39 gün sonu son saniyesi çok satırlı; 0178 kuralı 13 günde sahte kırılma verirdi, 0181 kuralı 0 | K1 açılış ve kapanışı ilk ve son saniyedeki zincir ucundan seçer; uç tekil değilse o saniyenin adayları denenir. |
 | Ücret kapsamı | Jade canlı 8.314 siparişin 7.461'inde etsy_payment_id boş | Sipariş ücreti motoru işleme ücretini siparişe bağlayamıyor (K4). |
 | having tuzağı | Net maliyeti 0 ya da altı olan ay aylık özetten düşer: Jade 2 ay $10,08, Artifact 1 ay $5,70 | Kredi ayları sessizce kaybolur (SIS-01). |
 | Eşlenmeyen ledger türleri | Jade 25.657 satır, 16 tür, net +$437.541,33 | Çoğu gider değil nakit ve emanettir; sözlük bunları sınıflar. |
 | Offsite oranı | Jade receipt tipli ücretlerde ortalama yüzde 12,04 ve 15 tavan (tüm 757 ücrette 34 tavan); EON 6/6, Artifact 1/1 tavanda | Oran ve tavan org ayarı olmalı (RKL-04). |
 | İptal siparişte COGS | Jade 815 iptal siparişte $414.892,48 motor maliyeti; kargo kanıtı olmayan ve kanıtın aranabildiği 516 sipariş $280.517,60, bunun 319'u hiç tahsil edilmedi ($162.391,17); kargo kaydı tutulmayan dönemde 225 sipariş $98.964,40 bilinmiyor | Geçmiş yılların karı bu tutar kadar düşük; İşletme Karı kartının 6 aylık penceresine düşen kısım $8.785,66 (K5, MAL-02). |
-| Etsy kargo kaydı boştu | sale_shipments 5 org'da 0 satır: 0174'ün kısmi tekil indeksi senkron upsert'ünü her seferinde 42P10 ile düşürüyordu | 0179 indeksi düzeltti; receipt yeniden okundukça gönderi kaydı dolar (SEV-01, MAL-02). |
+| Etsy kargo kaydı boştu | sale_shipments 5 org'da 0 satır: 0174'ün kısmi tekil indeksi senkron upsert'ünü her seferinde 42P10 ile düşürüyordu | 0181 indeksi düzeltti; receipt yeniden okundukça gönderi kaydı dolar (SEV-01, MAL-02). |
 | ShipStation çift sayım | Jade ShipStation gider satırları $24.882,40, iptal edilmemiş gönderilerin postaj ve sigorta toplamı $12.605,14 | İşletme Karı'nda $12.277,26 fazla kargo gideri (K13, SEV-02). |
 | Kaynak çakışması | EON 10 kalemde motor maliyeti fatura ya da elle maliyetin yanında duruyor: $2.297,32 | İşletme Karı'nda hayalet maliyet (K14, MAL-01). |
 | Vergi gelirde | Jade iptal dışı satış vergisi $141.721,03 (tüm dönem) panel kar kartı gelirinde; operating_profit_monthly'nin 6 aylık penceresinde $6.456,86 | Panel kar kartı ve İşletme Karı vergiyi kar sayıyor (GEL-01). |
@@ -181,7 +181,7 @@ Ledger sözlüğünün aylık gider özetine bağlanması, bakiye zinciri ve ayl
 | ID | Senaryo | Öncelik | Efor | Şerit | Kontrol |
 | --- | --- | --- | --- | --- | --- |
 | SIS-01 | Aylık ledger özeti sözlüğü okumuyor: having ile düşen ay, eşlenmeyen tür ve bayat özet | P1 | M | A, B, C | canlı: K6 `ledger_type_unknown`, K7 `ledger_cost_drift` |
-| SIS-02 | Ledger bakiye zinciri ve tazeliği: K1 0179 ile düzeldi, aylık ekstre ikinci kaynak | P2 | S | A, B, C, D | canlı: K1 `ledger_balance_break`, K12 `ledger_stale` |
+| SIS-02 | Ledger bakiye zinciri ve tazeliği: K1 0181 ile düzeldi, aylık ekstre ikinci kaynak | P2 | S | A, B, C, D | canlı: K1 `ledger_balance_break`, K12 `ledger_stale` |
 | SIS-03 | Finansal denetim izi: 90 günlük saklama kararı, silinen iz ve audit trigger'sız finansal ayar tabloları | P2 | M | A, B, C, D, E | öneri: `audit_trail_gap` |
 
 Toplam 49 senaryo: P0 5, P1 21, P2 18, P3 5.
@@ -222,6 +222,7 @@ Her adımın eforu parantez içinde yazılıdır (S yarım günden az, M 1 ile 2
 
 ## Kaynaklar
 
-- Kod: `supabase/migrations/0174_sale_item_pnl.sql`, `0178_accounting_checks.sql`, `0179_accounting_checks_fixes.sql`, `lib/db/queries/alerts.ts`, `lib/etsy/sync.ts`, `lib/etsy/refunds.ts`, `lib/gold-cost-entry.ts`, `lib/shipstation/sync.ts`.
+- Kod: `supabase/migrations/0174_sale_item_pnl.sql`, `0178_accounting_checks.sql`, `0181_accounting_checks_fixes.sql`, `lib/db/queries/alerts.ts`, `lib/etsy/sync.ts`, `lib/etsy/refunds.ts`, `lib/gold-cost-entry.ts`, `lib/shipstation/sync.ts`.
+- Numara notu: `0181_accounting_checks_fixes.sql` canlıya 2026-11-09'da MCP ile `0179_accounting_checks_fixes` adıyla uygulandı; main 0179 ve 0180 numaralarını EON-FR6'ya verdiği için dosya 0181'e taşındı. Fonksiyon gövdesindeki notlarda ve canlı fonksiyon yorumunda geçen `0179` bu dosyadır; gövde canlıyla bayt bayt aynıdır (md5 `007910a1fb56c9d82a0630bac00825d5`).
 - Belgeler: `docs/satis-maliyet-takip.md` (muhasebe kuralları ve dış kaynaklar: IRS Pub 334 ve 538, Schedule C talimatları, Etsy Help, Etsy OpenAPI), `docs/etsy-playbook/INDEX.md`.
 - Ham kayıtlar: `docs/muhasebe/kaynak/` (analiz, çürütme, ayıklama, bağımsız ölçümler; otomatik okunmaz).

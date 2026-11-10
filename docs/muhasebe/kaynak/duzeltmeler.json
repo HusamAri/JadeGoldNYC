@@ -1,5 +1,5 @@
 {
- "not": "Belge denetimi (wf_de9957a0-96c: g1..g5) ve ek blok denetimi (wf_4498f52d-d2b: ek1) bulgularının birebir metin düzeltmeleri; üreteç her find metninin dosyada tam bir kez geçtiğini sınar. Dizin (senaryo-matrisi.md) ve 0179 notu bulguları render.py sabitlerinde, iki üreteç kusuru (yorumla biten sorguda ';', '.; yeniden ölçüm' artığı) render.py kodunda düzeltildi.",
+ "not": "Belge denetimi (wf_de9957a0-96c: g1..g5) ve ek blok denetimi (wf_4498f52d-d2b: ek1) bulgularının birebir metin düzeltmeleri; üreteç her find metninin dosyada tam bir kez geçtiğini sınar. Dizin (senaryo-matrisi.md) ve 0181 notu bulguları render.py sabitlerinde, iki üreteç kusuru (yorumla biten sorguda ';', '.; yeniden ölçüm' artığı) render.py kodunda düzeltildi.",
  "post": [
   {
    "file": "senaryolar/01-gelir.md",
@@ -203,7 +203,7 @@
    "file": "senaryolar/03-ucret.md",
    "find": "docs/satis-maliyet-takip.md:113-116 aynı kusuru yazıyor",
    "replace": "docs/satis-maliyet-takip.md:121-123 aynı kusuru yazıyor",
-   "why": "denetim:g2 düşük UCR-03 panel_today: Satır referansı HEAD'de bayat. docs/satis-maliyet-takip.md:113-116 artık 0179 düzeltmelerini anlatıyor; Offsite 'etsy' kusurunu yazan metin 6a03693 ile :121-123'e kaydı."
+   "why": "denetim:g2 düşük UCR-03 panel_today: Satır referansı HEAD'de bayat. docs/satis-maliyet-takip.md:113-116 artık 0181 düzeltmelerini anlatıyor; Offsite 'etsy' kusurunu yazan metin 6a03693 ile :121-123'e kaydı."
   },
   {
    "file": "senaryolar/03-ucret.md",
@@ -226,8 +226,8 @@
   {
    "file": "senaryolar/03-ucret.md",
    "find": "K3 bu iadeyi kaçırıyor; receipt'e doğrudan bağlı offsite_ads_fee_refund yakalıyor",
-   "replace": "K3 bu iadeyi kaçırıyor; receipt'e doğrudan bağlı offsite_ads_fee_refund yakalıyor (0179 sonrası K3 siparişin herhangi bir sales_tax_refund satırını da iade sinyali saydığı için bu siparişi yakalıyor)",
-   "why": "denetim:g2 düşük UCR-03 other: UCR-03 bloğunda '0179 sonrası' satırı yok, oysa REK-06 satırı K3'ün EON 4145285871 iadesini kaçırdığını söylüyor. 0179 K3 siparişin herhangi bir sales_tax_refund satırını da iade sinyali sayıyor; bu sipariş completed ve 1 sn sonra yazılmış vergi iadesi var, 0179 sonrası stale_status olarak yakalanıy"
+   "replace": "K3 bu iadeyi kaçırıyor; receipt'e doğrudan bağlı offsite_ads_fee_refund yakalıyor (0181 sonrası K3 siparişin herhangi bir sales_tax_refund satırını da iade sinyali saydığı için bu siparişi yakalıyor)",
+   "why": "denetim:g2 düşük UCR-03 other: UCR-03 bloğunda '0181 sonrası' satırı yok, oysa REK-06 satırı K3'ün EON 4145285871 iadesini kaçırdığını söylüyor. 0181 K3 siparişin herhangi bir sales_tax_refund satırını da iade sinyali sayıyor; bu sipariş completed ve 1 sn sonra yazılmış vergi iadesi var, 0181 sonrası stale_status olarak yakalanıy"
   },
   {
    "file": "senaryolar/04-reklam.md",
@@ -364,7 +364,7 @@
   {
    "file": "senaryolar/06-maliyet.md",
    "find": "İşletme karı ve dashboard karı bu kadar düşük; marj raporu yanlış.",
-   "replace": "Geçmiş yılların karı ve bu dönemleri kapsayan dashboard karı bu kadar düşük; İşletme Karı kartının 6 aylık penceresine düşen kısım 0179 K5 ile $8.785,66; marj raporu yanlış.",
+   "replace": "Geçmiş yılların karı ve bu dönemleri kapsayan dashboard karı bu kadar düşük; İşletme Karı kartının 6 aylık penceresine düşen kısım 0181 K5 ile $8.785,66; marj raporu yanlış.",
    "why": "denetim:g4 düşük MAL-02 gap: Cümle İşletme Karı'nın hayalet COGS tutarının tamamı kadar düşük olduğunu ima ediyor; oysa İşletme Karı kartı son 6 ayı gösterir ve hayalet COGS'un çoğu 2022 ile 2025 yıllarında. Dizin aynı ayrımı yapıyor (6 aylık pencerede $8.785,66), blok yapmıyor."
   },
   {
@@ -376,7 +376,7 @@
   {
    "file": "senaryolar/06-maliyet.md",
    "find": "alert_key cancelled_cogs_phantom (kritik, bedel never_charged ve refunded_no_ship COGS toplamı)",
-   "replace": "Sinyal mevcut K5 cancelled_order_cogs (kritik; 0179 ile pozitif kargo kanıtı arar, bedel kanıtın aranabildiği hayalet COGS); void edilip sonradan kargo kanıtı gelen sipariş için yeni alert_key voided_cogs_shipped",
+   "replace": "Sinyal mevcut K5 cancelled_order_cogs (kritik; 0181 ile pozitif kargo kanıtı arar, bedel kanıtın aranabildiği hayalet COGS); void edilip sonradan kargo kanıtı gelen sipariş için yeni alert_key voided_cogs_shipped",
    "why": "denetim:g4 orta MAL-02 control_loop: Kontrol döngüsü yeni alert_key cancelled_cogs_phantom öneriyor; aynı bloktaki COGS-02 çürütmesi bu anahtarın canlı K5 cancelled_order_cogs ile mükerrer olduğunu söylüyor, tablo da kontrolü 'canlı: K5' diye veriyor. Uygulanırsa aynı hayalet COGS için iki kritik uyarı yanar. Kanonik kayıt yeni anahtar"
   },
   {
@@ -550,8 +550,8 @@
   {
    "file": "senaryolar/08-nakit.md",
    "find": "(açılış + Σ tutar = son bakiye, para birimi bazında, created_timestamp ve entry_id sırasıyla)",
-   "replace": "(açılış + Σ tutar = son bakiye, para birimi bazında; 0179'dan beri açılış ve kapanış ilk ve son saniyedeki zincir ucundan seçilir, entry_id sırası kullanılmaz çünkü aynı saniyede çok satır olunca sahte kırılma veriyordu: Jade son 91 günde 13 gün)",
-   "why": "denetim:g5 orta NAK-01 control_loop: NAK-01 bloğunda '0179 sonrası' satırı yok. Kontrol döngüsü K1'i hala created_timestamp ve entry_id sırasıyla anlatıyor, çürütmenin (4). maddesi de 'kontrol entry_id sırasını korumalı (0178 K1 öyle)' diyor. 0179 tam bu sırayı bıraktı, çünkü aynı saniyede çok satır olunca sahte kritik veriyordu; SIS-0"
+   "replace": "(açılış + Σ tutar = son bakiye, para birimi bazında; 0181'dan beri açılış ve kapanış ilk ve son saniyedeki zincir ucundan seçilir, entry_id sırası kullanılmaz çünkü aynı saniyede çok satır olunca sahte kırılma veriyordu: Jade son 91 günde 13 gün)",
+   "why": "denetim:g5 orta NAK-01 control_loop: NAK-01 bloğunda '0181 sonrası' satırı yok. Kontrol döngüsü K1'i hala created_timestamp ve entry_id sırasıyla anlatıyor, çürütmenin (4). maddesi de 'kontrol entry_id sırasını korumalı (0178 K1 öyle)' diyor. 0181 tam bu sırayı bıraktı, çünkü aynı saniyede çok satır olunca sahte kritik veriyordu; SIS-0"
   },
   {
    "file": "senaryolar/09-sistem.md",
@@ -574,8 +574,8 @@
   {
    "file": "senaryolar/08-nakit.md",
    "find": "ve hiçbir kontrol yanmadı (0178 K7 yalnız etsy_ledger kaynağını karşılaştırır).",
-   "replace": "ve 0178'de hiçbir kontrol yanmadı (K7 yalnız etsy_ledger kaynağını karşılaştırır); 0179'dan beri K13 postage_double_count bu çift sayımı kritik olarak gösteriyor (Jade $12.277,26), ama kapanmış ayın geriye dönük değişikliğini genel olarak yakalayan kontrol hala yok.",
-   "why": "denetim:g5 düşük NAK-02 gap: NAK-02 bloğunda '0179 sonrası' satırı yok. Boşluk aynı $12.277,26 ShipStation çift sayımı için 'hiçbir kontrol yanmadı' diyor; 0179 K13 postage_double_count tam bunu kritik olarak yakalıyor ve dizinin K13 satırı da yanıyor."
+   "replace": "ve 0178'de hiçbir kontrol yanmadı (K7 yalnız etsy_ledger kaynağını karşılaştırır); 0181'dan beri K13 postage_double_count bu çift sayımı kritik olarak gösteriyor (Jade $12.277,26), ama kapanmış ayın geriye dönük değişikliğini genel olarak yakalayan kontrol hala yok.",
+   "why": "denetim:g5 düşük NAK-02 gap: NAK-02 bloğunda '0181 sonrası' satırı yok. Boşluk aynı $12.277,26 ShipStation çift sayımı için 'hiçbir kontrol yanmadı' diyor; 0181 K13 postage_double_count tam bunu kritik olarak yakalıyor ve dizinin K13 satırı da yanıyor."
   },
   {
    "file": "senaryolar/08-nakit.md",
@@ -641,7 +641,7 @@
    "file": "senaryolar/09-sistem.md",
    "find": "/ayarlar/etsy kartı etsy_ledger_entries son satırının balance_cents ve currency değerini okur.",
    "replace": "/ayarlar/etsy kartı bakiyeyi K1'in kapanışıyla aynı kuralla (son saniyedeki zincir ucu, para birimi başına) okur; entry_id sırasıyla seçilen 'son satır' aynı saniyede çok satır olan günlerde yanlış bakiye gösterir.",
-   "why": "denetim:g5 düşük SIS-02 field: Bakiye yüzeyi 'son satır' ile kuruluyor; 0179 bu seçimi K1'de bıraktı, çünkü aynı saniyede çok satır olunca son satır Etsy'nin kapanışı değildir. 0179 notu 'kalan iş bakiye yüzeyi' diyor ama yüzeyin hangi kuralla kurulacağını söylemiyor, bu yüzden alan bırakılmış kuralı öneriyor."
+   "why": "denetim:g5 düşük SIS-02 field: Bakiye yüzeyi 'son satır' ile kuruluyor; 0181 bu seçimi K1'de bıraktı, çünkü aynı saniyede çok satır olunca son satır Etsy'nin kapanışı değildir. 0181 notu 'kalan iş bakiye yüzeyi' diyor ama yüzeyin hangi kuralla kurulacağını söylemiyor, bu yüzden alan bırakılmış kuralı öneriyor."
   },
   {
    "file": "senaryolar/01-gelir.md",
@@ -657,8 +657,8 @@
   },
   {
    "file": "senaryolar/01-gelir.md",
-   "find": "Ek düzeltme: K4 k4_sales CTE'si where s.source = 'etsy' ile süzülür (0178:269-276, 0179:316-323).",
-   "replace": "Ek düzeltme: K4 k4_sales CTE'si where s.source = 'etsy' ile süzülür (0178:269-276, 0179:316-323). Rapor: /raporlar altında aylık 'Satıcı vergi borcu' tablosu (tax_remitter seller ya da seller_imposed, eyalet x ay). Sahip rutini: aracı dökümünden kanal ücretini ve tahsil tarihini girer, ay sonunda eyalet vergi beyanını yapıp seller_tax_filings'e işler.",
+   "find": "Ek düzeltme: K4 k4_sales CTE'si where s.source = 'etsy' ile süzülür (0178:269-276, 0181:316-323).",
+   "replace": "Ek düzeltme: K4 k4_sales CTE'si where s.source = 'etsy' ile süzülür (0178:269-276, 0181:316-323). Rapor: /raporlar altında aylık 'Satıcı vergi borcu' tablosu (tax_remitter seller ya da seller_imposed, eyalet x ay). Sahip rutini: aracı dökümünden kanal ücretini ve tahsil tarihini girer, ay sonunda eyalet vergi beyanını yapıp seller_tax_filings'e işler.",
    "why": "ekdenetim:ek1 düşük GEL-03 field: Düzeltilmiş Alan iki şeyi kaybetmiş: aylık 'Satıcı vergi borcu' raporunu ve sahip rutinini (şerit D). Kontrol döngüsü 'ay sonunda vergi borcu listesi' diyor ama bu liste Alan'da tanımlı değil. Şerit D'nin bu blokta karşılığı kalmamış. Ana oturum aynı kaybı IAD-06 için doldurmuştu."
   },
   {
@@ -712,8 +712,8 @@
   {
    "file": "senaryolar/02-iade.md",
    "find": "(0178:427-441 refund_backlog ve refund_status_mismatch)",
-   "replace": "(canlı tanım 0179:703-716 refund_backlog ve refund_status_mismatch; 0178:427-441'in yerini aldı)",
-   "why": "ekdenetim:ek1 düşük IAD-06 panel_today: Panel bugün satırı K2 ve K3 için 0178 satırlarını gösteriyor. 0179 canlıda ve accounting_checks gövdesini değiştirdi; canlı tanım 0179:703-716'da."
+   "replace": "(canlı tanım 0181:703-716 refund_backlog ve refund_status_mismatch; 0178:427-441'in yerini aldı)",
+   "why": "ekdenetim:ek1 düşük IAD-06 panel_today: Panel bugün satırı K2 ve K3 için 0178 satırlarını gösteriyor. 0181 canlıda ve accounting_checks gövdesini değiştirdi; canlı tanım 0181:703-716'da."
   },
   {
    "file": "senaryolar/02-iade.md",
@@ -772,8 +772,8 @@
   {
    "file": "senaryolar/06-maliyet.md",
    "find": "Kargo kanıtı ShipStation gönderisi (order_number = receipt id; senkron 2026-07-10'da durdu) ya da sales.shipped_at ve sale_items.shipped_at.",
-   "replace": "Kargo kanıtı 0179 K5 ile aynıdır: ShipStation gönderisi (order_number = receipt id; senkron 2026-07-10'da durdu), sales.is_shipped, sales.shipped_at, sale_items.shipped_at ya da sale_shipments (5 org'da bugün 0 satır).",
-   "why": "ekdenetim:ek1 düşük MAL-12 etsy_source: Etsy kaynağı satırı kargo kanıtını ShipStation, sales.shipped_at ve sale_items.shipped_at olarak sayıyor. Bloğun kontrol sorgusu 0179 K5 ile aynı kanıtı kullanıyor ve buna sales.is_shipped ile sale_shipments da giriyor. Blok kendi içinde iki farklı kanıt tanımı taşıyor."
+   "replace": "Kargo kanıtı 0181 K5 ile aynıdır: ShipStation gönderisi (order_number = receipt id; senkron 2026-07-10'da durdu), sales.is_shipped, sales.shipped_at, sale_items.shipped_at ya da sale_shipments (5 org'da bugün 0 satır).",
+   "why": "ekdenetim:ek1 düşük MAL-12 etsy_source: Etsy kaynağı satırı kargo kanıtını ShipStation, sales.shipped_at ve sale_items.shipped_at olarak sayıyor. Bloğun kontrol sorgusu 0181 K5 ile aynı kanıtı kullanıyor ve buna sales.is_shipped ile sale_shipments da giriyor. Blok kendi içinde iki farklı kanıt tanımı taşıyor."
   },
   {
    "file": "kontrol-donguleri.sql",
@@ -860,30 +860,30 @@
   {
    "id": "EK-03",
    "field": "panel_today",
-   "find": "0179 K5 (repoda, canlıda değil)",
-   "replace": "0179 K5 (2026-11-09'dan beri canlıda)",
-   "why": "Çürütücü 0179 canlıya çıkmadan ölçtü; 0179 2026-11-09'da uygulandı ve K5 kargolu 74 iptali aynı tutarla ($35.410,48) ayırıyor."
+   "find": "0181 K5 (repoda, canlıda değil)",
+   "replace": "0181 K5 (2026-11-09'dan beri canlıda)",
+   "why": "Çürütücü 0181 canlıya çıkmadan ölçtü; 0181 2026-11-09'da uygulandı ve K5 kargolu 74 iptali aynı tutarla ($35.410,48) ayırıyor."
   },
   {
    "id": "EK-01",
    "field": "panel_today",
-   "find": "0179:232-239",
-   "replace": "0179:316-323",
-   "why": "Satır kayması: çürütücü 0179'un taslağını okudu; HEAD'de K4 k4_sales CTE'si 0179:316-323 (source süzgeci yok, bulgu geçerli)."
+   "find": "0181:232-239",
+   "replace": "0181:316-323",
+   "why": "Satır kayması: çürütücü 0181'un taslağını okudu; HEAD'de K4 k4_sales CTE'si 0181:316-323 (source süzgeci yok, bulgu geçerli)."
   },
   {
    "id": "EK-01",
    "field": "field",
-   "find": "0179:232-239",
-   "replace": "0179:316-323",
-   "why": "Satır kayması: çürütücü 0179'un taslağını okudu; HEAD'de K4 k4_sales CTE'si 0179:316-323 (source süzgeci yok, bulgu geçerli)."
+   "find": "0181:232-239",
+   "replace": "0181:316-323",
+   "why": "Satır kayması: çürütücü 0181'un taslağını okudu; HEAD'de K4 k4_sales CTE'si 0181:316-323 (source süzgeci yok, bulgu geçerli)."
   },
   {
    "id": "EK-01",
    "field": "reason",
-   "find": "0179:232-239",
-   "replace": "0179:316-323",
-   "why": "Satır kayması: çürütücü 0179'un taslağını okudu; HEAD'de K4 k4_sales CTE'si 0179:316-323 (source süzgeci yok, bulgu geçerli)."
+   "find": "0181:232-239",
+   "replace": "0181:316-323",
+   "why": "Satır kayması: çürütücü 0181'un taslağını okudu; HEAD'de K4 k4_sales CTE'si 0181:316-323 (source süzgeci yok, bulgu geçerli)."
   },
   {
    "id": "EK-03",
