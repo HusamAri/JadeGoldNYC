@@ -1,0 +1,24 @@
+{
+ "olcum_tarihi": "2026-11-08",
+ "org_ids": {
+  "Jade Gold NYC": "f155b853-dfaf-48fd-94c5-ddfcb856e07c",
+  "EON": "9d0336c0-8772-456d-a80c-a5f2cfe7bbd0",
+  "Ophir Gold USA": "b7658ac4-7fb4-4fcb-836f-401efc3d9e5b",
+  "by Artifact Studio Jewelry": "2c254edf-2119-4079-b09e-dc672e32c1f9",
+  "Seselka Home": "c40bbaf0-f7b4-4238-b705-480c7e78b058"
+ },
+ "bagimsiz_olcumler": [
+  "REFUND_GROSS (reference_type payment_adjustment) ve REFUND_PROCESSING_FEE (reference_type processing_fee) satırlarının reference_id'si payment_adjustment kimliğidir: Jade'de 1.922/1.922 satır ne sales.etsy_receipt_id ne sales.etsy_payment_id ne de PAYMENT_GROSS reference_id ile eşleşir (0 eşleşme). Bu satırları payment id ya da receipt id ile birleştiren her SQL sıfır döner ve YANLIŞTIR.",
+  "API'siz köprü: Jade'de 1.922 REFUND_GROSS satırının 1.690'ında (yüzde 88) aynı saniyede (created_timestamp eşit) yazılmış TEK bir sales_tax_refund satırı vardır ve sales_tax_refund.reference_id = receipt id'dir (1.739/1.739 sales.etsy_receipt_id ile eşleşir). Artı eksi 2 saniyede transaction_refund ya da sales_tax_refund ile tek siparişe düşen 1.751, adaysız 168, belirsiz 3. transaction_refund aynı saniyede YAZILMAZ (0 eşleşme), Etsy işlem ücreti iadesini sonra yazar. Köprüyle bağlanan 1.691 iadenin tutarı $608.837,31 (toplam REFUND_GROSS $701.507).",
+  "Bağlanabilen diğer iade türleri: transaction_refund.reference_id = transaction id (1.958/1.958 sale_items.etsy_transaction_id ile eşleşir); offsite_ads_fee satırlarından reference_type 'etsy' olan 369 satır da receipt id taşır (369/369 sales.etsy_receipt_id ile eşleşir; 'bağlanamaz' iddiası YANLIŞ); offsite_ads_fee_refund 156/156 receipt ile eşleşir.",
+  "İşleme ücreti ölçüldü: PAYMENT_PROCESSING_FEE 10.277/10.277 ödemede tam olarak yüzde 3 + $0,25. İade tarafında (köprüyle tek siparişe bağlanan 1.691 iade): tam iadelerin 1.488/1.488'inde yüzde 3 + $0,25 tamamen geri geldi; kısmi iadelerin 203'ünden 184'ünde yalnız yüzde 3 geri geldi, $0,25 satıcıda kaldı, 19'unda $0,25 de geldi (büyük olasılıkla toplamı tama tamamlayan son kısmi iade). Kural: tam iade işleme ücretini tamamen iade eder, kısmi iade yalnız yüzde 3 iade eder.",
+  "İade zamanlaması (transaction_refund -> sale_items -> sales.order_date, 1.901 iadeli sipariş): 687'si (yüzde 36) sipariş ayından SONRAKİ bir takvim ayında (NY saati) iade edildi, 82'si (yüzde 4,3) sonraki yılda; medyan 8,9 gün, p90 31,5 gün, en fazla 156 gün. Bu 1.901 siparişin statüsü: cancelled 1.388, refunded 332, partially_refunded 175, completed 6. Yani iptal statüsünün büyük kısmı tahsil edilip iade edilmiş siparişlerdir.",
+  "Ledger bütünlük kimliği: 4 org'un dördünde de tüm ledger satırlarının amount_cents toplamı en son satırın balance_cents değerine kuruşu kuruşuna eşittir (Jade 84.437 = 84.437; EON 165.384; Ophir -2.212; Artifact -6.218). Bugün ledger'da boşluk yok; bu eşitlik günlük ucuz bir kontrol döngüsüdür.",
+  "Ücret kapsamı: Jade canlı sipariş (completed/paid/processing) 8.314; etsy_fees_cents = 0 olan 5; etsy_payment_id NULL olan 7.461. EON canlı 44, ikisi de 0. Tüm sales satırları source = 'etsy' (csv 0); Temmuz denetimindeki CSV mapper pick() kusuru bugün kayıtlı veriye etki etmiyor.",
+  "having tuzağı ölçüldü: rebuild_etsy_ledger_costs'ta net maliyeti 0 ya da altında kalan ay düşer. Bugün yalnız kargo kategorisinde: Jade 2 ay (toplam $10,08 kredi düştü), Artifact 1 ay ($5,70). Küçük ama sessiz.",
+  "Eşlenmeyen ledger türleri (rebuild_etsy_ledger_costs eşlemesi dışında kalanlar): Jade 25.657 satır, 16 tür, net +$437.541,33; EON 254 satır, 11 tür, +$6.879,29; Ophir 68 satır, 10 tür, +$606,22; Artifact 39 satır, 10 tür, +$316,88. Bunların çoğu maliyet değil nakit hareketi ve emanettir (PAYMENT_GROSS, DISBURSE2, sales_tax, REFUND_GROSS, RECOUP).",
+  "Offsite Ads (reference_type receipt): Jade'de ücret, vergi öncesi sipariş tutarının ortalama yüzde 12,04'ü (tavan dışı), 15 siparişte $100 tavan; EON 6/6 sipariş tavanda; Artifact 1/1 tavanda.",
+  "Kolon tipleri: etsy_ledger_entries.reference_id TEXT; sales.etsy_receipt_id, sales.etsy_payment_id, sale_items.etsy_transaction_id BIGINT. Birleştirmede reference_id ~ '^[0-9]+$' süz ve reference_id::bigint kullan; bigint tarafı ::text'e çevirmek 60 sn zaman aşımı üretir.",
+  "Beşinci bir org var: 'Seselka Home' (c40bbaf0-f7b4-4238-b705-480c7e78b058). Kontrol SQL'leri org listesini sabit dört isimle değil organizations tablosundan almalı."
+ ]
+}

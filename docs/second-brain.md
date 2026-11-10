@@ -1956,6 +1956,40 @@ repodaki hedefidir.
   belirle. Yan not: iki üreteç (taslak SQL, galeri SQL) ortak modüle taşındı; 0176 ve 0177'nin bayt bayt aynı çıkması,
   yeniden düzenlemenin davranışı değiştirmediğinin kanıtıydı. 15 üretim, 30 kredi, 10 kabul.
 
+- **Kontrol döngüsünün kendisi de çürütülür: kanıt alanının dolu olduğunu, okuduğu tablonun RLS'te
+  görünür olduğunu ve iki yöndeki hatasını ölçmeden "kuruldu" deme (2026-11-09):** 0178'in 11 muhasebe
+  kontrolü canlıya çıktıktan saatler sonra senaryo çürütücüleri dördünde kusur buldu; 0179 taslağını sınayan
+  üç bağımsız göz (veri, SQL ve güvenlik, muhasebe) taslakta iki kusur daha buldu. (1) K1 kapanış satırını
+  entry_id ile seçiyordu; aynı saniyede çok satır olunca Jade'in son 91 gününün 13'ünde sağlam veride sahte
+  kritik verirdi. Taslaktaki "herhangi aday çifti" toleransı sahte pozitifi sahte negatife çevirdi: EON'un
+  kalıcı üç satırlı ilk saniyesi her gün bir kayıp satırı maskeliyordu. İkisini birden zincir ucunu çoklu
+  küme farkıyla seçmek çözdü. (2) K5 `is_shipped` NULL'u "kargolanmadı" saydı; alan yalnız 0174'ten sonra
+  okunan receipt'te doluydu (11.588 kalemin 8'i). Yedek kanıt `sale_shipments` 5 org'da 0 satırdı, çünkü
+  0174'ün kısmi tekil indeksi senkron upsert'ünü her seferinde 42P10 ile düşürüyordu ve hata console.error'a
+  yutuluyordu. (3) K12 taslağı `etsy_connection`'a bakıyordu; tabloda RLS açık ama politika yok, security
+  invoker fonksiyon oturumda onu hep boş görür ve kontrol sessizce yeşil kalırdı (2026-09-30 ops rotası
+  dersinin ayna hali). Kural: (a) kanıt alanını kullanmadan önce dolu olma oranını ölç; NULL "hayır" değil
+  "bilinmiyor"dur ve kanıtın aranamadığı dönem sayıdan ayrı bir kovaya gider (Jade 813 yerine 516 sipariş,
+  225'i "bilinmiyor"); (b) security invoker fonksiyonun okuduğu her tablonun authenticated select
+  politikasını `pg_policy`'den say ve fonksiyonu bir kez RLS oturumunda koş (`set local role
+  authenticated` + jwt claims; 14 kontrol aynı sonucu 702 ms'de verdi); (c) toleranslı bir düzeltmenin iki
+  yönünü ayrı ölç: sahte kırılma günü ve maskelenen kayıp günü; (d) bağımsız denetçilerin öngördüğü sayıları
+  kabul testi yap: uygulamadan sonra canlı çıktı birebir tuttu (K3 EON $2.448,80, K5 $280.517,60, K8
+  470.621 ve 59.526 cent).
+
+- **Doğrulanmış yapılandırılmış veriden belge üreteçle kurulur, yazar ajanla değil; ajanı denetime ver ve
+  düzeltmeyi kaynağın üstünde tut (2026-11-09):** 88 senaryonun çürütme, ayıklama ve ek senaryo aşamaları
+  bittiğinde akış gece boyunca saatlerce boşlukla takılmıştı; kalan 14 ajan (yazım ve denetim) 2 eşzamanlılıkla
+  7 saati aşacaktı. Kalan iş çürütülmüş alanları (`amended_*` analizi ezer) belgeye dökmekti; bunu ajanlara
+  yeniden yazdırmak her sayıda transkripsiyon riski demekti. Akış durduruldu, `docs/muhasebe/kaynak/render.py`
+  JSON'dan kısa dizin, 9 bölüm dosyası ve 104 kontrol sorgusu üretti; beş denetçi sorguları canlıda koştu ve
+  her düzeltmeyi dosyadan birebir kopyalanmış `find`/`replace` olarak verdi. Düzeltmeler `duzeltmeler.json`
+  katmanında uygulanır: `find` dosyada tam bir kez geçmezse ya da bir düzeltme uygulanmazsa üreteç durur. Bu
+  kapı denetçinin eski bir taslağı okuduğu bulguyu da yakaladı (K13 "0179'da yok" dedi, oysa son halinde
+  vardı). Kural: akışın kalan adımları zaten doğrulanmış verinin sunumuysa akışı durdur ve deterministik
+  üret; ajanları yazıya değil sınamaya harca; bilgi tabanını Etsy playbook deseninde kur (kısa dizin, bölüm
+  dosyası, otomatik okunmayan kaynak arşivi).
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
