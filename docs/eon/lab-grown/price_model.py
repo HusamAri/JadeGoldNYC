@@ -267,5 +267,89 @@ def hs():
     print("  gram: " + "  ".join(f"US{us:g} {hs_g(us):.2f}" for us in HS_SIZES))
 
 
+# ---- 05 Half Eternity Pavé, stone of your choice (2026-11-11) -----------------------------------
+# Sahibin referansı etsy.com/listing/685259244 (NyFineJewelry / Nobel Yates, 5,0 yıldız 320 yorum; okuma 2026-11-11,
+# Google çeviri vekili): "Natural Diamond or Moissanite Wedding Band: 18K Gold Half Eternity Ring", "Shank: 1.35 mm
+# width, 1.35 mm thickness", "Approx. 1.49 g", round taşlar "Approx. 0.184ctw"; Gemstone varyasyonu Natural Diamond /
+# Lab Grown Diamond / Moissanite, metal 10K/14K/18K × 3 renk + platin. 14K alıcı fiyatı (vitrin %25 sonrası):
+# moissanite $336,75, lab +$36,75 → ~$373,50, doğal +$137 → ~$473,75. Fotoğraflarda (03 sarı, 09 beyaz önden) taş
+# bant genişliğine eşit, ~1,3 mm; ön yarıda ~21 taş (US 6 civarı) → 21 × 0,009 = 0,19 ct, ilanla tutarlı.
+# Sahip 2026-11-11: "new model all stone choices as specialization option" + listing'in taş tablosu (20 taş).
+# Kişiselleştirme fiyatı DEĞİŞTİREMEZ (Etsy add_on_price yalnız isteğe bağlı text_input'ta), bu yüzden tek fiyat
+# tablodaki EN PAHALI taşı da karşılamalı.
+# Tasarım: 14K, 1,5 × 1,5 mm bant (EON standart kalınlığı; referans 1,35), üst yarıda tek sıra ~1,3 mm round taş,
+# paylaşımlı mikro tırnak (shared prong micro pavé). Taş sayısı bedenle ölçeklenir: yarım çevre / 1,45 mm adım
+# (taş 1,3 + tırnak 0,15) → US 4 19, US 8½ 23, US 16 30 (kötümser; üreticiye sorulur, sabit sayı da olabilir).
+# Üretici teklifi YOK: gram × $100 (altın + işçilik) + taş başı takma $4 (DSP notu) + taş.
+SPOT_HEP = 4003.70         # gold-api.com 2026-11-11 17:23 UTC
+HEP_W, HEP_T = 1.5, 1.5
+HEP_STONE_MM, HEP_STONE_CT = 1.3, 0.009   # standart round tablosu: 1,3 mm ≈ 0,009 ct
+HEP_PITCH = 1.45           # taş 1,3 mm + paylaşımlı tırnak ~0,15 mm
+HEP_SETTING_EACH = 4       # üreticinin DSP notu "taş takma $4" (2,4 mm taş için; mikro pavé için kalibre değil)
+HEP_STONE_USD = {          # taş başı, 1,3 mm, kalibre değil (üreticinin bilinen tek lab oranı $280/ct)
+    "lab_diamond": 0.009 * 280,       # varsayılan taş ve fotoğraflardaki taş
+    "cap": 5.00,                      # en pahalı seçim: doğal salt & pepper (~$500/ct → $4,50), tanzanit ~$4
+    "cheap": 0.50,                    # akik, gül kuvars, oniks
+}
+HEP_SIZES = [4, 5, 6, 7, 8, 8.5, 9, 10, 11, 12, 13, 14, 15, 16]
+HEP_LISTS = [925, 1000, 1050, 1150]
+HEP_REF_14K_BUYER = {"Moissanite": 336.75, "Lab Grown Diamond": 373.50, "Natural Diamond": 473.75}
+
+
+def hep_g(us):
+    """Üreticinin 14K bant listesi: genişlik × (0,836 + 0,0515 × US) × kalınlık / 1,5 (tam kesit; taş yuvaları
+    metal alır, tırnaklar ekler: tampon olarak tam kesit tutulur)."""
+    return HEP_W * (0.836 + 0.0515 * us) * HEP_T / 1.5
+
+
+def hep_stones(us):
+    """Üst yarıdaki taş sayısı: dış çevrenin yarısı / adım (iç çap 11,63 + 0,8128 × US)."""
+    d = 11.63 + 0.8128 * us
+    return js_round(math.pi * (d + 2 * HEP_T) / 2 / HEP_PITCH)
+
+
+def hep_cost(us, tier="lab_diamond"):
+    return hep_g(us) * VB_USD_G + hep_stones(us) * (HEP_STONE_USD[tier] + HEP_SETTING_EACH)
+
+
+def hep_profit(buyer, us, tier):
+    return 0.905 * buyer - min(0.15 * buyer, 100) - FIX - (hep_cost(us, tier) + PACK + SHIP)
+
+
+def hep_floor(us, tier, sale=0.75):
+    """En kötü Offsite'ta kâr ≥ MIN_PROFIT olan en düşük liste (5'in katı)."""
+    lst = 5
+    while hep_profit(lst * sale, us, tier) < MIN_PROFIT:
+        lst += 5
+    return lst
+
+
+def hep():
+    m14 = SPOT_HEP / TROY * PURITY["14K"]
+    print(f"spot {SPOT_HEP}: melt 14K ${m14:.2f}/g; üretici $100/g içinde işçilik ~${VB_USD_G - m14:.2f}/g")
+    print("beden  gram  taş  ct    lab-pırlanta maliyeti  en pahalı taşla")
+    for us in HEP_SIZES:
+        n = hep_stones(us)
+        print(f"  US{us:<4g} {hep_g(us):.2f}  {n:3d}  {n * HEP_STONE_CT:.3f}  ${hep_cost(us):7.2f}             ${hep_cost(us, 'cap'):7.2f}")
+    landed = hep_cost(8.5) + PACK + SHIP
+    print(f"\n-- US 8½, lab-grown pırlanta: maliyet ${hep_cost(8.5):.2f}  landed ${landed:.2f} --")
+    for sale, lbl in [(0.75, "%25"), (0.65, "%35"), (1.0, "indirimsiz")]:
+        eng, lst, s, p = retail(landed, MULT_NARROW, sale)
+        print(f"  {lbl:10s} engine {eng}  liste {lst}  alıcı {s}  kâr(en kötü Offsite) {p}")
+    for tier in ("lab_diamond", "cap"):
+        f = hep_floor(HEP_SIZES[-1], tier)
+        print(f"  tek fiyatta US {HEP_SIZES[-1]:g} {tier} ≥ ${MIN_PROFIT} (%25): liste ≥ {f} (alıcı {f * 0.75:.2f})")
+    print("  referans 14K alıcı (vitrin %25 sonrası): " + ", ".join(f"{k} ${v}" for k, v in HEP_REF_14K_BUYER.items()))
+    print("\n-- tek fiyat, bedene ve taşa göre kâr (en kötü Offsite) --")
+    for lst in HEP_LISTS:
+        for sale in (0.75, 0.65):
+            buyer = lst * sale
+            for tier in ("lab_diamond", "cap"):
+                row = "  ".join(f"US{us:g} {hep_profit(buyer, us, tier):+.0f}" for us in (4, 8.5, 13, 14, 15, 16))
+                print(f"  liste {lst} @ {1 - sale:.0%} (alıcı {buyer:.2f}) {tier:11s}: {row}")
+    print("\n-- beden başına motor (%25, lab-grown pırlanta): liste --")
+    print("  " + "  ".join(f"US{us:g} {retail(hep_cost(us) + PACK + SHIP, MULT_NARROW, 0.75)[1]}" for us in HEP_SIZES))
+
+
 if __name__ == "__main__":
-    {"vb": vb, "fr": fr, "hs": hs}.get(sys.argv[1] if len(sys.argv) > 1 else "", dsp)()
+    {"vb": vb, "fr": fr, "hs": hs, "hep": hep}.get(sys.argv[1] if len(sys.argv) > 1 else "", dsp)()
