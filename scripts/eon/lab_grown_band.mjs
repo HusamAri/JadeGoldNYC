@@ -18,11 +18,24 @@ export const EON_ORG = "9d0336c0-8772-456d-a80c-a5f2cfe7bbd0";
 
 export const fmtSize = (s) => (Number.isInteger(s) ? String(s) : s.toFixed(1));
 
-/** Beden hücreleri: {size, label, grams}; gram 2 haneye yuvarlanır (DB numeric ile aynı). */
-export function bandCells(L, gramAt) {
+/**
+ * Beden hücreleri: {size, label, grams}; gram 2 haneye yuvarlanır (DB numeric ile aynı). `stoneAt` (isteğe bağlı,
+ * 05 HEP): taş sayısı bedenle değişen paketlerde beden başına {stoneCarat, stoneCostCents}; verilmezse hücreler
+ * eskisi gibi yalnız gram taşır ve SQL çıktısı bayt bayt aynı kalır.
+ */
+export function bandCells(L, gramAt, stoneAt) {
   const sizes = [];
   for (let s = L.sizes.from; s <= L.sizes.to + 1e-9; s += L.sizes.step) sizes.push(Number(s.toFixed(1)));
-  return sizes.map((s) => ({ size: s, label: fmtSize(s), grams: Number(gramAt(s).toFixed(2)) }));
+  return sizes.map((s) => {
+    const cell = { size: s, label: fmtSize(s), grams: Number(gramAt(s).toFixed(2)) };
+    if (stoneAt) {
+      const { stoneCarat, stoneCostCents } = stoneAt(s);
+      assert(Number.isInteger(stoneCostCents) && stoneCostCents > 0, `taş maliyeti US ${s}`);
+      cell.stoneCarat = Number(stoneCarat.toFixed(2));   // product_variants.stone_carat numeric(5,2)
+      cell.stoneCostCents = stoneCostCents;
+    }
+    return cell;
+  });
 }
 
 /** Varyant satırları + md5 mührü (SQL aynı kuralla üretir). */
@@ -71,8 +84,12 @@ export function bandMeta({ L, pkgRel, generatorScript, seal }) {
     variationAxes: L.variationAxes,
     metalColor: "Yellow, white or rose gold (Metal Color axis)",
     goldSolidity: "Solid gold",
-    offersPersonalization: false,
+    // 05 HEP'ten beri: paket kendi kişiselleştirme sorularını taşıyabilir (create-listing personalizationFor onları
+    // protokolün sorularının yerine yazar). Taşımayan paketin meta verisi değişmez.
+    offersPersonalization: Boolean(L.personalizationQuestions),
+    ...(L.personalizationQuestions ? { personalizationQuestions: L.personalizationQuestions } : {}),
     stone: L.stone,
+    ...(L.stoneChoices ? { stoneChoices: L.stoneChoices } : {}),
     band: L.band,
     gram: L.gram,
     pricing: L.pricing,
@@ -85,7 +102,16 @@ export function bandMeta({ L, pkgRel, generatorScript, seal }) {
 export function bandMigrationSql({ fileName, header, L, pkgRel, generatorScript, cells, seal }) {
   const meta = bandMeta({ L, pkgRel, generatorScript, seal });
   const colorValues = L.colors.map(([code, name]) => `('${code}','${name}')`).join(",");
-  const sizeValues = cells.map((c) => `(${c.size.toFixed(1)},'${c.label}',${c.grams.toFixed(2)})`).join(",\n    ");
+  const perSizeStone = cells[0].stoneCostCents !== undefined;
+  assert(cells.every((c) => (c.stoneCostCents !== undefined) === perSizeStone), "taş alanı hücrelerde karışık");
+  const sizeValues = cells
+    .map((c) => perSizeStone
+      ? `(${c.size.toFixed(1)},'${c.label}',${c.grams.toFixed(2)},${c.stoneCarat.toFixed(2)},${c.stoneCostCents})`
+      : `(${c.size.toFixed(1)},'${c.label}',${c.grams.toFixed(2)})`)
+    .join(",\n    ");
+  const sizeCols = perSizeStone ? "s(size, label, grams, stone_carat, stone_cost)" : "s(size, label, grams)";
+  const stoneCarat = perSizeStone ? "s.stone_carat" : `${L.stone.totalCarat}`;
+  const stoneCost = perSizeStone ? "s.stone_cost" : `${L.stone.stoneCostCentsEstimate}`;
 
   return `-- ${fileName}
 ${header.map((h) => `-- ${h}`).join("\n")}
@@ -136,13 +162,13 @@ select
   '${L.gram.weightSource}',
   true,
   'USD',
-  ${L.stone.totalCarat},
-  ${L.stone.stoneCostCentsEstimate},
+  ${stoneCarat},
+  ${stoneCost},
   'manual'
 from public.products p
 cross join (values ${colorValues}) as c(code, name)
 cross join (values
-    ${sizeValues}) as s(size, label, grams)
+    ${sizeValues}) as ${sizeCols}
 where p.org_id = '${EON_ORG}' and p.sku = '${L.productSku}'
 on conflict (org_id, sku) do update set
   product_id = excluded.product_id,

@@ -13,12 +13,21 @@ import assert from "node:assert/strict";
 export const UNQUALIFIED_DIAMOND =
   /(?<!\blab grown )(?<!\blab-grown )(?<!\blaboratory-grown )(?<!\blab created )(?<!\bmined )\bdiamonds?\b/i;
 
+/**
+ * 05 HEP (taş seçimli bant, 2026-11-11): seçeneklerde DOĞAL taşlar da var (salt and pepper, siyah). FTC'de
+ * niteliksiz "diamond" zaten doğal demektir; bu hattın kapısı yine her "diamond"ı açık bir niteleyiciyle ister,
+ * yalnız "natural" da kabul edilir. Yalnız `allowNatural` ile açılır; diğer paketlerin kapısı değişmez.
+ */
+export const UNQUALIFIED_DIAMOND_ALLOW_NATURAL =
+  /(?<!\blab grown )(?<!\blab-grown )(?<!\blaboratory-grown )(?<!\blab created )(?<!\bmined )(?<!\bnatural )(?<!\bnatural black )(?<!\bnatural salt and pepper )\bdiamonds?\b/i;
+
 const DEAD = /\b(gift|anniversary|promise|his|hers|him|her|unisex|minimalist|christmas)\b/;
 
 const wset = (t) =>
   t.toLowerCase().split(/\s+/).map((w) => (w.length > 3 && w.endsWith("s") ? w.slice(0, -1) : w)).sort().join(" ");
 
-export function checkListingText(L) {
+export function checkListingText(L, { allowNatural = false } = {}) {
+  const unqualified = allowNatural ? UNQUALIFIED_DIAMOND_ALLOW_NATURAL : UNQUALIFIED_DIAMOND;
   const words = L.title.trim().split(/\s+/);
   assert(words.length < 15, `başlık ${words.length} kelime`);
   assert(L.title.length <= 140, "başlık 140 kr");
@@ -35,7 +44,7 @@ export function checkListingText(L) {
     tags: L.tags.join("\n"),
     materials: L.materials.join("\n"),
   })) {
-    const m = UNQUALIFIED_DIAMOND.exec(text);
+    const m = unqualified.exec(text);
     assert(
       !m,
       `${k}: niteliksiz "diamond" @${m?.index}: …${text.slice(Math.max(0, (m?.index ?? 0) - 40), (m?.index ?? 0) + 12)}…`,

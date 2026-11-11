@@ -1,0 +1,19 @@
+{
+  "product": "EON-HEP",
+  "model": "nano_banana_2",
+  "aspect_ratio": "4:3",
+  "resolution": "2k",
+  "count": 1,
+  "why": "nano_banana_2 resolution varsayılanı 1k (second-brain 2026-09-13, 2026-10-13): 2k AÇIKÇA geçilir. count DAİMA 1 (CLAUDE.md). Tüm kareler 4:3, 10. kare (taş tablosu) de 2400x1792. İlk fotoğraf 1:1 kırpımda kesilmesin diye halka ortada, yanlarda boşluk.",
+  "costCreditsPerImage": 2,
+  "costSource": "EON-HS5 2026-11-10 (nano_banana_2, 2k, 4:3); üretimden önce bakiye yeniden okunur",
+  "artDirection": "HS5 ile aynı: tek pencere gün ışığı, metalin tamamlayıcısı düşük doygunlukta zemin (sarı → mavi-gri karo / arduvaz / şambre / keten; beyaz → terrakota; rose → adaçayı; üç metal ve beş taş → nötr gri). Ayrıntı prompts.py başlığında ve PROMPTS-REVIEW.md.",
+  "references": {
+    "ring": {"file": "scratchpad ref-685259244/ref-ring-crop.png (repoya ALINMADI: üçüncü tarafın ürün fotoğrafı)", "source": "etsy 685259244 (NyFineJewelry) 3. fotoğraf il_fullxfull.7413275024 (2200x2750, önden, sarı); kırpım 1300x400+440+1180 (bütün halka, ön yarıda taş sırası); filigran kırpımın dışında"},
+    "row": {"file": "scratchpad ref-685259244/ref-row-crop.png", "source": "aynı fotoğraf, kırpım 640x190+780+1380 (sekiz taş ve paylaşımlı tırnaklar yakından)"},
+    "grey": "ref-ring-grey.png + ref-row-grey.png: aynı kırpımların siyah-beyazı (05, 06, 07, 09)",
+    "heroCrop": "kabul edilen hero'dan sıkı kırpım (02, 03, 04, 08'e üçüncü referans); hero onaylanınca eklenir"
+  },
+  "plan": "Önce yalnız 01 hero; referansla yan yana kontrol, sonra kalan 8 kare (en çok 7'lik gruplar). Kusurlu kareye yalnız o kare için yeniden çekim, tek kusur adlandırılarak.",
+  "runs": []
+}
