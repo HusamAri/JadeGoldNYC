@@ -1,0 +1,235 @@
+{
+  "product": "EON-HEP",
+  "note": "Owner 2026-11-11 after the v1 set: 'taşlar yarım tur tam tur değil' (half eternity, not full). 6 of 9 v1 frames wrapped the row past half; fix = clock-face placement per pose (lying flat: 9 -> 6 -> 3 with 6 nearest the camera; standing: 9 -> 12 -> 3), 'exactly half and no more' in the ring block, and row-only references (the reference listing's whole-ring crop carried its own over-half coverage). 02, 04 and 08 v1 stayed (their prompts are frozen as DESIGN_V1 / ONLY_V1).",
+  "frames": [
+    {
+      "id": "01-hero",
+      "chosen": {
+        "take": "v2",
+        "file": "public/eon/lab-grown-hep/01.jpg",
+        "job": "1e6ea9a0-2a32-4187-a4f4-a1edd7e332eb",
+        "promptMd5": "9a1fc88ab58cd9924f1fb8dcad698448"
+      },
+      "rejected": [
+        {
+          "take": "v1",
+          "job": "bcf31c09-739f-47b2-901b-9e055cb5b28e",
+          "reason": "owner 2026-11-11 'taşlar yarım tur tam tur değil': the row ran past the left-most and right-most points and up both sides onto the back half (about 60-65% of the circle)"
+        }
+      ]
+    },
+    {
+      "id": "02-row",
+      "chosen": {
+        "take": "v1",
+        "file": "public/eon/lab-grown-hep/02.jpg",
+        "job": "ac75f9a6-3f74-4cb0-bc06-c27283c4c185",
+        "promptMd5": "c1ed58bc029f35a3d1bc510ad45cee42"
+      },
+      "rejected": []
+    },
+    {
+      "id": "03-stand",
+      "chosen": {
+        "take": "v2",
+        "file": "public/eon/lab-grown-hep/03.jpg",
+        "job": "75d2cd54-4fab-49bc-9b76-040a6f5a9f45",
+        "promptMd5": "b15ee3744cedf458936642a83ae11b66"
+      },
+      "rejected": [
+        {
+          "take": "v1",
+          "job": "03b7c44e-cae0-4f1b-9351-c4bc9045b425",
+          "reason": "owner 2026-11-11 'taşlar yarım tur tam tur değil': the row ran down the whole visible side to the cloth and over the top, well past half"
+        }
+      ]
+    },
+    {
+      "id": "04-hand",
+      "chosen": {
+        "take": "v1",
+        "file": "public/eon/lab-grown-hep/04.jpg",
+        "job": "601ee44c-f99e-4c6f-9558-197f8b639608",
+        "promptMd5": "14f28d3242a80edf047f4f34724e507e"
+      },
+      "rejected": []
+    },
+    {
+      "id": "05-stones",
+      "chosen": {
+        "take": "v2",
+        "file": "public/eon/lab-grown-hep/05.jpg",
+        "job": "d5308780-88d8-4cb3-a6e1-06e05b15f1af",
+        "promptMd5": "73aa96576f0397cc327d7f46df164dce"
+      },
+      "rejected": [
+        {
+          "take": "v1",
+          "job": "d7cd4db5-db21-4105-b100-41dfcd95c33e",
+          "reason": "owner 2026-11-11 'taşlar yarım tur tam tur değil': each of the five rows wrapped past the sides onto the back half"
+        }
+      ]
+    },
+    {
+      "id": "06-white",
+      "chosen": {
+        "take": "v3",
+        "file": "public/eon/lab-grown-hep/06.jpg",
+        "job": "ca1c0e0d-1392-4df6-b98f-1a7b0eced02c",
+        "promptMd5": "9927bae1fbde89625f4700e7a1989817"
+      },
+      "rejected": [
+        {
+          "take": "v1",
+          "job": "458b55f2-6175-48b3-a043-edd9ab8b0c60",
+          "reason": "owner 2026-11-11 'taşlar yarım tur tam tur değil': low side view; the row climbed past the left end onto the back half"
+        },
+        {
+          "take": "v2",
+          "job": "b9b92b40-b0c8-405d-be08-ba361eb6a9fe",
+          "reason": "same low side view; the row again curved past the right-most point onto the back half, so the pose changed to the upright view that held in 03 v2"
+        }
+      ]
+    },
+    {
+      "id": "07-metals",
+      "chosen": {
+        "take": "v2",
+        "file": "public/eon/lab-grown-hep/07.jpg",
+        "job": "9dcf6d4f-d9bf-4077-97e4-29c085b0a5ca",
+        "promptMd5": "f8f9ef0149371a985bb85b36e5679766"
+      },
+      "rejected": [
+        {
+          "take": "v1",
+          "job": "4052baf1-4bcc-4fbf-abb2-acf53fb13da4",
+          "reason": "owner 2026-11-11 'taşlar yarım tur tam tur değil': all three rows wrapped past the right ends onto the back halves"
+        }
+      ]
+    },
+    {
+      "id": "08-scale",
+      "chosen": {
+        "take": "v1",
+        "file": "public/eon/lab-grown-hep/08.jpg",
+        "job": "d9ab9037-a60d-48b0-8247-6b240242db78",
+        "promptMd5": "6eaab84677228ec38e48b18b9e6a050d"
+      },
+      "rejected": []
+    },
+    {
+      "id": "09-rose",
+      "chosen": {
+        "take": "v3",
+        "file": "public/eon/lab-grown-hep/09.jpg",
+        "job": "381c7be1-31d2-4be7-a7c1-2844d083cd0c",
+        "promptMd5": "7f070216cf7b7020c437abdf59308c80"
+      },
+      "rejected": [
+        {
+          "take": "v1",
+          "job": "bbfde690-ee3b-459a-9022-4676ef25273f",
+          "reason": "owner 2026-11-11 'taşlar yarım tur tam tur değil': the row ran around the right end and up toward the back"
+        },
+        {
+          "take": "v2",
+          "job": "244bd3fd-6bf5-4ad7-aebd-023e5944a1f8",
+          "reason": "a different ring: white metal with a centre cluster of pear stones and loose stones scattered on sparkly silver fabric; v3 adds the greyscale crop of the accepted hero v2"
+        }
+      ]
+    },
+    {
+      "id": "10-chart",
+      "chosen": {
+        "take": "typeset",
+        "file": "public/eon/lab-grown-hep/10.jpg",
+        "source": "images/stone_chart.py (typeset from ../listing.json stoneChoices; no credits, no AI text)"
+      },
+      "rejected": []
+    }
+  ],
+  "credits": {
+    "generations": 17,
+    "creditsAt2PerImage": 34,
+    "balanceBefore": 5691.51,
+    "balanceAfter": 5656.51,
+    "balanceDrop": 35.0,
+    "difference": "1 credit of the drop is not from this job's 17 IDs (another use on the account; HS5 left the balance at 5692.51 and it was 5691.51 before this job)"
+  },
+  "accepted": 9,
+  "rejected": 8,
+  "typeset": 1,
+  "gallery": [
+    {
+      "position": 0,
+      "file": "public/eon/lab-grown-hep/01.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-hep/01.jpg",
+      "alt": "14K yellow gold 1.5 mm half eternity band with one row of small round lab-grown diamonds across its front half, lying on a pale blue-grey ceramic tile in soft window light.",
+      "md5": "688bff1f42d0c4e0e1443b2fc58a85b7"
+    },
+    {
+      "position": 1,
+      "file": "public/eon/lab-grown-hep/02.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-hep/02.jpg",
+      "alt": "Close view of the row of round lab-grown diamonds on the 14K yellow gold band, each pair held by tiny shared prongs that form a fine beaded line along both edges.",
+      "md5": "7abb2513fcee15d939165c3e67bf4cae"
+    },
+    {
+      "position": 2,
+      "file": "public/eon/lab-grown-hep/03.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-hep/03.jpg",
+      "alt": "The 1.5 mm 14K yellow gold band standing on light indigo chambray, its lab-grown diamonds arching over the top half and the lower half plain polished gold.",
+      "md5": "e40ad5531105a74542316013a3d6da8a"
+    },
+    {
+      "position": 3,
+      "file": "public/eon/lab-grown-hep/04.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-hep/04.jpg",
+      "alt": "The slim 14K yellow gold half eternity band worn on a woman's ring finger, the row of lab-grown diamonds across the top of the finger, hand resting on blue-grey linen.",
+      "md5": "e778a84b8b67138f85c6d9d5a5287603"
+    },
+    {
+      "position": 4,
+      "file": "public/eon/lab-grown-hep/05.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-hep/05.jpg",
+      "alt": "Five of the twenty stone choices in 14K yellow gold, left to right: lab-grown diamond, lab-created sapphire, lab-created ruby, lab-created emerald and amethyst. Sold as one ring.",
+      "md5": "493f8fc67d4f65291a8b24c82a8afe67"
+    },
+    {
+      "position": 5,
+      "file": "public/eon/lab-grown-hep/06.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-hep/06.jpg",
+      "alt": "14K white gold version of the 1.5 mm half eternity band standing on a warm terracotta clay tile, lab-grown diamonds across the top half, the lower half plain.",
+      "md5": "15bd87a11809548ccd11fdb2c5b1f693"
+    },
+    {
+      "position": 6,
+      "file": "public/eon/lab-grown-hep/07.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-hep/07.jpg",
+      "alt": "The half eternity band in 14K yellow, white and rose gold side by side on grey limestone, each with lab-grown diamonds along its front half.",
+      "md5": "0dcc6bae2c1361a273db26b61ab494a4"
+    },
+    {
+      "position": 7,
+      "file": "public/eon/lab-grown-hep/08.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-hep/08.jpg",
+      "alt": "The 14K yellow gold band held edge-on between a woman's thumb and index finger to show its real size: a thin line of lab-grown diamonds about 21 mm long.",
+      "md5": "5294b6bd373e80191c756477f618a49f"
+    },
+    {
+      "position": 8,
+      "file": "public/eon/lab-grown-hep/09.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-hep/09.jpg",
+      "alt": "14K rose gold version of the 1.5 mm half eternity band with lab-grown diamonds across its front half, on sage green linen with eucalyptus leaves behind.",
+      "md5": "80b538b06e4ce26e179987956ae74554"
+    },
+    {
+      "position": 9,
+      "file": "public/eon/lab-grown-hep/10.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-hep/10.jpg",
+      "alt": "Chart of the twenty stone choices for this band, each named with its origin: laboratory-grown, laboratory-created, natural or cultured, with the usual treatments noted.",
+      "md5": "c1ae2f242649974694f5de03509218a5"
+    }
+  ],
+  "promptCheck": "chosen.promptMd5 = md5 of that frame's prompt in prompts.json; on 2026-11-11 all 9 matched the payloads actually sent (02/04/08 the v1 batch, 01/03/05/07 the v2 sends, 06/09 the v3 sends)."
+}

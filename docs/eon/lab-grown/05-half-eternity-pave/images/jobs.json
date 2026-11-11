@@ -9,11 +9,188 @@
   "costSource": "EON-HS5 2026-11-10 (nano_banana_2, 2k, 4:3); üretimden önce bakiye yeniden okunur",
   "artDirection": "HS5 ile aynı: tek pencere gün ışığı, metalin tamamlayıcısı düşük doygunlukta zemin (sarı → mavi-gri karo / arduvaz / şambre / keten; beyaz → terrakota; rose → adaçayı; üç metal ve beş taş → nötr gri). Ayrıntı prompts.py başlığında ve PROMPTS-REVIEW.md.",
   "references": {
-    "ring": {"file": "scratchpad ref-685259244/ref-ring-crop.png (repoya ALINMADI: üçüncü tarafın ürün fotoğrafı)", "source": "etsy 685259244 (NyFineJewelry) 3. fotoğraf il_fullxfull.7413275024 (2200x2750, önden, sarı); kırpım 1300x400+440+1180 (bütün halka, ön yarıda taş sırası); filigran kırpımın dışında"},
-    "row": {"file": "scratchpad ref-685259244/ref-row-crop.png", "source": "aynı fotoğraf, kırpım 640x190+780+1380 (sekiz taş ve paylaşımlı tırnaklar yakından)"},
+    "ring": {
+      "file": "scratchpad ref-685259244/ref-ring-crop.png (repoya ALINMADI: üçüncü tarafın ürün fotoğrafı)",
+      "source": "etsy 685259244 (NyFineJewelry) 3. fotoğraf il_fullxfull.7413275024 (2200x2750, önden, sarı); kırpım 1300x400+440+1180 (bütün halka, ön yarıda taş sırası); filigran kırpımın dışında"
+    },
+    "row": {
+      "file": "scratchpad ref-685259244/ref-row-crop.png",
+      "source": "aynı fotoğraf, kırpım 640x190+780+1380 (sekiz taş ve paylaşımlı tırnaklar yakından)"
+    },
     "grey": "ref-ring-grey.png + ref-row-grey.png: aynı kırpımların siyah-beyazı (05, 06, 07, 09)",
-    "heroCrop": "kabul edilen hero'dan sıkı kırpım (02, 03, 04, 08'e üçüncü referans); hero onaylanınca eklenir"
+    "heroCrop": "01 v1'den 1000x300+700+880 kırpım (taş sırası + altın), media b0a8b39c; 02, 03, 04, 08'e üçüncü referans",
+    "hero2RingGrey": "01 v2 (kabul, kapsam doğru) 1400x620+500+720 kırpımın siyah-beyazı; 09 v3'e şekil + yarım sıra referansı"
   },
   "plan": "Önce yalnız 01 hero; referansla yan yana kontrol, sonra kalan 8 kare (en çok 7'lik gruplar). Kusurlu kareye yalnız o kare için yeniden çekim, tek kusur adlandırılarak.",
-  "runs": []
+  "runs": [
+    {
+      "frame": "01-hero",
+      "take": "v1",
+      "job": "bcf31c09-739f-47b2-901b-9e055cb5b28e",
+      "refs": [
+        "refRing",
+        "refRow"
+      ],
+      "at": "2026-11-11T18:52Z"
+    },
+    {
+      "frame": "02-row",
+      "take": "v1",
+      "job": "ac75f9a6-3f74-4cb0-bc06-c27283c4c185",
+      "refs": [
+        "refRing",
+        "refRow",
+        "heroCrop"
+      ]
+    },
+    {
+      "frame": "03-stand",
+      "take": "v1",
+      "job": "03b7c44e-cae0-4f1b-9351-c4bc9045b425",
+      "refs": [
+        "refRing",
+        "refRow",
+        "heroCrop"
+      ]
+    },
+    {
+      "frame": "04-hand",
+      "take": "v1",
+      "job": "601ee44c-f99e-4c6f-9558-197f8b639608",
+      "refs": [
+        "refRing",
+        "refRow",
+        "heroCrop"
+      ]
+    },
+    {
+      "frame": "05-stones",
+      "take": "v1",
+      "job": "d7cd4db5-db21-4105-b100-41dfcd95c33e",
+      "refs": [
+        "refRingGrey",
+        "refRowGrey"
+      ]
+    },
+    {
+      "frame": "06-white",
+      "take": "v1",
+      "job": "458b55f2-6175-48b3-a043-edd9ab8b0c60",
+      "refs": [
+        "refRingGrey",
+        "refRowGrey"
+      ]
+    },
+    {
+      "frame": "07-metals",
+      "take": "v1",
+      "job": "4052baf1-4bcc-4fbf-abb2-acf53fb13da4",
+      "refs": [
+        "refRingGrey",
+        "refRowGrey"
+      ]
+    },
+    {
+      "frame": "08-scale",
+      "take": "v1",
+      "job": "d9ab9037-a60d-48b0-8247-6b240242db78",
+      "refs": [
+        "refRing",
+        "refRow",
+        "heroCrop"
+      ]
+    },
+    {
+      "frame": "09-rose",
+      "take": "v1",
+      "job": "bbfde690-ee3b-459a-9022-4676ef25273f",
+      "refs": [
+        "refRingGrey",
+        "refRowGrey"
+      ]
+    },
+    {
+      "frame": "01-hero",
+      "take": "v2",
+      "job": "1e6ea9a0-2a32-4187-a4f4-a1edd7e332eb",
+      "refs": [
+        "refRow",
+        "heroCrop"
+      ],
+      "why": "owner 2026-11-11 'taşlar yarım tur tam tur değil': v1 row wrapped past 9 and 3 o'clock; clock-face wording, row-only references"
+    },
+    {
+      "frame": "03-stand",
+      "take": "v2",
+      "job": "75d2cd54-4fab-49bc-9b76-040a6f5a9f45",
+      "refs": [
+        "refRow",
+        "heroCrop"
+      ],
+      "why": "v1 row ran down the whole left side to the cloth (more than half); clock-face wording 9-12-3, row-only references"
+    },
+    {
+      "frame": "05-stones",
+      "take": "v2",
+      "job": "d5308780-88d8-4cb3-a6e1-06e05b15f1af",
+      "refs": [
+        "refRowGrey"
+      ],
+      "why": "v1 row wrapped past the ring's left-most/right-most points onto the back half (owner: 'yarım tur, tam tur değil'); v2 'exactly half, stops exactly there', grey row-only reference"
+    },
+    {
+      "frame": "06-white",
+      "take": "v2",
+      "job": "b9b92b40-b0c8-405d-be08-ba361eb6a9fe",
+      "refs": [
+        "refRowGrey"
+      ],
+      "why": "v1 row wrapped past the ring's left-most/right-most points onto the back half (owner: 'yarım tur, tam tur değil'); v2 'exactly half, stops exactly there', grey row-only reference"
+    },
+    {
+      "frame": "07-metals",
+      "take": "v2",
+      "job": "9dcf6d4f-d9bf-4077-97e4-29c085b0a5ca",
+      "refs": [
+        "refRowGrey"
+      ],
+      "why": "v1 row wrapped past the ring's left-most/right-most points onto the back half (owner: 'yarım tur, tam tur değil'); v2 'exactly half, stops exactly there', grey row-only reference"
+    },
+    {
+      "frame": "09-rose",
+      "take": "v2",
+      "job": "244bd3fd-6bf5-4ad7-aebd-023e5944a1f8",
+      "refs": [
+        "refRowGrey"
+      ],
+      "why": "v1 row wrapped past the ring's left-most/right-most points onto the back half (owner: 'yarım tur, tam tur değil'); v2 'exactly half, stops exactly there', grey row-only reference"
+    },
+    {
+      "frame": "06-white",
+      "take": "v3",
+      "job": "ca1c0e0d-1392-4df6-b98f-1a7b0eced02c",
+      "refs": [
+        "refRowGrey"
+      ],
+      "why": "v2 low side view again wrapped the row past the right-most point onto the back half; pose changed to the upright three-quarter view that held in 03 v2 (clock 9-12-3)"
+    },
+    {
+      "frame": "09-rose",
+      "take": "v3",
+      "job": "381c7be1-31d2-4be7-a7c1-2844d083cd0c",
+      "refs": [
+        "hero2RingGrey",
+        "refRowGrey"
+      ],
+      "why": "v2 drew a different ring (white metal, flower cluster of pear stones, loose stones) on sparkly silver fabric; v3 adds the greyscale whole-ring crop of the accepted hero v2"
+    }
+  ],
+  "media": {
+    "refRing": "22c8a733-9735-4b58-91c3-59ff9aad03d7",
+    "refRow": "ff354d6a-38ee-495c-92e4-043ebfa9b918",
+    "refRingGrey": "920a1e72-7635-4960-8d7f-6480203dd31d",
+    "refRowGrey": "1b3ace9a-b6d4-4a4c-9b04-9b31cf040ac8",
+    "heroCrop": "b0a8b39c-a51b-4d36-ae84-a152b31c1434",
+    "hero2RingGrey": "92153b36-53dd-4c0a-a3ec-cfd489bdb882"
+  }
 }

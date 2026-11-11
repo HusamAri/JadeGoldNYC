@@ -122,16 +122,27 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
   **kişiselleştirme fiyatı değiştiremez, tek fiyat en pahalı taşı da karşılar**; 20 taş × 75 varyant = 1.500 > 400
   ürün sınırı, varyasyon olamazdı. Etiketler ve FTC eşlemesi (lab taş "Lab Grown"/"Lab Created"/"Created" ile, doğal
   pırlantalar açıklamada "natural" ile, işlemler beyanlı): `2026-11-11-half-eternity-pave-pricing.md`.
-- Fiyat önerisi: liste **$1.050** → %25 vitrin → alıcı **$787,50**, her beden ve her taş tek fiyat; US 16'da en
-  pahalı taşla ($5/taş) en kötü Offsite kârı +$63. Kanıt: fiyat belgesi + `price_model.py hep`.
-- Panel taslağı: `0185_eon_lab_grown_hep.sql` (üreteç `scripts/eon/gen_lab_grown_hep_migration.mjs`; sahip onayı
-  listing.json'a yazılmadan dosyayı yazmaz). Varyant başına taş karatı ve taş + takma maliyeti
-  (`products.setting_fee_cents` 0, çünkü taş sayısı bedenle değişir). Ortak modül `bandCells(…, stoneAt)` ve `bandMeta`
-  kişiselleştirme alanlarını öğrendi; 0175–0184 bayt bayt aynı üretiliyor. Metin kapısı `checkListingText(L,
-  { allowNatural })`; yedi negatif kontrol (niteliksiz diamond, 21 kr etiket, niteleyicisiz lab taş, tavanı aşan taş,
-  eksik seçenek, silinen işlem beyanı, en pahalı taşta zarar eden fiyat) yakalandı.
+- Fiyat kararı (sahip kartı): liste **$1.050** → %25 vitrin → alıcı **$787,50**, her beden ve her taş tek fiyat; US 16'da
+  en pahalı taşla ($5/taş) en kötü Offsite kârı +$63. Taş eşlemesi önerildiği gibi kaldı. Kanıt: fiyat belgesi +
+  `price_model.py hep`.
+- Panel taslağı: `0185_eon_lab_grown_hep.sql`, uygulandı 2026-11-11 (`20261111175933`); gövdesi DONUK, üreteç
+  `scripts/eon/gen_lab_grown_hep_migration.mjs` md5 kapısıyla korur (düzeltme yeni bir koşullu UPDATE migration'ıdır).
+  Ürün id `306333d4-0903-46ea-af40-2b3e4602add6`, 75 varyant `EON-HEP-14K-{YG,WG,RG}-US040..160`, `ring_band`, mühür
+  `54bb79369f3ccc574c28f829c9ede406` (canlı = meta veri = beklenen), kişiselleştirmede 20 taş. Varyant başına taş karatı
+  ve taş + takma maliyeti (`products.setting_fee_cents` 0, çünkü taş sayısı bedenle değişir). Ortak modül
+  `bandCells(…, stoneAt)` ve `bandMeta` kişiselleştirme alanlarını öğrendi; 0175–0184 bayt bayt aynı üretiliyor. Metin
+  kapısı `checkListingText(L, { allowNatural })`; yedi negatif kontrol (niteliksiz diamond, 21 kr etiket, niteleyicisiz
+  lab taş, tavanı aşan taş, eksik seçenek, silinen işlem beyanı, en pahalı taşta zarar eden fiyat) yakalandı.
 - Galeri: `05-half-eternity-pave/images/`: 9 Higgsfield karesi (`prompts.py` → `prompts.json`, `PROMPTS-REVIEW.md`)
-  + 10. kare taş tablosu, `stone_chart.py` ile yerelde dizilir (kredisiz, metni model yazmaz).
+  + 10. kare taş tablosu, `stone_chart.py` ile yerelde dizilir (kredisiz, metni model yazmaz). **Sahip düzeltmesi (v1
+  setinden sonra):** "taşlar yarım tur tam tur değil". v1'in 9 karesinin 6'sında sıra yarımı aşıp arka yarıya
+  taşmıştı. Düzeltme: her poz için saat yüzü (yatık: 9 → 6 → 3, 6 kameraya en yakın; dik: 9 → 12 → 3), halka
+  bloğunda "exactly half and no more", referans listing'in bütün-halka kırpımı yerine yalnız sıra kırpımları (o kırpım
+  yarımdan geniş görünen kendi kaplamasını taşıyordu); 06 alçak yan görünümde iki kez taştı, dik poza geçti; 09 v3'te
+  onaylı hero v2'nin gri kırpımı. 17 üretim / 34 kredi: 9 kabul (02, 04, 08 v1; 01, 03, 05, 07 v2; 06, 09 v3), 8 ret;
+  gerekçeler `status.json`, her kabulün prompt'u gönderilen metinle birebir (`promptMd5`). Dosyalar
+  `public/eon/lab-grown-hep/01-10.jpg`, panel satırları `0186_eon_lab_grown_hep_gallery.sql`; **0186 ancak prod
+  dağıtımından ve 10 URL'in 10'u 200 döndükten sonra uygulanır.**
 
 ## Üreticiye açık sorular (cevap gelmeden Etsy'ye çıkmaz)
 0. **(2026-11-07, DSP canlı)** $550 (Model 1) ve $1.150 (Model 2) fiyatlarına taş ve taş takma dahil mi? Model 2'de

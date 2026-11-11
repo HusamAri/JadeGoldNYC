@@ -1959,6 +1959,13 @@ repodaki hedefidir.
   tasarımda bütün-halka kırpımı tasarımın kendisidir: sızıntıya karşı referansı değil pozu değiştir (03, dik üç çeyrek
   pozla v4'te tuttu). Bant genişliği düzenlemesi kendi karesinde yalnız bir kez işledi (0,44 → 0,37; 0,34 → 0,30),
   ikinci düzenleme hiçbir şey değiştirmedi: oranı ilk üretimde sayıyla pinle, düzenlemeyi tek tur say.
+  **Güçlendirme-2 (2026-11-11, EON-HEP) — kaplama oranı da bir yer sözcüğüdür; bütün-halka kırpımı yalnız KENDİ onaylı
+  karenden alınır:** "one half of the ring's circle" yazdım; v1'in 9 karesinin 6'sında sıra yarımı aşıp arka yarıya
+  taştı, sahip "taşlar yarım tur tam tur değil" dedi. Model oranı pozdan bağımsız okumadı, referans listing'in
+  bütün-halka kırpımı da kendi geniş kaplamasını sızdırdı. Tutan şey her poz için uç noktaları saat yüzüyle yazmak
+  (yatık 9 → 6 → 3, dik 9 → 12 → 3; "stops exactly there") ve yalnız sıra kırpımı referans vermekti; son karede (09) kendi
+  onaylı hero'nun gri kırpımı tuttu. Alçak yan görünüm kaplamayı iki kez bozdu, dik poz ilk denemede tuttu. Kural: oranı
+  (yarım, çeyrek) uç noktalarıyla ve poza göre yaz; dış referansın bütün-halka kırpımı düzeltmek istediğin özelliği de taşır.
 
 - **Etsy 403 verince sayfa çeviri vekilinden okunur; rakibin beyanı fotoğraftan ölçülür ve fizikle sınanır; ölçek
   karesinde oran, uzvun GÖRÜNEN boyutuyla kurulur (2026-11-08, EON-FR6):** Sahibin referans linki (4512052520)

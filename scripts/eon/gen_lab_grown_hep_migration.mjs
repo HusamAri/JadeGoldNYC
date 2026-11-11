@@ -26,6 +26,7 @@
  * Kullanım: node scripts/eon/gen_lab_grown_hep_migration.mjs
  */
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -177,5 +178,10 @@ const sql = bandMigrationSql({
   cells,
   seal,
 });
+// 0185 canlıya uygulandı (2026-11-11, 20261111175933, mühür ve metin md5'leri doğrulandı): gövde donuk. Paket değişirse
+// düzeltme yeni bir koşullu UPDATE migration'ıdır (HS5 0182 → 0183 deseni, lab_grown_band.mjs bandUpdateSql).
+const APPLIED_0185_MD5 = "4cdcfa82526c968b642337d12e344517";
+assert.equal(createHash("md5").update(sql).digest("hex"), APPLIED_0185_MD5,
+  "0185 canlıya uygulandı; gövdesi değişmez, düzeltme yeni migration'dır");
 await writeFile(outFile, sql);
-console.log(`wrote ${path.relative(repoRoot, outFile)}`);
+console.log(`wrote ${path.relative(repoRoot, outFile)} (byte-identical to the applied body)`);
