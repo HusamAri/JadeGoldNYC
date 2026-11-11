@@ -166,7 +166,7 @@ const sql = bandMigrationSql({
     "EON lab-grown 05 (EON-HEP): 14K, 1,5 × 1,5 mm bant, üst yarıda tek sıra ~1,3 mm round taş, paylaşımlı mikro tırnak",
     "(US 4 19 → US 8½ 23 → US 16 30 taş). Taş seçimi Etsy kişiselleştirme açılır listesi: 20 taş (sahibin tablosu),",
     "varsayılan Lab Grown Diamond; listing_metadata.personalizationQuestions. Metal Color × Ring Size US 4-16 yarım",
-    `bedenler (75 varyant), ring_band. Tek fiyat ${usd(L.pricing.listUsd)} (alıcı %25 vitrinle ${usd(Math.round(buyer * 100) / 100)}), her beden ve her taş.`,
+    `bedenler (75 varyant), ring_band. Tek fiyat ${usd(L.pricing.listUsd)} (alıcı %25 vitrinle $${buyer.toLocaleString("de-DE", { minimumFractionDigits: 2 })}), her beden ve her taş.`,
     `Maliyet US 8½ $341 (1,91 g × $100 + 23 × (lab $2,52 + takma $4)); en kötü Offsite kârı en düşük US 16: lab +$${Math.round(minLab)},`,
     `en pahalı taş ($5/taş) +$${Math.round(minCap)}. Takma beden başına varyant taş maliyetinde, products.setting_fee_cents 0.`,
     "Kanıt: docs/eon/lab-grown/2026-11-11-half-eternity-pave-pricing.md.",

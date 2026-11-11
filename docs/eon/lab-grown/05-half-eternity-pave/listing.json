@@ -172,9 +172,9 @@
     "methodology": "docs/eon/lab-grown/price_model.py hep; formula lib/pricing-engine/eon-cost.ts 457-472"
   },
   "approval": {
-    "authority": null,
-    "panelDraftAuthorized": false,
-    "etsyDraftCreationAuthorized": false,
+    "authority": "Owner 2026-11-11 (question card): list 1,050 USD -> 25% sale -> 787.50 USD, one price for every size and every stone; the stone mapping as proposed (lab grown diamond as the default; lab created sapphire, ruby and emerald and created alexandrite; natural salt and pepper and black diamonds, the black colour-treated; the other stones natural, the pearl cultured; labels FTC-qualified); scope 14K, 3 colours, US 4-16 with half sizes (75 variants); gallery: generate the 9 AI frames from images/PROMPTS-REVIEW.md, hero first and checked against the reference, plus the typeset stone chart (frame 10).",
+    "panelDraftAuthorized": true,
+    "etsyDraftCreationAuthorized": true,
     "livePublicationAuthorized": false,
     "blockers": [
       "Etsy activation needs at least one unedited photo of the physical piece (draft allowed)",
