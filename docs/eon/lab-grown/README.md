@@ -142,7 +142,10 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
   onaylı hero v2'nin gri kırpımı. 17 üretim / 34 kredi: 9 kabul (02, 04, 08 v1; 01, 03, 05, 07 v2; 06, 09 v3), 8 ret;
   gerekçeler `status.json`, her kabulün prompt'u gönderilen metinle birebir (`promptMd5`). Dosyalar
   `public/eon/lab-grown-hep/01-10.jpg`, panel satırları `0186_eon_lab_grown_hep_gallery.sql`; **0186 ancak prod
-  dağıtımından ve 10 URL'in 10'u 200 döndükten sonra uygulanır.**
+  dağıtımından ve 10 URL'in 10'u 200 döndükten sonra uygulanır.** Uygulandı 2026-11-12 (`20261112052839`; prod yayını
+  `41fb224` READY, 10 URL canlıda 200 ve repoyla md5 birebir): 10 satır (pozisyon 0–9), mühür
+  `8f76d63e40811b7e3ed7b87f8380afe0` (`md5(string_agg(position||'|'||url||'|'||alt, E'\n' order by position))`), kapak 01,
+  `num_images` 10, varyant mührü değişmedi, denetimde 10 + 1.
 
 ## Üreticiye açık sorular (cevap gelmeden Etsy'ye çıkmaz)
 0. **(2026-11-07, DSP canlı)** $550 (Model 1) ve $1.150 (Model 2) fiyatlarına taş ve taş takma dahil mi? Model 2'de
