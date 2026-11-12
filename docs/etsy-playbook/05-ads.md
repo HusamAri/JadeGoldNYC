@@ -28,3 +28,4 @@ Kaynak: `source/05-*.txt` (M5), okuma 2026-10-22.
 - `lib/ads/meta.ts:157` "7-14 gün veri"; Etsy 30 gün diyor.
 - `lib/pricing-engine/eon-cost.ts:235,242` Offsite tabanı ÷0,745, $100 tavanı yok ($667 üstünde tabanı şişirir); `:467,502` doğru (min).
 - `supabase/migrations/0097_operating_profit.sql:29` Offsite ücreti sabit gider sayılıyor; değişken gider olmalı.
+- **2026-11-12, Leander (by Artifact Studio):** ledger'da 18 Eki siparişinde `offsite_ads_fee` 100 USD var, yani Offsite Ads AÇIK (09-22 notu "kapatıldı" diyordu; katalog kontrolleri Offsite'sız). Etsy Ads (`prolist`) 30 Eyl'den beri 338,26 USD, günde yaklaşık 10 USD, net sipariş 0. `ad_daily_stats` bu mağazada boş; reklam payı ölçüm değil varsayım (%10,65). Sahip Offsite'ı kapatmazsa başa baş fiyatlı 28 listing'de Offsite siparişi siparişin %15'ine kadar zarar yazar.

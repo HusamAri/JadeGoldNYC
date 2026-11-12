@@ -54,8 +54,30 @@ Owner: "market research, competitive prices, I edit manually if needed". `pricin
 post seal 84f0f796 = repo; 141/144 variants changed, audit 141. `ops/price-sync` dry 141 offering diffs (panel maps
 30/18 full) -> apply 141 written, 0 left -> fresh-token read-back 6/6 unchanged, 0 diff.
 
+## Repriced on cost (2026-11-12, owner: "5 usd is each gram's cost ... set highly competitive prices")
+The market fit above is superseded. What was live: between 8 and 11 Nov the owner cut every Etsy price by 35% by
+hand (Etsy list = 0173 list x 0.65, read per offering 144/144) and the shop runs a 15% sale until 23 Nov, so the
+buyer paid 36.8 + 4.42 USD/g. At 5.00 USD/g that is below cost for 63 of 144 variants (from about 27 g up; worst -65.94 USD a sale).
+- Rule (`pricing.py`): list = ceil((5.00 x grams + 8.50 + 0.45) / (0.905 x 0.75)). Fixed 8.50 = label 5.80 measured
+  in `etsy_ledger_entries` + 2.70 packaging (assumption). The list price breaks even at the deepest planned sale
+  (25%, Cyber Specials 23 Nov to 1 Dec); at today's 15% sale it leaves 10.65% of the buyer price for ads and profit.
+- Result: 46 variants down (to -46%), 94 up (to +32%), 4 unchanged at the buyer. Every "from" price fell:
+  S01 98.90 -> 92.65, S02 60.22 -> 43.35, S03 71.27 -> 59.50, S04 54.70 -> 29.75, S05 71.27 -> 56.10, S06 49.17 -> 28.90.
+  Buyer price is 6.4 to 7.7 USD/g above 8 g; see `market-2026-11-12.md` (73 competitor listings read).
+- Applied: 0187 (`gen_reprice_cost5.py`), precondition seal 84f0f796 = live, post seal 943509361507c0a24d27a69ae427f162
+  = repo, 144 variant audit rows. `ops/price-sync` dry 144 offering diffs (maps 30/18 full) -> S06 canary 18 written,
+  fresh-token read 18/18 -> 126 written, 0 left -> fresh-token read 144/144 equal to `prices.csv`. Public page checked:
+  S06 "Now 28.90+, Original 34.00+, 15% off".
+- Limits, in the owner's hands: (1) Offsite Ads is on (the 18 Oct order was charged 100 USD); an Offsite order at these
+  prices nets -0.81 to -25.56 USD (`net_offsite_15_usd`), so opt out in Shop Manager > Settings > Offsite Ads while the
+  shop is under 10K. (2) No sale or coupon deeper than 25% on silver without re-running `pricing.py`. (3) Etsy Ads
+  has spent 338.26 USD since 30 Sep (about 10 USD a day) with no net order; the 10.65% cushion covers ads only once
+  the shop sells about 2,800 USD a month. (4) Bracelet grams are scaled from the 18 in weight; weigh the first units.
+- Second run guard: live seal already 94350936... means the job is done; the migration stops on it.
+
 ## Open
-- **Supplier cost** replaces the 4 USD/g assumption; re-run `pricing.py`.
+- **Supplier price** is the lever: 5.00 USD/g is 3.4 x melt (1.49 at spot 50.09). Each 0.50 USD/g off lowers every
+  list price by 0.74 USD/g; change `COST_G` and re-run `pricing.py`, a seal-guarded migration and `ops/price-sync`.
 - Curb/Figaro plating status.
 
 ## Panel load (2026-10-27, owner "evet")
@@ -81,4 +103,4 @@ Panel: 6 linked, 6 distinct ids, 6 `etsy.listing_create` audit rows; open tokens
 ## Open
 - Owner adds one real unedited photo per draft in the Etsy editor (Etsy rule since 2026-10-22), then publishes.
 - Shipping profile and shop section are set in the Etsy editor before publishing.
-- Supplier cost replaces the 4 USD/g assumption; re-run `pricing.py`, a new seal-guarded migration and `ops/price-sync` (panel price = Etsy list price). If the shop sale % changes, change SALE the same way.
+- Done 2026-11-12: supplier cost 5.00 USD/g replaced the 4 USD/g assumption (see "Repriced on cost"). If the deepest sale changes, change `DEEPEST_SALE` in `pricing.py` the same way.

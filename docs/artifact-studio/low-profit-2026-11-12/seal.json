@@ -1,0 +1,7 @@
+{
+ "variants": 4914,
+ "listings": 22,
+ "preSeal": "0f49501f32a2d3d5ea0105e211893176",
+ "postSeal": "aef08ece5ae02842664f762ea6e7974e",
+ "sealLine": "sku|price_cents|grams(0.00), sorted bytewise, joined by newline, md5"
+}

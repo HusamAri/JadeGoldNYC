@@ -2047,6 +2047,28 @@ repodaki hedefidir.
   bedeli sahibe söyle; (3) iki denetçinin kapsamı örtüşürse aynı bulgu iki kez gelir, kapsamları ayrık kur; (4) bu dosya
   her oturuma ve her alt ajana yüklenir, uzadıkça her ajan turu pahalanır.
 
+- **"Fiyatlar yüksek" şikâyetinde önce alıcının BUGÜN ödediğini canlıdan oku ve maliyetle aynı satıra koy; tek
+  şikâyet iki ters gerçeği birden saklayabilir (2026-11-12, Leander):** Sahip "fiyatlar rekabetçi değil, ilk satış
+  için düşük kârla satalım, özellikle gümüş; gümüşün gramı 5 USD" dedi. Panel gümüşte 0173 fiyatlarını gösteriyordu;
+  canlı Etsy ise sahibin elle yaptığı %35 kesintiyle panelin 0,65 katıydı ve üstünde %15 mağaza indirimi vardı.
+  5 USD/g ile 144 varyantın 63'ü maliyetin ALTINDAYDI (en kötü -65,94 USD). Yani "daha da indir" isteğinin doğru
+  cevabı hafifleri indirmek (-%46'ya kadar) ve ağırları başa başa ÇIKARMAK oldu (+%32'ye kadar). Altında ise tersi:
+  sahibin Ekim'deki +%15 ve +%10 zamları %15 indirimle birleşince alıcı 2,15 x maliyet ödüyordu, tasarlanan 1,4 x idi.
+  Üç ölçüm işi belirledi. (1) Fiyat işinden önce `price-sync ?detail=1` ile 217 listing'in canlı fiyatı okundu: panel
+  101 listing'de bayattı, körlemesine itiş sahibin elle kurduğu fiyatları ezerdi. (2) "Reklam ve ücreti varsay" denince
+  varsaymadan önce ledger okundu: `prolist` 338 USD ve net sipariş 0, `offsite_ads_fee` 100 USD (yani "Offsite kapalı"
+  notu yanlıştı), kargo etiketi 5,70 USD (eski 12 USD varsayımı değil). (3) Rakip adet fiyatıyla değil GRAM fiyatıyla
+  karşılaştırıldı: çeviri vekili 73 rakip sayfasını ağırlık tablolarıyla verdi; pazar lideri ağır Franco'yu 6,5 USD/g'a
+  satıyor, bizim ücret sonrası başa başımız 5,5 USD/g. Darboğaz etiket değil tedarikçi fiyatıydı (5 USD/g, erime
+  değerinin 3,4 katı). Fiyat kuralı tek satır: liste = (maliyet + sabit + 0,45) / (0,905 x 0,75); en derin planlı
+  indirimde (%25) başa baş, bugünkü %15 indirimde alıcı fiyatının %10,65'i reklam ve kâra kalıyor. Kural: (a) "pahalı"
+  ya da "ucuz" hükmü, canlı alıcı fiyatı ile birim maliyet aynı tabloda durmadan verilmez; (b) sahibin elle yaptığı
+  toplu fiyat değişikliği paneli bayatlatır, fiyat işi canlı okumayla başlar; (c) "maliyeti kesin olanlar" gibi bir
+  kapsamı en dar savunulabilir kümeyle çiz (üreticinin kendi listesi ya da parça teklifi: 22 listing) ve dışarıda
+  kalanı sayısıyla söyle (189); (d) elle yazdığın karşılaştırma tablosunu üretilen CSV'ye karşı satır satır doğrula:
+  ilk taslakta 12 satırın 3'ü yanlıştı. Zincir tuttu: ön mühür = canlı, son mühür = repo (gümüş 94350936, altın
+  aef08ece), kuru 144 ve 4.914 fark, kanarya, taze token'la bağımsız okuma 144/144 ve 4.914/4.914, 28 audit satırı.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
