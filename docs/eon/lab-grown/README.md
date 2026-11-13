@@ -147,6 +147,25 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
   `8f76d63e40811b7e3ed7b87f8380afe0` (`md5(string_agg(position||'|'||url||'|'||alt, E'\n' order by position))`), kapak 01,
   `num_images` 10, varyant mührü değişmedi, denetimde 10 + 1.
 
+## 06 Princess Channel, dokuz taş (EON-PC9), 2026-11-13
+- Girdi: sahibin linki 25karats.com WB9262 "Classic 9 Stone Princes Cut Diamond Anniversary Band (1/2 ct.t.w.)" (14K,
+  doğal GH/VS 0,45 ct, ~2,9 g, $1.669): "new model". Site Cloudflare 403, Google çeviri vekili 429 verdi; sayfa `r.jina.ai`
+  okuyucu vekiliyle okundu, 4 fotoğraf doğrudan indi; repoya alınmadı.
+- Tasarım: 14K, 3,0 × 1,8 mm düz üstlü bant; üstte iki ince cilalı ray arasında tek kanal, içinde dokuz 2 mm prenses
+  lab-grown taş kenar kenara (~18 mm, çemberin ~dörtte biri, her bedende 9 taş); sıranın iki ucu düz cilalı duvar,
+  gövdenin geri kalanı düz cilalı. Ölçü fotoğraftan (taş 69 px = 2 mm, raylar ~0,4 mm); 2 mm prensesin ~1,4 mm
+  derinliği için 1,8 mm et (referans ~1,6 mm, konfor kesim).
+- Fiyat önerisi: liste **$1.500** → %25 vitrin → alıcı **$1.125**, her beden tek fiyat. Kötümser maliyet (tam kesit gram,
+  taş $14, kanal takma taş başı $10) US 8½'te $674,55; en kötü Offsite kârı en düşük US 16'da +$74; her beden ≥ $50 tabanı
+  $1.465. Piyasa: Allurez'in aynı tasarımdaki lab-grown bandı $1.033 (indirimli). Kanıt:
+  `2026-11-13-princess-channel-pricing.md` + `price_model.py pc`.
+- Panel taslağı: `0189_eon_lab_grown_pc9.sql` (üreteç `scripts/eon/gen_lab_grown_pc_migration.mjs`; sahip onayı
+  listing.json'a yazılmadan dosyayı yazmaz, kuru koşu mührü `26fcaf93e593bfceaa0bd5a26ae6ca6d`). Yedi negatif kontrol
+  (niteliksiz diamond, konfor kesim iddiası, taban altı liste, bayat kâr tablosu, metinde karat, vesile tag'i, eksik
+  tasarım cümlesi) yakalandı.
+- Galeri: `06-princess-channel/images/`: 9 Higgsfield karesi (`prompts.py` → `prompts.json`, `PROMPTS-REVIEW.md`,
+  parametreler `jobs.json`) + 10. kare ölçü kartı, `spec_card.py` ile yerelde dizilir (kredisiz, metni model yazmaz).
+
 ## Üreticiye açık sorular (cevap gelmeden Etsy'ye çıkmaz)
 0. **(2026-11-07, DSP canlı)** $550 (Model 1) ve $1.150 (Model 2) fiyatlarına taş ve taş takma dahil mi? Model 2'de
    11,5 g × $100 = $1.150 tam tuttuğu için konvansiyon "gram × $100 + taş + takma ayrı" görünüyor; DSP'de taş ve takma
@@ -168,6 +187,11 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
    + taş + taş başı takma mı; mikro tırnakta takma kaç $?); taş sayısı bedenle mi (US 4 19 → US 16 30) sabit mi; 20 taşın
    hepsi bu boyda bulunur ve bu tırnakla takılır mı (opal, aytaşı, turkuaz, oniks, inci genelde kabaşon/boncuk, inci pim
    ya da kap ister); lab-grown renk/berraklık, beyaz altında rodyum, üretim süresi.
+
+9. **(2026-11-13, PC9)** 3,0 × 1,8 mm bant, üstte 9 × 2 mm prenses lab-grown taş kanal yuvada: fiyat (gram × $100 + taş +
+   taş başı kanal takma mı, kanal takma kaç $?); 2 mm prenses için en az kalınlık (öneri 1,8 mm; referans ~1,6 mm), iç
+   yüzey konfor mu düz mü; ~18 mm'lik dokuz taşlık sıra her bedende aynı mı, resize arkadaki düz kısımdan kaç beden
+   yapılır; taş rengi/berraklığı, beyaz altında rodyum, üretim süresi.
 
 ## Diğer teklifler (aynı not, ileride)
 - Model 2: 6 mm baguette eternity, 2,20 mm min kalınlık, 6×2 mm taş 0,35 ct, taş $280/ct,

@@ -1,0 +1,32 @@
+{
+  "product": "EON-PC9",
+  "model": "nano_banana_2",
+  "aspect_ratio": "4:3",
+  "resolution": "2k",
+  "count": 1,
+  "why": "nano_banana_2 resolution varsayılanı 1k (second-brain 2026-09-13, 2026-10-13): 2k AÇIKÇA geçilir. count DAİMA 1 (CLAUDE.md). Tüm kareler 4:3, 10. kare (ölçü kartı) de 2400x1792. İlk fotoğraf 1:1 kırpımda kesilmesin diye halka ortada, yanlarda boşluk.",
+  "costCreditsPerImage": 2,
+  "costSource": "EON-HS5 2026-11-10 ve EON-HEP 2026-11-11 (nano_banana_2, 2k, 4:3); üretimden önce bakiye yeniden okunur",
+  "artDirection": "HS5/HEP ile aynı: tek pencere gün ışığı, metalin tamamlayıcısı düşük doygunlukta zemin (sarı → mavi-gri karo / arduvaz / şambre / keten; beyaz → terrakota; rose → adaçayı; üç metal → nötr gri). Ayrıntı prompts.py başlığında ve PROMPTS-REVIEW.md.",
+  "plan": "Önce yalnız 01 hero; referansla yan yana kontrol (dokuz kare taş, dörtte bir kaplama, düz uç duvarları), sonra kalan 8 kare (en çok 7'lik gruplar). Kusurlu kareye yalnız o kare için yeniden çekim, tek kusur adlandırılarak.",
+  "references": {
+    "source": "25karats.com WB9262 ürün sayfasının 4 fotoğrafı (jewelry-assets/pi/254896, 254897, 254903, 254904 thumb_800, 800x800 render, beyaz zemin); repoya ALINMADI: üçüncü tarafın ürün görseli",
+    "refFlat": "254896 (beyaz, geriye yatık, sıra üstte kameraya bakıyor), piksel sınırından kırpım 759x348+20+262, siyah-beyaz",
+    "refStand": "254904 (beyaz, dik duran ve dönük, sıra üst sağda), piksel sınırından kırpım 455x665+183+135, siyah-beyaz",
+    "refRow": "254896, sıranın ortası 310x136+250+262, ×3 büyütme, siyah-beyaz",
+    "refEnd": "254896, sıranın sol ucu ve düz duvar 290x180+40+250, ×3 büyütme, siyah-beyaz",
+    "byFrame": {
+      "01-hero": ["refFlat", "refRow"],
+      "02-row": ["refRow", "refEnd"],
+      "03-stand": ["refStand", "refRow"],
+      "04-hand": ["refRow"],
+      "05-metals": ["refFlat"],
+      "06-white": ["refStand", "refRow"],
+      "07-rose": ["refFlat", "refRow"],
+      "08-scale": ["refRow"],
+      "09-end": ["refEnd", "refRow"]
+    }
+  },
+  "runs": [],
+  "media": {}
+}
