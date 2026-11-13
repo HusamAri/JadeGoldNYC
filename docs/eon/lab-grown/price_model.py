@@ -422,5 +422,113 @@ def pc():
     print("  " + "  ".join(f"US{us:g} {retail(pc_cost(us) + PACK + SHIP, MULT_NARROW, 0.75)[1]}" for us in PC_SIZES))
 
 
+# ---- 07 Two-Tone Milgrain Channel (2026-11-13) --------------------------------------------------------------
+# Girdi: sahibin 4 fotoğrafı (gerçek parça, atölye; 2026-11-13) + "10k 14k ve 18k 3 varyantlı". Tasarım: beyaz altın
+# raylar, her rayın iç kenarında beyaz milgrain boncuk hattı (tam tur), arada kubbeli cilalı sarı altın orta; ön üstte
+# sarı ortaya kesilmiş tek kanalda dokuz round taş kenar kenara, kanal son taşın biraz ötesinde yuvarlak uçla biter.
+# Ölçü (fotoğraflardan, piksel oranı): taş / milgrain arası 0,56-0,59 (3 fotoğraf), taş / bant ~0,40, bant / dış çap
+# 0,28-0,30 (iki asılı fotoğraf), taş / dış çap 0,116 (iki fotoğrafta aynı); dokuz taş çemberin ~üçte birini kaplar
+# (yan fotoğrafta uç taşların kısalması ~117-130°). Numune bedeni bilinmiyor; erkek bedeni (dış çap ~23-24 mm) ile
+# bant ~6,4-7,3 mm, taş ~2,7-2,8 mm. Tasarım: 7,0 mm, kubbe merkezde 2,0 mm (2,75 mm round ~1,68 mm derin), taş
+# 2,75 mm ≈ 0,08 ct. Üretici teklifi YOK.
+# Maliyet: iki okumanın YÜKSEĞİ, ayar ve beden başına:
+#   (a) üretici konvansiyonu: 14K gram × $100 (altın + işçilik); 10K/18K $/g lib/gold-cost.ts derivePurchaseCentsPerGram
+#       (metal spotla saflıkla ölçeklenir, 14K'nın işçilik primi sabit), gram × yoğunluk oranı (×0,892 / ×1,137);
+#   (b) EON iki tonlu kuralı (CLAUDE.md, V4.laborTwoToneUsd): melt × 1,07 + $250 (V4 saflıkları 0,417/0,583/0,75).
+# Gram tam dikdörtgen kesit (kanal ~2,1 g metal alır, tampon olarak maliyette kalır), + 9 taş + 9 kanal takma.
+SPOT_TMC = 3883.17         # gold-api.com 2026-11-13 19:12 UTC
+TMC_SPECS = {              # genişlik, kubbe kalınlığı, taş mm, taş ct (tasarım 7 mm; 6 mm alternatif)
+    7.0: (2.0, 2.75, 0.08),
+    6.0: (1.8, 2.40, 0.05),
+}
+TMC_STONES = 9
+TMC_STONE_USD_CT = 280     # üreticinin bilinen tek lab oranı (Model 2 baget), kalibre değil
+TMC_SETTING_EACH = 10      # Model 2'nin kanal (baget) takma ücreti, taş başı (kalibre değil)
+TMC_KARATS = ("10K", "14K", "18K")
+TMC_GC_PURITY = {"10K": 0.416, "14K": 0.585, "18K": 0.75}   # lib/gold-cost.ts KARAT_PURITY
+TMC_V4_PURITY = {"10K": 0.417, "14K": 0.583, "18K": 0.75}   # lib/pricing/gold-index.ts V4.purity
+TMC_V4_FIRE, TMC_V4_TWO_TONE = 0.07, 250
+TMC_SIZES = [4, 5, 6, 7, 8, 8.5, 9, 10, 11, 12, 13, 14, 15, 16]
+TMC_LISTS = {              # aday tek fiyatlar (ayar başına, her beden)
+    "10K": [2305, 2400, 2405],
+    "14K": [2980, 3100, 3125],
+    "18K": [3830, 4000, 4035],
+}
+
+
+def tmc_rate_cents(karat, spot=SPOT_TMC):
+    """lib/gold-cost.ts derivePurchaseCentsPerGram birebir (cent/g, JS Math.round): 14K = $100/g."""
+    if karat == "14K":
+        return 10000
+    pure = spot * 100 / TROY
+    premium = max(0.0, 10000 - pure * TMC_GC_PURITY["14K"])
+    return js_round(pure * TMC_GC_PURITY[karat] + premium)
+
+
+def tmc_g(us, karat, w=7.0):
+    """Üreticinin 14K bant listesi × kubbe kalınlığı / 1,5 (tam kesit) × alaşım yoğunluk oranı."""
+    t = TMC_SPECS[w][0]
+    return w * (0.836 + 0.0515 * us) * t / 1.5 * DENS[karat]
+
+
+def tmc_gold(us, karat, w=7.0, spot=SPOT_TMC):
+    """(dolar, okuma): üretici konvansiyonu ile iki tonlu $250 kuralının yükseği."""
+    g = tmc_g(us, karat, w)
+    conv = g * tmc_rate_cents(karat, spot) / 100
+    two_tone = g * spot / TROY * TMC_V4_PURITY[karat] * (1 + TMC_V4_FIRE) + TMC_V4_TWO_TONE
+    return (conv, "üretici") if conv >= two_tone else (two_tone, "iki-ton")
+
+
+def tmc_extras(w=7.0):
+    ct = TMC_SPECS[w][2]
+    return TMC_STONES * (ct * TMC_STONE_USD_CT + TMC_SETTING_EACH)
+
+
+def tmc_cost(us, karat, w=7.0):
+    return tmc_gold(us, karat, w)[0] + tmc_extras(w)
+
+
+def tmc_profit(buyer, us, karat, w=7.0):
+    return 0.905 * buyer - min(0.15 * buyer, 100) - FIX - (tmc_cost(us, karat, w) + PACK + SHIP)
+
+
+def tmc_floor(karat, w=7.0, sale=0.75):
+    """Her bedende en kötü Offsite kârı ≥ MIN_PROFIT olan en düşük liste (5'in katı); bağlayan beden US 16."""
+    lst = 5
+    while min(tmc_profit(lst * sale, us, karat, w) for us in TMC_SIZES) < MIN_PROFIT:
+        lst += 5
+    return lst
+
+
+def tmc():
+    pure = SPOT_TMC / TROY
+    print(f"spot {SPOT_TMC}: saf ${pure:.4f}/g; 14K melt ${pure * 0.585:.2f}/g, $100/g içinde işçilik "
+          f"${100 - pure * 0.585:.2f}/g")
+    print("$/g (derivePurchaseCentsPerGram): " + "  ".join(f"{k} {tmc_rate_cents(k) / 100:.2f}" for k in TMC_KARATS))
+    for w in (7.0, 6.0):
+        t, smm, sct = TMC_SPECS[w]
+        print(f"\n==== {w:g} mm × {t} mm, {TMC_STONES} × {smm} mm round ≈ {TMC_STONES * sct:.2f} ct: taş "
+              f"${TMC_STONES * sct * TMC_STONE_USD_CT:.2f} + kanal takma ${TMC_STONES * TMC_SETTING_EACH} = ${tmc_extras(w):.2f}")
+        print("beden   " + "   ".join(f"{k}: gram  altın (okuma)" for k in TMC_KARATS))
+        for us in TMC_SIZES:
+            cells = []
+            for k in TMC_KARATS:
+                gd, rd = tmc_gold(us, k, w)
+                cells.append(f"{tmc_g(us, k, w):6.2f} {gd:8.2f} ({rd})")
+            print(f"  US{us:<4g} " + "   ".join(cells))
+        for k in TMC_KARATS:
+            landed = tmc_cost(8.5, k, w) + PACK + SHIP
+            eng, lst, s, p = retail(landed, MULT_NARROW, 0.75)
+            print(f"  {k} US 8½: maliyet ${tmc_cost(8.5, k, w):.2f} landed ${landed:.2f} | motor {eng} liste {lst} "
+                  f"alıcı {s} kâr {p} | her beden ≥ ${MIN_PROFIT} tabanı (%25) {tmc_floor(k, w)}, (%35) {tmc_floor(k, w, 0.65)}")
+    print("\n-- 7 mm aday tek fiyatlar: bedene göre kâr (en kötü Offsite) --")
+    for k in TMC_KARATS:
+        for lst in TMC_LISTS[k]:
+            for sale in (0.75, 0.65):
+                buyer = lst * sale
+                row = "  ".join(f"US{us:g} {tmc_profit(buyer, us, k):+.0f}" for us in (4, 8.5, 12, 16))
+                print(f"  {k} liste {lst} @ {1 - sale:.0%} (alıcı {buyer:.2f}): {row}")
+
+
 if __name__ == "__main__":
-    {"vb": vb, "fr": fr, "hs": hs, "hep": hep, "pc": pc}.get(sys.argv[1] if len(sys.argv) > 1 else "", dsp)()
+    {"vb": vb, "fr": fr, "hs": hs, "hep": hep, "pc": pc, "tmc": tmc}.get(sys.argv[1] if len(sys.argv) > 1 else "", dsp)()
