@@ -18,6 +18,7 @@ Dersler (second-brain): kaplama oranı bir yer sözcüğüdür (HEP 2026-11-11):
 kusur hep şekil/sayıdadır (Noel 40). "eternity" (taşı bütün halkaya yayar), "pave" (çok sıra), "baguette" (dikdörtgen
 taş), "sparkle"/"macro" jargonu yok. Bant incelik oranı sayıyla: 3 mm = dış çapın ~1/7'si.
 """
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -109,13 +110,49 @@ FRONT_ROW = (
 
 
 def stand_row(surface):
+    """v2 (2026-11-13): v1'de (03, 06) sıra kameraya bakan yan yüzden kumaşa/kile kadar indi (11-13 taş, yarım tur).
+    Düzeltme: bitişi bir yer işaretine bağla (halkanın orta yükseklikteki iki en geniş noktasının çok üstünde),
+    yanlış sınıfı adıyla yasakla (yanlardan aşağı inmez) ve kamerayı yükselt (taşlar yukarı bakıyor, üstten görünür)."""
     return (
-        "Seen as a clock face with 12 o'clock at the top: the row of nine stones is centred on 12 o'clock, on the very "
-        "top of the ring, and runs from a point between 10 and 11 o'clock to a point between 1 and 2 o'clock, about a "
-        "quarter of the circle, and stops there; the rest of the circle, down both sides and across the bottom that "
-        f"rests on the {surface}, is plain polished gold and no stone shows."
+        "Seen as a clock face with 12 o'clock at the top: the row of nine stones sits only on the very top of the ring, "
+        "facing up, centred on 12 o'clock, and runs from a point between 10 and 11 o'clock to a point between 1 and 2 "
+        "o'clock, about a quarter of the circle, and stops there, well above the ring's two widest points at "
+        "mid-height. The stones never run down the sides: the side of the ring that faces the camera, the far side, "
+        f"both widest points and the bottom that rests on the {surface} are all plain polished gold and no stone shows, "
+        "so in the photograph the nine stones make only a short arc across the top of the ring and most of the circle "
+        "is bare gold."
     )
 
+
+# 08 ölçek karesi, çekim çekim (status.json reddedilenler bu metinlerin md5'ini taşır):
+# v1 parmak uçları halkanın iki ucunda (FRAMES geçmişi: git), halkayı başparmağın görünen kalınlığının ~2,1 katı çizdi.
+# v2 modelin kendi tutuşu (bandın altı ve üstü), ölçek iki komşu boyutla: tuttu (1,2) ama sırada 8 taş.
+# v3 v2 + simetrik sayı (ortada beşinci taş, iki yanda dörder): yine 8 taş. Aynı pozda üçüncü kez sertleştirmek yerine
+# poz değişti (second-brain 2026-09-30, "bir detay bir pozda tutmuyorsa pozu değiştir").
+# v4 avuç içinde yatık halka: 01, 05 ve 07'de dokuz taşı her seferinde tutan yatık/önden poz; ölçek avuç ve parmakla.
+SCALE_PINCH = (
+    "Real-size view. A woman's hand is seen from the side, close to the camera, holding the ring level between the "
+    "very tips of the thumb and the index finger: the index fingertip rests on the top edge of the band and the thumb "
+    "tip under its bottom edge, pinching the front of the band, so the ring is seen edge-on at its own height and the "
+    "front of the band faces the lens: the row of nine square stones is in the middle of it, facing the camera, a "
+    "short line of stones between the fingertips{count}; the opening is hidden. The ring is small next to the "
+    "fingertips, as a real ring is: the band is only 3 mm high, about a fifth of the thickness of the thumb tip, and "
+    "the whole ring, about 22 mm wide, is only about one and a half times as wide as the thumb tip is thick. Fingers "
+    "relaxed, natural skin, short natural nails without polish. Behind, a pale blue-grey wall is out of focus."
+)
+SCALE_V2 = SCALE_PINCH.format(count=", and the opening is hidden").replace(
+    ", and the opening is hidden; the opening is hidden.", ", and the opening is hidden.")
+SCALE_V3 = SCALE_PINCH.format(count=": the fifth stone sits exactly in front of the lens with four stones on each side "
+                                    "of it, and a flat end wall closes each end of the row")
+SCALE_V4 = (
+    "Real-size view. A woman's open hand, palm up, is seen from slightly above, the fingers relaxed and slightly "
+    "curled; the ring lies flat in the middle of the palm, its opening facing up, turned so that its row of stones is "
+    "at the front of the ring, nearest the camera. " + FRONT_ROW + " The ring is small on the palm, as a real ring is: "
+    "its whole width, about 22 mm, is only about a quarter of the width of the palm, a little more than the width of "
+    "one finger at its base. " + SLIM + " Natural skin texture, short natural nails without polish. Behind the hand, "
+    "soft blue-grey linen is out of focus."
+)
+SCALE = SCALE_V4
 
 FRAMES = [
     ("01-hero", "the design at a glance (Etsy first photo: one product, no text)", RING_Y, REF_FLAT,
@@ -137,7 +174,8 @@ FRAMES = [
      "thin bright highlights. Behind the band, blue-grey slate is out of focus."),
     ("03-stand", "the row across the top, the plain band below", RING_Y, REF_STAND,
      "The ring stands upright on its edge on folded chambray, a soft light-indigo cotton, turned three-quarters to the "
-     "camera and seen from a little above. " + stand_row("cotton") + " The polished inside of the band shows through "
+     "camera and seen from above at about 40 degrees, so the top of the ring, where the stones face up, is in clear "
+     "view. " + stand_row("cotton") + " The polished inside of the band shows through "
      "the opening. " + SLIM + " Colour: the chambray is a muted light indigo with a soft visible weave, so the warm "
      "gold stands out against it."),
     ("04-hand", "how the band looks on the hand", RING_Y, REF_HAND,
@@ -157,7 +195,8 @@ FRAMES = [
      "favoured."),
     ("06-white", "the white gold version, against warm clay", RING_W, REF_STAND,
      "The ring stands upright on its edge on a warm terracotta clay tile, turned three-quarters to the camera and seen "
-     "from a little above. " + stand_row("clay") + " The polished inside of the band shows through the opening. "
+     "from above at about 40 degrees, so the top of the ring, where the stones face up, is in clear view. "
+     + stand_row("clay") + " The polished inside of the band shows through the opening. "
      + SLIM + " Daylight grazes across the ring from one side, so the stones show their facets and the rails draw thin "
      "bright lines. Colour: the clay and the softly blurred background are warm, muted terracotta, so the cool white "
      "gold reads crisp and bright against them."),
@@ -166,26 +205,22 @@ FRAMES = [
      + FRONT_ROW + " " + SLIM + " A few eucalyptus leaves lie softly out of focus behind the ring. Daylight comes from "
      "a window on the right. Colour: the sage green is the complementary colour of the rose gold's soft pink, kept "
      "muted, so the rose gold looks warm and rich against it. The ring is the only piece of jewellery in the image."),
-    ("08-scale", "real size against the fingertips", RING_Y, REF_HAND,
-     "Real-size view. A woman's hand is seen from the side, close to the camera, holding the ring level between the "
-     "very tips of the thumb and the index finger, the two fingertips pressing on the ring's left-most and right-most "
-     "points, so the ring is seen edge-on at its own height and the front of the band faces the lens: the row of nine "
-     "square stones is in the middle of it, facing the camera, a short straight line of stones between the fingertips, "
-     "and the opening is hidden. The ring is small, as a real ring is: its outer diameter of about 22 mm is the gap "
-     "between the two fingertips, only about one and a third times the thickness of the thumb's tip as seen from this "
-     "side. The band itself is a slim strip: its 3 mm height is only about a seventh of that 22 mm gap. Fingers "
-     "relaxed, natural skin, short natural nails without polish. Behind, a pale blue-grey wall is out of focus."),
+    ("08-scale", "real size against the hand", RING_Y, REF_FLAT, SCALE),
     ("09-end", "where the row ends: the flat end wall of the channel", RING_Y, REF_END,
-     "Close view of one end of the row of stones. The ring stands upright on its edge on matte blue-grey slate, with "
-     "its row of stones on top; the camera is close above the top of the ring and a little to one side, looking down "
-     "at the top of the band where the row ends. On the "
-     "right of the frame are the last three square stones of the row, edge to edge between the two slim polished "
-     "rails; in the middle of the frame the row ends at a flat polished wall of gold cut straight across the band, "
-     "level with the rails; on the left the band continues as plain polished gold, its smooth flat top and softly "
-     "rounded edges catching the window light. The end wall is crisp and square, with no prong, no bead and no rounded "
-     "cap. The band's 1.8 mm thickness shows on its side face, toward the camera. Low daylight from one side. Colour: the slate is a "
-     "muted cool blue-grey, so the warm yellow gold is the only warm colour in the image. The ring is the only object "
-     "in the image."),
+     # v2 (2026-11-13): v1 bütün halkayı yatık ve kadrajda çizdi; taş ve bant halkaya göre büyüdü (bant ~5 mm, halka
+     # ~12 mm okunuyordu). Bütün halka kadraj dışında kalır, 02 gibi tam tepeden ama bant çapraz akar (02'nin kopyası
+     # olmasın diye).
+     "Close view of one end of the row of stones. The camera looks straight down at the top of the band from a few "
+     "centimetres away, so only a short length of the band is in the frame and the rest of the ring is outside it; the "
+     "band runs diagonally across the frame as a slim flat strip, from the lower left corner to the upper right "
+     "corner. In the upper right are the last three square stones of the row, edge to edge between the two slim "
+     "polished rails; in the centre of the frame the row ends at a flat polished wall of gold cut straight across the "
+     "band, level with the rails; in the lower left the band continues as plain polished gold, its smooth flat top and "
+     "softly rounded edges catching the window light. The end wall is crisp and square, with no prong, no bead and no "
+     "rounded cap. The end wall and the stones next to it are in sharp focus; the band softens toward the two corners. "
+     "Low daylight from one side. Behind the band, matte blue-grey slate is out of focus. Colour: the slate is a muted "
+     "cool blue-grey, so the warm yellow gold is the only warm colour in the image. The ring is the only object in the "
+     "image."),
 ]
 
 prompts = []
@@ -198,7 +233,7 @@ for fid, feature, ring, ref, frame in FRAMES:
     want = {"05-metals": (0, 0, 0, 1), "06-white": (0, 1, 0, 0), "07-rose": (0, 0, 1, 0)}.get(fid, (1, 0, 0, 0))
     assert counts == want, (fid, counts)
     want_ref = {"01-hero": REF_FLAT, "07-rose": REF_FLAT, "03-stand": REF_STAND, "06-white": REF_STAND,
-                "02-row": REF_CLOSE, "09-end": REF_END, "04-hand": REF_HAND, "08-scale": REF_HAND,
+                "02-row": REF_CLOSE, "09-end": REF_END, "04-hand": REF_HAND, "08-scale": REF_FLAT,
                 "05-metals": REF_METALS}[fid]
     assert ref is want_ref, (fid, "referans cümlesi")
     # bilinen tuzaklar: tam tur / çok sıra / dikdörtgen taş çağıran sözcükler, jargon, kardeş listing'ler, renkli ışık
@@ -219,13 +254,22 @@ for fid, feature, ring, ref, frame in FRAMES:
     where = {"01-hero": "centred on 6 o'clock", "07-rose": "centred on 6 o'clock", "03-stand": "centred on 12 o'clock",
              "06-white": "centred on 12 o'clock", "02-row": "the whole row of nine square stones is in the frame",
              "09-end": "the row ends at a flat polished wall", "04-hand": "lying across the top of the finger",
-             "08-scale": "the row of nine square stones is in the middle", "05-metals": "centred on the point nearest the camera"}[fid]
+             "08-scale": "centred on 6 o'clock", "05-metals": "centred on the point nearest the camera"}[fid]
     assert where in low, (fid, "taş sırasının yeri")
-    if fid in ("01-hero", "07-rose", "03-stand", "06-white"):
+    if fid in ("01-hero", "07-rose", "03-stand", "06-white", "08-scale"):
         assert re.search(r"runs from a point between \d+ and \d+ o'clock to a point between \d+ and \d+ o'clock", low), fid
         assert "and stops there" in low and "no stone shows" in low, (fid, "sıranın bittiği yer + gerisi boş")
     # incelik orana bağlı
-    assert re.search(r"one seventh|a seventh|a fifth of the finger", low) or fid in ("02-row", "09-end"), (fid, "incelik")
+    assert re.search(r"one seventh|a seventh|a fifth of the finger|a fifth of the thickness of the thumb tip", low) \
+        or fid in ("02-row", "09-end"), (fid, "incelik")
+    # v2 pinleri (v1 kusurunun sınıfı adıyla)
+    if fid in ("03-stand", "06-white"):
+        assert "well above the ring's two widest points" in low and "the stones never run down the sides" in low, fid
+        assert "seen from above at about 40 degrees" in low and "a little above" not in low, fid
+    if fid == "08-scale":
+        assert "about a quarter of the width of the palm" in low and "lies flat in the middle of the palm" in low, fid
+    if fid == "09-end":
+        assert "the rest of the ring is outside it" in low and "diagonally" in low, fid
     assert "natural daylight only" in low and "no coloured light patches" in low, fid
     pal = {"05-metals": ("mid-grey limestone",), "06-white": ("terracotta",), "07-rose": ("sage",)}.get(
         fid, ("blue-grey", "slate", "indigo", "chambray"))
@@ -242,6 +286,17 @@ for fid, feature, ring, ref, frame in FRAMES:
     prompts.append({"id": fid, "feature": feature, "prompt": p, "words": len(p.split())})
 
 assert len(prompts) == 9 and len({x["prompt"] for x in prompts}) == 9
+# v1'de kabul edilen kareler (status.json) donuk: metinleri bayt bayt aynı kalır.
+FROZEN_V1 = {
+    "01-hero": "4d6add819cde4009c5270d3282448080",
+    "02-row": "9f8fbd46646c8e8124b436e66a8e82a5",
+    "04-hand": "57469ec19144084cbd000ce864ecbf16",
+    "05-metals": "08bffd488c3c26016e2cdc52ddd1dbbd",
+    "07-rose": "9aee152752fd69fe333a181ece3c778f",
+}
+for x in prompts:
+    if x["id"] in FROZEN_V1:
+        assert hashlib.md5(x["prompt"].encode()).hexdigest() == FROZEN_V1[x["id"]], (x["id"], "kabul edilen v1 değişti")
 (HERE / "prompts.json").write_text(json.dumps(prompts, indent=2, ensure_ascii=False) + "\n")
 for x in prompts:
     print(f"== {x['id']} ({x['words']} words): {x['feature']}\n{x['prompt']}\n")

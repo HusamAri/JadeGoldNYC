@@ -85,3 +85,43 @@ Close view of one end of the row of stones. The ring stands upright on its edge 
 
 ### 10-spec (typeset): the details
 `spec_card.py`: "The details"; top of the band to scale (nine 2 mm squares, about 18 mm, 3 mm wide, flat end walls) and the cross-section (3 × 1.8 mm, the stone in its channel); Metal, Stones, Setting, Band, Sizes, Weight from `listing.json`; footer "Drawings show the proportions of the design; sizes are approximate."
+
+## Retakes (2026-11-13, after the set review)
+
+Only the frame text changed; ring block, LIGHT, PHOTO and the reference sentence are the shared blocks above (08 v4 uses REF_FLAT with refFlat + refRow). Full sent prompts: `prompts.json` (chosen takes) and, for 08 v2/v3, `prompts.py` SCALE_V2/SCALE_V3. Each retake names one defect. 01, 02, 04, 05 and 07 stayed v1.
+
+### 03-stand v2 (chosen)
+
+Defect fixed: the row ran down the side of the ring that faces the camera to the cloth: about 13 stones, half the circle instead of a quarter
+
+The ring stands upright on its edge on folded chambray, a soft light-indigo cotton, turned three-quarters to the camera and seen from above at about 40 degrees, so the top of the ring, where the stones face up, is in clear view. Seen as a clock face with 12 o'clock at the top: the row of nine stones sits only on the very top of the ring, facing up, centred on 12 o'clock, and runs from a point between 10 and 11 o'clock to a point between 1 and 2 o'clock, about a quarter of the circle, and stops there, well above the ring's two widest points at mid-height. The stones never run down the sides: the side of the ring that faces the camera, the far side, both widest points and the bottom that rests on the cotton are all plain polished gold and no stone shows, so in the photograph the nine stones make only a short arc across the top of the ring and most of the circle is bare gold. The polished inside of the band shows through the opening. The band is slim: its 3 mm width is only about one seventh of the ring's outer diameter of about 22 mm. Colour: the chambray is a muted light indigo with a soft visible weave, so the warm gold stands out against it.
+
+### 06-white v2 (chosen)
+
+Defect fixed: same as 03 v1: the row ran down the camera-facing side to the clay, about 11 stones
+
+The ring stands upright on its edge on a warm terracotta clay tile, turned three-quarters to the camera and seen from above at about 40 degrees, so the top of the ring, where the stones face up, is in clear view. Seen as a clock face with 12 o'clock at the top: the row of nine stones sits only on the very top of the ring, facing up, centred on 12 o'clock, and runs from a point between 10 and 11 o'clock to a point between 1 and 2 o'clock, about a quarter of the circle, and stops there, well above the ring's two widest points at mid-height. The stones never run down the sides: the side of the ring that faces the camera, the far side, both widest points and the bottom that rests on the clay are all plain polished gold and no stone shows, so in the photograph the nine stones make only a short arc across the top of the ring and most of the circle is bare gold. The polished inside of the band shows through the opening. The band is slim: its 3 mm width is only about one seventh of the ring's outer diameter of about 22 mm. Daylight grazes across the ring from one side, so the stones show their facets and the rails draw thin bright lines. Colour: the clay and the softly blurred background are warm, muted terracotta, so the cool white gold reads crisp and bright against them.
+
+### 08-scale v2 (rejected: 8 stones)
+
+Defect fixed: scale: the ring was about 2.1 times as wide as the thumb tip is thick (a real 22 mm ring is about 1.5), so it read larger than it is; the fingertips pinched the band from above and below
+
+Real-size view. A woman's hand is seen from the side, close to the camera, holding the ring level between the very tips of the thumb and the index finger: the index fingertip rests on the top edge of the band and the thumb tip under its bottom edge, pinching the front of the band, so the ring is seen edge-on at its own height and the front of the band faces the lens: the row of nine square stones is in the middle of it, facing the camera, a short line of stones between the fingertips, and the opening is hidden. The ring is small next to the fingertips, as a real ring is: the band is only 3 mm high, about a fifth of the thickness of the thumb tip, and the whole ring, about 22 mm wide, is only about one and a half times as wide as the thumb tip is thick. Fingers relaxed, natural skin, short natural nails without polish. Behind, a pale blue-grey wall is out of focus.
+
+### 08-scale v3 (rejected: 8 stones)
+
+Defect fixed: scale held (band about a fifth of the thumb tip, ring about 1.2 times it) but the row showed 8 stones
+
+Real-size view. A woman's hand is seen from the side, close to the camera, holding the ring level between the very tips of the thumb and the index finger: the index fingertip rests on the top edge of the band and the thumb tip under its bottom edge, pinching the front of the band, so the ring is seen edge-on at its own height and the front of the band faces the lens: the row of nine square stones is in the middle of it, facing the camera, a short line of stones between the fingertips: the fifth stone sits exactly in front of the lens with four stones on each side of it, and a flat end wall closes each end of the row; the opening is hidden. The ring is small next to the fingertips, as a real ring is: the band is only 3 mm high, about a fifth of the thickness of the thumb tip, and the whole ring, about 22 mm wide, is only about one and a half times as wide as the thumb tip is thick. Fingers relaxed, natural skin, short natural nails without polish. Behind, a pale blue-grey wall is out of focus.
+
+### 08-scale v4 (chosen)
+
+Defect fixed: the symmetric count (fifth stone in the middle, four on each side) still gave 8 stones; the pose was changed instead of tightening the sentence a third time
+
+Real-size view. A woman's open hand, palm up, is seen from slightly above, the fingers relaxed and slightly curled; the ring lies flat in the middle of the palm, its opening facing up, turned so that its row of stones is at the front of the ring, nearest the camera. Seen from above, the ring is like a clock face with 6 o'clock nearest the camera: the row of nine stones is centred on 6 o'clock, at the front of the ring facing the camera, and runs from a point between 4 and 5 o'clock to a point between 7 and 8 o'clock, about a quarter of the circle, and stops there; everywhere else, from there round through 12 o'clock and back, the band is plain polished gold and no stone shows. The ring is small on the palm, as a real ring is: its whole width, about 22 mm, is only about a quarter of the width of the palm, a little more than the width of one finger at its base. The band is slim: its 3 mm width is only about one seventh of the ring's outer diameter of about 22 mm. Natural skin texture, short natural nails without polish. Behind the hand, soft blue-grey linen is out of focus.
+
+### 09-end v2 (chosen)
+
+Defect fixed: the whole ring lay flat in view, so against it the band read about 5 mm wide and the ring about 12 mm across; v2 keeps the rest of the ring outside the frame
+
+Close view of one end of the row of stones. The camera looks straight down at the top of the band from a few centimetres away, so only a short length of the band is in the frame and the rest of the ring is outside it; the band runs diagonally across the frame as a slim flat strip, from the lower left corner to the upper right corner. In the upper right are the last three square stones of the row, edge to edge between the two slim polished rails; in the centre of the frame the row ends at a flat polished wall of gold cut straight across the band, level with the rails; in the lower left the band continues as plain polished gold, its smooth flat top and softly rounded edges catching the window light. The end wall is crisp and square, with no prong, no bead and no rounded cap. The end wall and the stones next to it are in sharp focus; the band softens toward the two corners. Low daylight from one side. Behind the band, matte blue-grey slate is out of focus. Colour: the slate is a muted cool blue-grey, so the warm yellow gold is the only warm colour in the image. The ring is the only object in the image.

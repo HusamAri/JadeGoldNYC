@@ -16,17 +16,196 @@
     "refRow": "254896, sıranın ortası 310x136+250+262, ×3 büyütme, siyah-beyaz",
     "refEnd": "254896, sıranın sol ucu ve düz duvar 290x180+40+250, ×3 büyütme, siyah-beyaz",
     "byFrame": {
-      "01-hero": ["refFlat", "refRow"],
-      "02-row": ["refRow", "refEnd"],
-      "03-stand": ["refStand", "refRow"],
-      "04-hand": ["refRow"],
-      "05-metals": ["refFlat"],
-      "06-white": ["refStand", "refRow"],
-      "07-rose": ["refFlat", "refRow"],
-      "08-scale": ["refRow"],
-      "09-end": ["refEnd", "refRow"]
+      "01-hero": [
+        "refFlat",
+        "refRow"
+      ],
+      "02-row": [
+        "refRow",
+        "refEnd"
+      ],
+      "03-stand": [
+        "refStand",
+        "refRow"
+      ],
+      "04-hand": [
+        "refRow"
+      ],
+      "05-metals": [
+        "refFlat"
+      ],
+      "06-white": [
+        "refStand",
+        "refRow"
+      ],
+      "07-rose": [
+        "refFlat",
+        "refRow"
+      ],
+      "08-scale": [
+        "refFlat",
+        "refRow"
+      ],
+      "09-end": [
+        "refEnd",
+        "refRow"
+      ]
+    },
+    "byFrameHistory": {
+      "08-scale": "v1-v3 refRow (REF_HAND, pinch pose); v4 refFlat + refRow (REF_FLAT, ring lying on the palm)"
     }
   },
-  "runs": [],
-  "media": {}
+  "runs": [
+    {
+      "frame": "01-hero",
+      "take": "v1",
+      "job": "b3ec0541-a5f8-4b26-97a2-382091cc2a77",
+      "refs": [
+        "refFlat",
+        "refRow"
+      ],
+      "at": "2026-11-13T17:20Z"
+    },
+    {
+      "frame": "02-row",
+      "take": "v1",
+      "job": "33c43756-f9c7-4150-8878-2ef4899fa629",
+      "refs": [
+        "refRow",
+        "refEnd"
+      ],
+      "at": "2026-11-13T17:23Z"
+    },
+    {
+      "frame": "03-stand",
+      "take": "v1",
+      "job": "072bc991-1c44-4b56-9133-e9fd7ced135a",
+      "refs": [
+        "refStand",
+        "refRow"
+      ],
+      "at": "2026-11-13T17:23Z"
+    },
+    {
+      "frame": "04-hand",
+      "take": "v1",
+      "job": "3f85e28d-2f08-436b-a7bb-cda59eb459ab",
+      "refs": [
+        "refRow"
+      ],
+      "at": "2026-11-13T17:23Z"
+    },
+    {
+      "frame": "05-metals",
+      "take": "v1",
+      "job": "66adcfee-79e5-4b51-b139-0648780e90d7",
+      "refs": [
+        "refFlat"
+      ],
+      "at": "2026-11-13T17:23Z"
+    },
+    {
+      "frame": "06-white",
+      "take": "v1",
+      "job": "5b22d91b-b096-45a1-9d7e-1eb0b202e718",
+      "refs": [
+        "refStand",
+        "refRow"
+      ],
+      "at": "2026-11-13T17:27Z"
+    },
+    {
+      "frame": "07-rose",
+      "take": "v1",
+      "job": "7c6527a5-6c4e-4b8e-9dd7-eb4485db6f32",
+      "refs": [
+        "refFlat",
+        "refRow"
+      ],
+      "at": "2026-11-13T17:27Z"
+    },
+    {
+      "frame": "08-scale",
+      "take": "v1",
+      "job": "976260cc-57a7-43b5-a295-053a2086c6f3",
+      "refs": [
+        "refRow"
+      ],
+      "at": "2026-11-13T17:27Z"
+    },
+    {
+      "frame": "09-end",
+      "take": "v1",
+      "job": "9c6f3aeb-73f7-41ab-a26c-6869fbd6b2aa",
+      "refs": [
+        "refEnd",
+        "refRow"
+      ],
+      "at": "2026-11-13T17:27Z"
+    },
+    {
+      "frame": "03-stand",
+      "take": "v2",
+      "job": "edd1e75a-617d-46c8-9628-db3c2574d2bf",
+      "refs": [
+        "refStand",
+        "refRow"
+      ],
+      "at": "2026-11-13T17:35Z"
+    },
+    {
+      "frame": "06-white",
+      "take": "v2",
+      "job": "696fc740-fa19-47fb-8b8b-691b216eeeef",
+      "refs": [
+        "refStand",
+        "refRow"
+      ],
+      "at": "2026-11-13T17:35Z"
+    },
+    {
+      "frame": "08-scale",
+      "take": "v2",
+      "job": "5b100b0e-f05e-43fb-9771-57ac23d8d487",
+      "refs": [
+        "refRow"
+      ],
+      "at": "2026-11-13T17:35Z"
+    },
+    {
+      "frame": "09-end",
+      "take": "v2",
+      "job": "c6d6a0f9-556f-4166-997d-ef65a35b8b05",
+      "refs": [
+        "refEnd",
+        "refRow"
+      ],
+      "at": "2026-11-13T17:36Z"
+    },
+    {
+      "frame": "08-scale",
+      "take": "v3",
+      "job": "ee63fb02-6846-440e-937f-acedbade3aac",
+      "refs": [
+        "refRow"
+      ],
+      "at": "2026-11-13T18:13Z"
+    },
+    {
+      "frame": "08-scale",
+      "take": "v4",
+      "job": "837358c8-56a4-4fcf-8100-e938087a967f",
+      "refs": [
+        "refFlat",
+        "refRow"
+      ],
+      "at": "2026-11-13T18:20Z"
+    }
+  ],
+  "media": {
+    "refFlat": "51d1a754-381b-4a7f-b855-57ef5f3a7177",
+    "refStand": "7ddb273e-519c-4e79-817b-b2f48efeb06e",
+    "refRow": "5ee5549e-33d1-40c1-8b35-eeba26c0c42d",
+    "refEnd": "de451935-a095-4e92-b6b6-64c360e010da"
+  }
 }
