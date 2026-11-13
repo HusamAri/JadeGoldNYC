@@ -1,10 +1,13 @@
 """EON lab-grown fiyat modeli: 01 Double Shared Prong (2026-11-04), 02 Vertical Baguette (2026-11-07),
-03 Flush Round (2026-11-08), 04 Hammered Star (2026-11-10).
+03 Flush Round (2026-11-08), 04 Hammered Star (2026-11-10), 05 Half Eternity Pavé (2026-11-11),
+06 Princess Channel (2026-11-13).
 
 Run: python3 -I docs/eon/lab-grown/price_model.py        (01 DSP, çıktısı 2026-11-04 ile birebir)
      python3 -I docs/eon/lab-grown/price_model.py vb     (02 Vertical Baguette)
      python3 -I docs/eon/lab-grown/price_model.py fr     (03 Flush Round)
      python3 -I docs/eon/lab-grown/price_model.py hs     (04 Hammered Star)
+     python3 -I docs/eon/lab-grown/price_model.py hep    (05 Half Eternity Pavé)
+     python3 -I docs/eon/lab-grown/price_model.py pc     (06 Princess Channel)
 
 Girdi: üreticinin el yazısı notu (Model 1: 2,40 mm round, US7 toplam 0,8 ct, 13 taş, 14K $550,
 taş takma $4) + canlı spot. Perakende formülü lib/pricing-engine/eon-cost.ts 457-472'nin birebir
@@ -351,5 +354,73 @@ def hep():
     print("  " + "  ".join(f"US{us:g} {retail(hep_cost(us) + PACK + SHIP, MULT_NARROW, 0.75)[1]}" for us in HEP_SIZES))
 
 
+# ---- 06 Princess Channel, nine stones (2026-11-13) ---------------------------------------------
+# Sahibin referansı 25karats.com WB9262 "Classic 9 Stone Princes Cut Diamond Anniversary Band (1/2 ct.t.w.)"
+# (okuma 2026-11-13: site Cloudflare 403, Google çeviri vekili 429, r.jina.ai okuyucu vekili 200): 14K, 9 princess
+# 0,05 ct / 2×2 mm (toplam 0,45 ct), doğal GH/VS, kanal yuva, comfort fit, "Approximately 2.9 grams", $1.669.
+# Fotoğraflarda (beyaz önden, sıranın ortası kameraya dik) taş 69 px = 2 mm; iki ray ~0,35-0,6 mm → bant ~3,0 mm.
+# 2 mm princess'in derinliği ~1,4 mm (~%70): kanal en az ~1,7-1,8 mm et ister; 2,9 g ancak ~3,0 × 1,6 mm konfor
+# kesimli bir bantla tutar. Tasarım: 3,0 × 1,8 mm (taş altında ~0,4 mm taban), sıra yalnız ön üstte (9 × 2 mm =
+# 18 mm), iki ucu düz duvar, bedenle sabit 9 taş. Üretici teklifi YOK: gram × $100 (tam kesit; kanal ~0,7 g metal
+# alır, tampon olarak maliyette bırakıldı) + taş + taş başı kanal takma.
+SPOT_PC = 3887.87          # gold-api.com 2026-11-13 16:44 UTC
+PC_W, PC_T = 3.0, 1.8
+PC_STONES, PC_STONE_MM, PC_STONE_CT_EACH = 9, 2.0, 0.05
+PC_STONE_USD_EACH = 0.05 * 280   # bilinen tek lab oranı $280/ct (Model 2) → $14 (kalibre değil)
+PC_SETTING_EACH = 10       # Model 2'nin kanal (baget) takma ücreti; DSP'nin $4'ü tırnak içindi (kalibre değil)
+PC_CHANNEL_G = 9 * 2.0 * 2.0 * 1.4 * 13.5 / 1000   # kanal boşluğu 18 × 2 × 1,4 mm, 14K 13,5 g/cm³ → ~0,68 g
+PC_SIZES = [4, 5, 6, 7, 8, 8.5, 9, 10, 11, 12, 13, 14, 15, 16]
+PC_LISTS = [1450, 1500, 1550, 1600]
+PC_REF_NATURAL_14K = 1669  # 25karats WB9262 14K beyaz, doğal GH/VS, indirimsiz, 2026-11-13
+
+
+def pc_g(us):
+    """Üreticinin 14K bant listesi: genişlik × (0,836 + 0,0515 × US) × kalınlık / 1,5 (tam kesit)."""
+    return PC_W * (0.836 + 0.0515 * us) * PC_T / 1.5
+
+
+def pc_cost(us):
+    return pc_g(us) * VB_USD_G + PC_STONES * (PC_STONE_USD_EACH + PC_SETTING_EACH)
+
+
+def pc_profit(buyer, us):
+    return 0.905 * buyer - min(0.15 * buyer, 100) - FIX - (pc_cost(us) + PACK + SHIP)
+
+
+def pc_floor(us, sale=0.75):
+    """En kötü Offsite'ta kâr ≥ MIN_PROFIT olan en düşük liste (5'in katı)."""
+    lst = 5
+    while pc_profit(lst * sale, us) < MIN_PROFIT:
+        lst += 5
+    return lst
+
+
+def pc():
+    m14 = SPOT_PC / TROY * PURITY["14K"]
+    print(f"spot {SPOT_PC}: melt 14K ${m14:.2f}/g; üretici $100/g içinde işçilik ~${VB_USD_G - m14:.2f}/g")
+    print(f"taş {PC_STONES} × {PC_STONE_MM} mm princess = {PC_STONES * PC_STONE_CT_EACH:.2f} ct: ${PC_STONES * PC_STONE_USD_EACH:.0f};"
+          f" kanal takma {PC_STONES} × ${PC_SETTING_EACH}; kanal boşluğu ~{PC_CHANNEL_G:.2f} g (tampon)")
+    print("beden  gram(tam)  gram(kanalsız)  maliyet")
+    for us in PC_SIZES:
+        print(f"  US{us:<4g} {pc_g(us):.2f}      {pc_g(us) - PC_CHANNEL_G:.2f}           ${pc_cost(us):.2f}")
+    landed = pc_cost(8.5) + PACK + SHIP
+    print(f"\n-- US 8½: maliyet ${pc_cost(8.5):.2f}  landed ${landed:.2f} --")
+    for sale, lbl in [(0.75, "%25"), (0.65, "%35"), (1.0, "indirimsiz")]:
+        eng, lst, s, p = retail(landed, MULT_NARROW, sale)
+        print(f"  {lbl:10s} engine {eng}  liste {lst}  alıcı {s}  kâr(en kötü Offsite) {p}")
+    for sale in (0.75, 0.65):
+        f = pc_floor(PC_SIZES[-1], sale)
+        print(f"  tek fiyatta US {PC_SIZES[-1]:g} ≥ ${MIN_PROFIT} (%{(1 - sale) * 100:.0f}): liste ≥ {f} (alıcı {f * sale:.2f})")
+    print(f"  referans (doğal GH/VS, 14K, indirimsiz): ${PC_REF_NATURAL_14K}")
+    print("\n-- tek fiyat, bedene göre kâr (en kötü Offsite) --")
+    for lst in PC_LISTS:
+        for sale in (0.75, 0.65):
+            buyer = lst * sale
+            row = "  ".join(f"US{us:g} {pc_profit(buyer, us):+.0f}" for us in (4, 7, 8.5, 12, 14, 16))
+            print(f"  liste {lst} @ {1 - sale:.0%} (alıcı {buyer:.2f}): {row}")
+    print("\n-- beden başına motor (%25): liste --")
+    print("  " + "  ".join(f"US{us:g} {retail(pc_cost(us) + PACK + SHIP, MULT_NARROW, 0.75)[1]}" for us in PC_SIZES))
+
+
 if __name__ == "__main__":
-    {"vb": vb, "fr": fr, "hs": hs, "hep": hep}.get(sys.argv[1] if len(sys.argv) > 1 else "", dsp)()
+    {"vb": vb, "fr": fr, "hs": hs, "hep": hep, "pc": pc}.get(sys.argv[1] if len(sys.argv) > 1 else "", dsp)()

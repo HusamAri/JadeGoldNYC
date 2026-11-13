@@ -1,0 +1,133 @@
+{
+  "sourcePackage": "2026-11-13-eon-lab-grown-pc9",
+  "productSku": "EON-PC9",
+  "productType": "ring",
+  "listingProtocol": "ring_band",
+  "referenceUrl": "https://www.25karats.com/classic-9-stone-princes-cut-diamond-anniversary-band-1-2-ct-t-w?variant_id=41473-14K-White-Gold",
+  "referenceNote": "Owner's reference 2026-11-13: 25karats.com style WB9262 'Classic 9 Stone Princes Cut Diamond Anniversary Band (1/2 ct.t.w.)', 14K white gold, natural diamonds GH/VS, 1,669 USD. The site returns a Cloudflare 403 to the container and the Google Translate proxy returned 429; the page was read through the r.jina.ai reader proxy and its 4 photos downloaded directly (not committed). Stated: channel set, 9 princess cut, 0.05 ct / 2x2 mm each, 0.45 ct t.w., comfort fit inside, metal approximately 2.9 grams. Design from the photos: flat-topped band, one channel between two slim polished rails across the top front, the nine square stones edge to edge, a flat polished wall closing each end of the row (about 18 mm long), the rest plain polished gold. In the white front photo the centre of the row faces the camera: a stone is 69 px = 2 mm and each rail 12-22 px (0.35-0.6 mm, the near one including its rounded edge), so the band is about 3.0 mm wide. A 2 mm princess is about 1.4 mm deep, so the channel needs about 1.7-1.8 mm of metal; the reference's 2.9 g only fits about 3.0 x 1.6 mm with a comfort fit. Design: 3.0 x 1.8 mm (about 0.4 mm of gold under the stones).",
+  "title": "14K Gold Lab Grown Diamond Band, Nine Princess Cut Stones, Channel Set, 3mm",
+  "description": "A solid 14K gold band, 3 mm wide, with nine princess cut lab grown diamonds set side by side in a channel across the top. The square stones sit edge to edge between two slim polished rails, so the row reads as one continuous line of light with crisp corners, and the rest of the band is plain polished gold.\n\nYOUR RING\nSolid 14K gold in yellow, white or rose. Flat-topped profile about 3 mm wide and 1.8 mm thick, polished all over, inside and out. Nine princess cut lab grown diamonds, about 2 mm square each, are channel set in a single straight row across the top of the band: the row is about 18 mm long and ends at a flat polished wall of gold at each end. About 4 grams in US 8.5. The price is for one ring in your selected metal color and size; all nine lab grown diamonds are included.\n\nCHOOSE YOUR OPTIONS\n1. Metal Color: Yellow Gold, White Gold or Rose Gold.\n2. Ring Size: US 4 to US 16, including half sizes. One price for every size.\n\nABOUT THE LAB GROWN DIAMONDS\nLaboratory-grown diamonds are grown above ground and have the same crystal structure, hardness and brilliance as mined diamonds; they are not simulants. A princess cut is a square brilliant cut: its facets return light from a square outline, so stones set edge to edge form an unbroken line.\n\nTHE CHANNEL SETTING\nEach stone sits in a channel cut along the top of the band, held along both sides by the gold rails and at the two ends of the row by the end walls. There are no prongs, so nothing stands proud to catch on clothing or gloves.\n\nSIZING AND RESIZING\nMade to order in your size. Message us before ordering if you are between sizes. A jeweler can usually resize the band by about half a size through the plain gold at the back, away from the stones.\n\nMADE FOR YOU\nMade to order from raw precious-metal materials. The preparation time before dispatch is shown in the shipping details of this listing; transit time is separate.\n\nCARE\nClean gently with mild soap, lukewarm water and a soft brush, then pat dry. Avoid harsh chemicals and abrasive cleaners. Remove the ring before heavy work or sport.",
+  "tags": [
+    "lab grown diamond",
+    "lab created diamond",
+    "princess cut band",
+    "princess cut ring",
+    "channel set band",
+    "channel set ring",
+    "nine stone band",
+    "stackable gold ring",
+    "14k gold band",
+    "white gold band",
+    "rose gold band",
+    "yellow gold band",
+    "3mm gold band"
+  ],
+  "tagEvidence": "EON 30-day Etsy search terms (docs/eon/seo/2026-10-21-etsy-keyword/data/etsy-search-terms-30d.tsv, 188 terms / 215 visits; every tag word contained in the term, 2026-11-13 count): white gold band 31, 14k gold band 12, rose gold band 5, yellow gold band 4, 3mm gold band 1. Lab-grown, princess, channel, nine-stone and stackable terms: 0 (a new category for the shop; the tags define it). Unqualified 'diamond' cannot appear in a tag (FTC 16 CFR 23.25), so 'princess cut band', 'channel set band' and 'nine stone band' carry the design; 'anniversary' is an occasion word and stays out of the tags (03-seo 2026-11-02).",
+  "materials": [
+    "Solid 14K yellow gold",
+    "Solid 14K white gold",
+    "Solid 14K rose gold",
+    "Lab grown diamond"
+  ],
+  "variationAxes": [
+    "Metal Color",
+    "Ring Size"
+  ],
+  "colors": [
+    [
+      "YG",
+      "Yellow Gold"
+    ],
+    [
+      "WG",
+      "White Gold"
+    ],
+    [
+      "RG",
+      "Rose Gold"
+    ]
+  ],
+  "sizes": {
+    "from": 4,
+    "to": 16,
+    "step": 0.5
+  },
+  "band": {
+    "widthMm": 3,
+    "thicknessMm": 1.8,
+    "karat": "14K",
+    "profile": "flat top with one channel between two slim polished rails; a flat polished wall closes each end of the row; plain polished shank",
+    "finish": "high polish all over, inside and out",
+    "row": "nine 2 mm square princess cut stones edge to edge in one straight row about 18 mm long across the top front of the band; the same nine stones at every size"
+  },
+  "gram": {
+    "model": "maker's 14K band list (docs/artifact-studio/maker_cost.py list_g14 = width x (0.836 + 0.0515 x US) x thickness / 1.5), full rectangular 3 x 1.8 mm section; the channel (18 x 2 x 1.4 mm) removes about 0.68 g, kept in the cost as a buffer for the channel work. Public text says 'about 4 grams in US 8.5' (4.59 - 0.68 = 3.91 g).",
+    "anchorUs": 8.5,
+    "anchorGrams": 4.59,
+    "weightSource": "estimated"
+  },
+  "stone": {
+    "origin": "lab",
+    "shape": "princess",
+    "count": 9,
+    "sizeMm": "2.0",
+    "totalCarat": 0.45,
+    "caratNote": "Design stones 9 x 2.0 mm square princess cut, about 0.05 ct each (the reference states 0.05 ct / 2x2 mm each, 0.45 ct t.w., natural GH/VS), channel set edge to edge in one straight row across the top; the count does not change with size. Carat weight is NOT stated in public text until the maker confirms.",
+    "colorClarity": null,
+    "settingFeeCents": 1000,
+    "castingFeeCents": 0,
+    "stoneCostCentsEstimate": 12600,
+    "stoneCostNote": "No maker quote for this design. The maker's only known lab rate is 280 USD/ct (Model 2 baguette): 9 x 0.05 ct = 126 USD. Channel setting 10 USD a stone = the maker's Model 2 baguette (channel) fee; the DSP note's 4 USD was for prong setting; uncalibrated. Panel cost view (variant_stone_cost) sees stones 126 + settings 9 x 10 (products.setting_fee_cents 1000) = 216."
+  },
+  "priceCents": 150000,
+  "quantityPerVariant": 20,
+  "pricing": {
+    "makerQuote": null,
+    "costBasis": "maker convention (same maker as EON-VB6): 14K band = grams x 100 USD (gold + labor), stones and settings on top. US 8.5: 4.59 g x 100 = 458.55 + nine stones 126 + nine channel settings 90 = 674.55",
+    "packagingUsd": 8,
+    "shippingUsd": 22,
+    "landedUsdAtAnchor": 704.55,
+    "multiplier": 1.55,
+    "engineUsd": 1092,
+    "engineListUsdAtAnchor": 1460,
+    "storePromotionRate": 0.25,
+    "listUsd": 1500,
+    "buyerUsd": 1125,
+    "onePriceAllSizes": true,
+    "everySizeFloorListUsd": 1465,
+    "worstOffsiteProfitBySizeUsd": {
+      "US4": 297,
+      "US8.5": 213,
+      "US12": 148,
+      "US16": 74
+    },
+    "at35PercentSale": "US 4-12 stay above zero at the worst Offsite fee (US 12 +12); US 14 loses about 25 USD and US 16 about 62",
+    "spotUsdPerOzt": 3887.87,
+    "spotDate": "2026-11-13",
+    "marketAnchors": [
+      "Reference 25karats WB9262 (natural diamonds GH/VS, 0.45 ct t.w., 14K white): 1,669 USD, read 2026-11-13",
+      "Allurez 'princess cut channel set lab grown diamond ring in 14K white gold 1/2 ct': nine princess lab-grown stones, F-G / VS1, 14K white channel, 1,033 USD on sale from a 2,506 USD list (search snippet 2026-11-13)",
+      "Blue Nile 'channel set princess cut lab grown diamond ring in 14K, 1/2 ct tw': 19 smaller stones, 1,220 USD, 732 USD at 40% off (search snippet 2026-11-13)",
+      "EON lab-grown line: DSP 1,200 -> 900; HEP 1,050 -> 787.50; HS5 and FR6 1,800 -> 1,350; VB6 2,665 -> 1,999"
+    ],
+    "methodology": "docs/eon/lab-grown/price_model.py pc; formula lib/pricing-engine/eon-cost.ts 457-472"
+  },
+  "approval": {
+    "authority": "Owner 2026-11-13 (question card): list 1,500 USD -> 25% sale -> 1,125 USD, one price for every size; scope 14K, 3 colours, US 4-16 with half sizes (75 variants); band 3.0 x 1.8 mm (thickness to be confirmed by the maker); gallery: 9 frames from the prompt sheet (images/PROMPTS-REVIEW.md), hero first and checked against the reference, plus the locally typeset spec card (frame 10).",
+    "panelDraftAuthorized": true,
+    "etsyDraftCreationAuthorized": true,
+    "livePublicationAuthorized": false,
+    "blockers": [
+      "Etsy activation needs at least one unedited photo of the physical piece (draft allowed)",
+      "No maker quote for this design: cost is the maker's band list (4.59 g x 100 USD at US 8.5) + nine stones 126 + nine channel settings 90, all estimates",
+      "Maker to confirm: minimum thickness for a 2 mm princess channel (design 1.8 mm; the reference is about 1.6 mm with a comfort fit), comfort fit or flat inside, the nine-stone row (about 18 mm) at every size and how far the band can be resized through the plain back, stone colour/clarity grade, white gold rhodium plating, preparation time, price per size",
+      "No shop section for lab grown pieces yet",
+      "Spanish translation not written"
+    ]
+  },
+  "classification": {
+    "protocol": "ring_band",
+    "taxonomy": "Jewelry > Rings > Bands (1232)",
+    "basis": "Owner 2026-11-04 for the lab-grown line (EON-DSP: 'bu wedding band değil'); ring_band is live in prod, needs no Width axis (width is fixed at 3 mm)"
+  }
+}

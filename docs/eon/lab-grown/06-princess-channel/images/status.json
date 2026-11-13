@@ -1,0 +1,229 @@
+{
+  "product": "EON-PC9",
+  "note": "Owner card 2026-11-13: 9 frames + typeset spec card, hero first and checked against the reference. Hero v1 held (nine square stones, about a quarter of the circle, flat end walls). The set review found one defect in each of four frames: 03 and 06 (standing) ran the row down the camera-facing side, 08 drew the ring too large for the fingers, 09 lost the band's proportion with the whole ring in view. v2 fixed 03, 06 and 09 (row end tied to a landmark well above the two widest points, camera raised to about 40 degrees; 09 a close crop with the rest of the ring outside the frame) and 08's scale, but 08 then showed 8 stones twice in the pinch pose; v4 moved the ring onto the palm, the lying-flat front pose that held nine stones in 01, 05 and 07, and held both count and scale. 01, 02, 04, 05 and 07 stayed v1 (prompts.py asserts their md5s).",
+  "frames": [
+    {
+      "id": "01-hero",
+      "chosen": {
+        "take": "v1",
+        "file": "public/eon/lab-grown-pc9/01.jpg",
+        "job": "b3ec0541-a5f8-4b26-97a2-382091cc2a77",
+        "promptMd5": "4d6add819cde4009c5270d3282448080"
+      },
+      "rejected": []
+    },
+    {
+      "id": "02-row",
+      "chosen": {
+        "take": "v1",
+        "file": "public/eon/lab-grown-pc9/02.jpg",
+        "job": "33c43756-f9c7-4150-8878-2ef4899fa629",
+        "promptMd5": "9f8fbd46646c8e8124b436e66a8e82a5"
+      },
+      "rejected": []
+    },
+    {
+      "id": "03-stand",
+      "chosen": {
+        "take": "v2",
+        "file": "public/eon/lab-grown-pc9/03.jpg",
+        "job": "edd1e75a-617d-46c8-9628-db3c2574d2bf",
+        "promptMd5": "36584350efad6ff786266c6a513106c1"
+      },
+      "rejected": [
+        {
+          "take": "v1",
+          "job": "072bc991-1c44-4b56-9133-e9fd7ced135a",
+          "promptMd5": "8f4741a0b6ca63df7936e4153288b428",
+          "reason": "the row ran down the side of the ring that faces the camera to the cloth: about 13 stones, half the circle instead of a quarter"
+        }
+      ]
+    },
+    {
+      "id": "04-hand",
+      "chosen": {
+        "take": "v1",
+        "file": "public/eon/lab-grown-pc9/04.jpg",
+        "job": "3f85e28d-2f08-436b-a7bb-cda59eb459ab",
+        "promptMd5": "57469ec19144084cbd000ce864ecbf16"
+      },
+      "rejected": []
+    },
+    {
+      "id": "05-metals",
+      "chosen": {
+        "take": "v1",
+        "file": "public/eon/lab-grown-pc9/05.jpg",
+        "job": "66adcfee-79e5-4b51-b139-0648780e90d7",
+        "promptMd5": "08bffd488c3c26016e2cdc52ddd1dbbd"
+      },
+      "rejected": []
+    },
+    {
+      "id": "06-white",
+      "chosen": {
+        "take": "v2",
+        "file": "public/eon/lab-grown-pc9/06.jpg",
+        "job": "696fc740-fa19-47fb-8b8b-691b216eeeef",
+        "promptMd5": "92f229a57845848cf9ea07466c8446cb"
+      },
+      "rejected": [
+        {
+          "take": "v1",
+          "job": "5b22d91b-b096-45a1-9d7e-1eb0b202e718",
+          "promptMd5": "47474b07145f7ba575a36178a1dbfbc4",
+          "reason": "same as 03 v1: the row ran down the camera-facing side to the clay, about 11 stones"
+        }
+      ]
+    },
+    {
+      "id": "07-rose",
+      "chosen": {
+        "take": "v1",
+        "file": "public/eon/lab-grown-pc9/07.jpg",
+        "job": "7c6527a5-6c4e-4b8e-9dd7-eb4485db6f32",
+        "promptMd5": "9aee152752fd69fe333a181ece3c778f"
+      },
+      "rejected": []
+    },
+    {
+      "id": "08-scale",
+      "chosen": {
+        "take": "v4",
+        "file": "public/eon/lab-grown-pc9/08.jpg",
+        "job": "837358c8-56a4-4fcf-8100-e938087a967f",
+        "promptMd5": "62b35489331fe9dc7d9974aaf51e1af9"
+      },
+      "rejected": [
+        {
+          "take": "v1",
+          "job": "976260cc-57a7-43b5-a295-053a2086c6f3",
+          "promptMd5": "2d8ef55528fc43ad602200ed347b2297",
+          "reason": "scale: the ring was about 2.1 times as wide as the thumb tip is thick (a real 22 mm ring is about 1.5), so it read larger than it is; the fingertips pinched the band from above and below"
+        },
+        {
+          "take": "v2",
+          "job": "5b100b0e-f05e-43fb-9771-57ac23d8d487",
+          "promptMd5": "411877cd90dd59822b0951c8d2f20d71",
+          "reason": "scale held (band about a fifth of the thumb tip, ring about 1.2 times it) but the row showed 8 stones"
+        },
+        {
+          "take": "v3",
+          "job": "ee63fb02-6846-440e-937f-acedbade3aac",
+          "promptMd5": "b2cd30ddac6c4138a28f6c632afb8af8",
+          "reason": "the symmetric count (fifth stone in the middle, four on each side) still gave 8 stones; the pose was changed instead of tightening the sentence a third time"
+        }
+      ]
+    },
+    {
+      "id": "09-end",
+      "chosen": {
+        "take": "v2",
+        "file": "public/eon/lab-grown-pc9/09.jpg",
+        "job": "c6d6a0f9-556f-4166-997d-ef65a35b8b05",
+        "promptMd5": "06414539eee2f0b36e588818e86b34a0"
+      },
+      "rejected": [
+        {
+          "take": "v1",
+          "job": "9c6f3aeb-73f7-41ab-a26c-6869fbd6b2aa",
+          "promptMd5": "16217ae27bc3a6124d3a5dc1463e0516",
+          "reason": "the whole ring lay flat in view, so against it the band read about 5 mm wide and the ring about 12 mm across; v2 keeps the rest of the ring outside the frame"
+        }
+      ]
+    },
+    {
+      "id": "10-spec",
+      "chosen": {
+        "take": "typeset",
+        "file": "public/eon/lab-grown-pc9/10.jpg",
+        "source": "images/spec_card.py (typeset from ../listing.json; no credits, no AI text)"
+      },
+      "rejected": []
+    }
+  ],
+  "credits": {
+    "generations": 15,
+    "creditsAt2PerImage": 30,
+    "balanceBefore": 5650.76,
+    "balanceAfter": 5620.76,
+    "balanceDrop": 30.0,
+    "difference": "none: the drop equals this job's 15 IDs x 2"
+  },
+  "accepted": 9,
+  "rejected": 6,
+  "typeset": 1,
+  "gallery": [
+    {
+      "position": 0,
+      "file": "public/eon/lab-grown-pc9/01.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-pc9/01.jpg",
+      "alt": "14K yellow gold 3 mm band with nine square princess cut lab-grown diamonds channel set across its front, lying on a pale blue-grey ceramic tile in soft window light.",
+      "md5": "e09b728e7dfb331db74c8d79358d2650"
+    },
+    {
+      "position": 1,
+      "file": "public/eon/lab-grown-pc9/02.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-pc9/02.jpg",
+      "alt": "Close view of the nine princess cut lab-grown diamonds set edge to edge in the channel of the 14K yellow gold band, between two slim polished rails and two flat end walls.",
+      "md5": "beff314e3f8eec1167cdabe43a256581"
+    },
+    {
+      "position": 2,
+      "file": "public/eon/lab-grown-pc9/03.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-pc9/03.jpg",
+      "alt": "The 3 mm 14K yellow gold band standing on light indigo chambray, its short row of princess cut lab-grown diamonds across the top and the rest of the band plain polished gold.",
+      "md5": "4902b40f2ad2fc35fe48982efe707a2e"
+    },
+    {
+      "position": 3,
+      "file": "public/eon/lab-grown-pc9/04.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-pc9/04.jpg",
+      "alt": "A hand on blue-grey linen wearing the 14K yellow gold band on the ring finger, its row of princess cut lab-grown diamonds across the top of the finger.",
+      "md5": "fd216f8ac08620bbdaa082403ee6cede"
+    },
+    {
+      "position": 4,
+      "file": "public/eon/lab-grown-pc9/05.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-pc9/05.jpg",
+      "alt": "Three versions of the band side by side on grey limestone: 14K yellow, white and rose gold, each with nine princess cut lab-grown diamonds in a channel.",
+      "md5": "05caef8da3ae011e42bd782b6a3a1d62"
+    },
+    {
+      "position": 5,
+      "file": "public/eon/lab-grown-pc9/06.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-pc9/06.jpg",
+      "alt": "The 14K white gold band standing on a warm terracotta tile, its short row of princess cut lab-grown diamonds along the top and the rest of the band plain polished white gold.",
+      "md5": "ffdc166570cf64ecb94b34a1d2cd0fb0"
+    },
+    {
+      "position": 6,
+      "file": "public/eon/lab-grown-pc9/07.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-pc9/07.jpg",
+      "alt": "The 14K rose gold band lying on sage green linen with eucalyptus leaves behind, its nine princess cut lab-grown diamonds channel set across the front.",
+      "md5": "d9e8e9b3145f6fee55462b6c60e26aa9"
+    },
+    {
+      "position": 7,
+      "file": "public/eon/lab-grown-pc9/08.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-pc9/08.jpg",
+      "alt": "Real-size view: the 14K yellow gold band lying in the palm of an open hand, its row of princess cut lab-grown diamonds at the front of the ring.",
+      "md5": "c244318db8185b84cb4f716f4c42a249"
+    },
+    {
+      "position": 8,
+      "file": "public/eon/lab-grown-pc9/09.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-pc9/09.jpg",
+      "alt": "Close view of one end of the stone row: a flat polished wall of 14K yellow gold closes the channel after the last princess cut lab-grown diamond, and the band continues plain.",
+      "md5": "2a63ce4606338fad24114aed4151d4fe"
+    },
+    {
+      "position": 9,
+      "file": "public/eon/lab-grown-pc9/10.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-pc9/10.jpg",
+      "alt": "Spec card: top view and cross-section drawings of the band, 3 mm wide and 1.8 mm thick, with nine 2 mm princess cut lab-grown diamonds in a row about 18 mm long.",
+      "md5": "808f8d339282f2ec34826742bd0538c7"
+    }
+  ],
+  "promptCheck": "chosen.promptMd5 = md5 of that frame's prompt in prompts.json, the text each payload was copied from (01, 02, 04, 05, 07 the v1 batch; 03, 06, 09 the v2 batch; 08 the v4 send). The single sends (01 v1, 08 v3, 08 v4) came back echoed by the API identical to it; the batch sends return no echo. Rejected 08 v2/v3 texts are reproduced byte for byte by prompts.py SCALE_V2/SCALE_V3."
+}
