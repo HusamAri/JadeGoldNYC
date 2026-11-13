@@ -113,9 +113,9 @@
     "methodology": "docs/eon/lab-grown/price_model.py pc; formula lib/pricing-engine/eon-cost.ts 457-472"
   },
   "approval": {
-    "authority": null,
-    "panelDraftAuthorized": false,
-    "etsyDraftCreationAuthorized": false,
+    "authority": "Owner 2026-11-13 (question card): list 1,500 USD -> 25% sale -> 1,125 USD, one price for every size; scope 14K, 3 colours, US 4-16 with half sizes (75 variants); band 3.0 x 1.8 mm (thickness to be confirmed by the maker); gallery: 9 frames from the prompt sheet (images/PROMPTS-REVIEW.md), hero first and checked against the reference, plus the locally typeset spec card (frame 10).",
+    "panelDraftAuthorized": true,
+    "etsyDraftCreationAuthorized": true,
     "livePublicationAuthorized": false,
     "blockers": [
       "Etsy activation needs at least one unedited photo of the physical piece (draft allowed)",
