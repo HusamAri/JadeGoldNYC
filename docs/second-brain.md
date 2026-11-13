@@ -1966,6 +1966,14 @@ repodaki hedefidir.
   (yatık 9 → 6 → 3, dik 9 → 12 → 3; "stops exactly there") ve yalnız sıra kırpımı referans vermekti; son karede (09) kendi
   onaylı hero'nun gri kırpımı tuttu. Alçak yan görünüm kaplamayı iki kez bozdu, dik poz ilk denemede tuttu. Kural: oranı
   (yarım, çeyrek) uç noktalarıyla ve poza göre yaz; dış referansın bütün-halka kırpımı düzeltmek istediğin özelliği de taşır.
+  **Güçlendirme-3 (2026-11-13, EON-PC9) — çeyrek turun ucu boşlukta durmaz, bir işarete bağlanır; sayı bir pozda iki kez
+  tutmazsa yeni pozu SETİN tutan karesinden al:** dik pozda (03, 06) "10:30 → 12 → 1:30" yazdım; yarımın aksine bu uçların
+  görünür işareti yok ve model sırayı kameraya bakan yan yüzden kumaşa indirdi (11-13 taş). Ucu işarete bağlamak ("orta
+  yükseklikteki iki en geniş noktanın çok üstünde biter"), taşları koyduğu bölgeyi adıyla yasaklamak ve kamerayı ~40°'ye
+  kaldırmak ikisinde de tek denemede tuttu. Ölçek karesi (08) parmak ucu kıstırmasında iki kez 8 taş verdi, simetrik sayı
+  cümlesi ("ortada beşinci, iki yanda dörder") de tutmadı; halkayı avuç içine yatırmak, yani 01, 05 ve 07'de dokuz taşı her
+  seferinde tutan yatık-önden pozu ödünç almak tek denemede tuttu (15 üretim, 30 kredi). Yan ders: alt metinleri seçimden
+  önce yazmıştım, 08'inki reddedilen pozu anlatıyordu; migration'dan önce son kareye karşı grep yakaladı.
 
 - **Etsy 403 verince sayfa çeviri vekilinden okunur; rakibin beyanı fotoğraftan ölçülür ve fizikle sınanır; ölçek
   karesinde oran, uzvun GÖRÜNEN boyutuyla kurulur (2026-11-08, EON-FR6):** Sahibin referans linki (4512052520)

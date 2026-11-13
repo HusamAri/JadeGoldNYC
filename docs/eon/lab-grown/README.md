@@ -159,12 +159,23 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
   taş $14, kanal takma taş başı $10) US 8½'te $674,55; en kötü Offsite kârı en düşük US 16'da +$74; her beden ≥ $50 tabanı
   $1.465. Piyasa: Allurez'in aynı tasarımdaki lab-grown bandı $1.033 (indirimli). Kanıt:
   `2026-11-13-princess-channel-pricing.md` + `price_model.py pc`.
-- Panel taslağı: `0189_eon_lab_grown_pc9.sql` (üreteç `scripts/eon/gen_lab_grown_pc_migration.mjs`; sahip onayı
-  listing.json'a yazılmadan dosyayı yazmaz, kuru koşu mührü `26fcaf93e593bfceaa0bd5a26ae6ca6d`). Yedi negatif kontrol
-  (niteliksiz diamond, konfor kesim iddiası, taban altı liste, bayat kâr tablosu, metinde karat, vesile tag'i, eksik
-  tasarım cümlesi) yakalandı.
+- Karar (sahip kartı 2026-11-13): fiyat "$1.500 → $1.125 (Önerilen)", galeri "9 kare + ölçü kartı (Önerilen)";
+  `listing.json` `approval.authority`.
+- Panel taslağı: `0189_eon_lab_grown_pc9.sql` canlıda (MCP 2026-11-13, sürüm `20261113171517`): ürün `9e1bb52e`, 75 varyant
+  bağlı, mühür `26fcaf93e593bfceaa0bd5a26ae6ca6d`, başlık/açıklama/tag/malzeme md5'i listing.json ile aynı, audit 1 + 75.
+  Üreteç uygulanan gövdeyi md5 ile kilitler (`701a7b1e…`); düzeltme yeni koşullu UPDATE migration'ıdır. Yedi negatif
+  kontrol (niteliksiz diamond, konfor kesim iddiası, taban altı liste, bayat kâr tablosu, metinde karat, vesile tag'i,
+  eksik tasarım cümlesi) yakalandı.
 - Galeri: `06-princess-channel/images/`: 9 Higgsfield karesi (`prompts.py` → `prompts.json`, `PROMPTS-REVIEW.md`,
-  parametreler `jobs.json`) + 10. kare ölçü kartı, `spec_card.py` ile yerelde dizilir (kredisiz, metni model yazmaz).
+  parametreler `jobs.json`, seçilen/reddedilen çekimler `status.json`) + 10. kare ölçü kartı (`spec_card.py`, yerelde,
+  kredisiz). Hero v1 referansla tuttu; set incelemesi dört karede tek kusur adlandırdı: 03 ve 06'da (dik) sıra kameraya
+  bakan yan yüzden kumaşa indi (11-13 taş), 08'de halka parmaklara göre ~1,5 kat büyüktü, 09'da bütün halka kadrajda
+  yatınca bant ~5 mm okundu. v2 03/06/09'u (bitiş "orta yükseklikteki iki en geniş noktanın çok üstünde", kamera ~40°;
+  09 kadraj dışı halka) ve 08'in ölçeğini düzeltti; 08 sıkıştırma pozunda iki kez 8 taş verdi (simetrik sayı cümlesi de
+  tutmadı), v4'te halka avuç içine yatırıldı ve 9 taş + ölçek tuttu. 15 üretim, 30 kredi (5.650,76 → 5.620,76).
+  Dosyalar `public/eon/lab-grown-pc9/01-10.jpg` (2400×1792, meta veri sökülmüş, <1 MB). Galeri migration'ı
+  `0190_eon_lab_grown_pc9_gallery.sql` (üreteç `scripts/eon/gen_lab_grown_pc_gallery_migration.mjs`) **henüz
+  uygulanmadı**: dosyalar main'e girip prod'da 10 URL 200 dönünce uygulanır.
 
 ## Üreticiye açık sorular (cevap gelmeden Etsy'ye çıkmaz)
 0. **(2026-11-07, DSP canlı)** $550 (Model 1) ve $1.150 (Model 2) fiyatlarına taş ve taş takma dahil mi? Model 2'de
