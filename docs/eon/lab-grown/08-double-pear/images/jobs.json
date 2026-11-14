@@ -19,12 +19,12 @@
   "byFrame": {
     "01-hero": ["refPair", "refTop"],
     "02-pair": ["refPair", "refTop"],
-    "03-front": ["refFront", "refPair"],
+    "03-above": ["refPair", "refTop"],
     "04-hand": ["refTop"],
-    "05-metals": ["refFront"],
+    "05-metals": ["refPair", "refTop"],
     "06-white": ["refPair", "refTop"],
     "07-rose": ["refTop", "refPair"],
     "08-profile": ["refSide", "refFront"],
-    "09-scale": ["refFront", "refPair"]
+    "09-scale": ["refPair", "refTop"]
   }
 }
