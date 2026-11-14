@@ -91,6 +91,11 @@ REF_SIDE = ("Reference images: black-and-white crops of this ring's design: the 
             + _TAKE)
 REF_HAND = ("Reference image: a black-and-white crop of this ring's two stones from above, head to tail on the band. "
             + _TAKE)
+# 05 v2'de üç yüzüğün üçünde de iki damla aşağı baktı; v3 kabul edilen 01 v2'nin taş kırpımını (siyah-beyaz, bizim
+# üretimimiz) düzenin kendisi olarak verir.
+REF_HERO = ("Reference images: black-and-white crops of this ring's design: the first is a close view of the two stones "
+            "exactly as they sit on every ring, the larger pear on the left pointing down and the smaller pear on the "
+            "right pointing up, the second is a close view of the two pear stones in their claw prongs. " + _TAKE)
 
 # Uçların yönü, poza göre (VB6/HS5 dersi: yön sözcüğü pozla birlikte yazılır). v1 (2026-11-14): halkanın önden ya da
 # 45°'den göründüğü 01/03/05/06/09'da model damlaları bant boyunca, çapraz ya da aynı yöne çevirdi (sahip: "damlaların
@@ -131,25 +136,29 @@ FRAMES = [
      "muted light indigo with a soft visible weave, so the warm yellow gold stands out against it. The ring is the only "
      "object in the image."),
     ("04-hand", "worn: on a woman's hand", RING_Y, REF_HAND,
-     "A woman's hand rests palm-down on soft charcoal-grey wool, seen from above, the fingers pointing to the left of "
-     "the frame, relaxed and slightly apart, short natural nails; a natural hand with one thumb and four fingers. The "
-     "ring is worn on the ring finger, the fourth finger, between the middle finger and the little finger, near the base "
-     "of the finger, with its two stones on top of the finger, facing the camera. Both pears lie along the finger, "
-     "parallel to it: the larger pear sits on the half of the finger toward the top of the frame, with its point toward "
-     "the fingertip, to the left; the smaller pear sits beside it on the half toward the bottom of the frame, with its "
-     "point toward the knuckles, to the right. The ring is "
+     "A woman's hand rests palm-down on soft charcoal-grey wool, seen from directly above, the fingers pointing straight "
+     "up toward the top of the frame, relaxed and slightly apart, short natural nails; a natural hand with one thumb and "
+     "four fingers. The ring is worn on the ring finger, the fourth finger, between the middle finger and the little "
+     "finger, near the base of the finger, with its two stones on top of the finger, facing the camera. In the "
+     "photograph the band crosses the finger as a thin horizontal line of gold, and on top of it the two pears sit side "
+     "by side across the finger, their sides almost touching, their long axes running straight up and down along the "
+     "finger, parallel to each other: the smaller pear on the left with its point toward the bottom of the frame, toward "
+     "the knuckles, and the larger pear on the right with its point toward the top of the frame, toward the fingertip. "
+     "The two stones sit side by side across the width of the finger, never one behind the other along it. The ring is "
      "small on the finger, as a real ring is: the larger stone is about two thirds as long as the fingernail, the two "
      "stones side by side cover a little more than half the width of the finger, and the slim band is a thin line of "
      "gold around the finger. Only that one ring on the hand, no other jewellery. Daylight from "
      "a window. Colour: the wool is a muted cool charcoal grey and the skin natural, so the gold is the warmest accent in "
      "the image."),
-    ("05-metals", "the three metal colours side by side", RING_3, REF_PAIR,
+    ("05-metals", "the three metal colours side by side", RING_3, REF_HERO,
      "The three rings lie almost flat side by side in a row on matte grey limestone, evenly spaced, each with its "
      "opening facing up and its two stones at the front, nearest the camera, their faces turned toward the camera; they "
      "are seen from the front and a little above. In the photograph, on every ring the two pears are seen face-on, side "
      "by side, and their long axes run straight up and down, at right angles to the band: the larger pear on the left "
      "with its point toward the bottom of the frame and the smaller pear on the right with its point toward the top of "
-     "the frame. Behind the stones each slim band curves away as a thin oval. Soft daylight from the left; the three "
+     "the frame. On every ring the two stones look exactly like the first reference image, so on each ring the two "
+     "points face opposite ways: the smaller pear points up and never down. Behind the stones each slim band curves "
+     "away as a thin oval. Soft daylight from the left; the three "
      "metals keep their true colours. Colour: the limestone is a neutral light grey, so the three golds read as three "
      "clear colours. The three rings are the only objects in the image."),
     ("06-white", "the white gold version", RING_W, REF_PAIR,
@@ -208,7 +217,11 @@ for fid, feature, ring, ref, frame in FRAMES:
     # kiralite referanstaki gibi: bant yatayken büyük taş solda, ucu aşağıda (07 v1 aynasıydı)
     assert "larger pear on the left with its point toward the top of the frame" not in low, (fid, "ayna kiralite")
     if fid == "04-hand":
-        assert "toward the top of the frame, with its point toward the fingertip" in low, (fid, "elde kiralite")
+        # v2'de (parmaklar sola) taşlar parmak boyunca arka arkaya dizildi; v3 eli referanstaki gibi kurar (parmak yukarı,
+        # bant yatay): refTop'ta küçük taş solda ucu aşağıda, büyük taş sağda ucu yukarıda.
+        assert "fingers pointing straight up toward the top of the frame" in low, (fid, "parmak yukarı")
+        assert ("smaller pear on the left with its point toward the bottom of the frame" in low
+                and "larger pear on the right with its point toward the top of the frame, toward the fingertip" in low), (fid, "elde kiralite")
     hands = "hand" in frame.lower() and "a woman's hand" in low
     assert hands == (fid in ("04-hand", "09-scale")), (fid, "el yalnız el karelerinde")
     assert "only the window is reflected" in low, (fid, "yansıma cümlesi")
@@ -224,7 +237,7 @@ jobs = json.loads((HERE / "jobs.json").read_text())
 # Referans sırası da prompt'tur (second-brain 2026-11-14): prompt'un "the first ... the second ..." tarifi ile gönderilen
 # görsellerin sayısı ve sırası birebir aynı olmalı.
 REF_ORDER = {REF_PAIR: ["refPair", "refTop"], REF_TOP: ["refTop", "refPair"], REF_FRONT: ["refFront", "refPair"],
-             REF_SIDE: ["refSide", "refFront"], REF_HAND: ["refTop"]}
+             REF_SIDE: ["refSide", "refFront"], REF_HAND: ["refTop"], REF_HERO: ["heroStones", "refPair"]}
 for fid, _f, _r, ref, _fr in FRAMES:
     assert jobs["byFrame"][fid] == REF_ORDER[ref], (fid, "referans sırası prompt'la uyuşmuyor", jobs["byFrame"][fid])
     assert all(k in jobs["references"] for k in jobs["byFrame"][fid]), fid

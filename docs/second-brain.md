@@ -1980,6 +1980,16 @@ repodaki hedefidir.
   veri, yeniden deneme oradan kopyalar). O karenin (dik, kenar önde, göz hizası) tek kusuru sarı kubbede fotoğrafçı ve kamera
   yansımasıydı, kendisinden tek düzenleme sildi; böyle karede "yalnız pencere yansır, kişi/kamera/el yansımaz" ilk prompt'a
   yazılır. Sahibin gerçek fotoğrafı galeriye meta veri segmentleri söküp çözülen pikselleri karşılaştırarak girer.
+  **Güçlendirme-5 (2026-11-14, EON-PEAR2) — yönü üç boyutla değil fotoğrafın düzleminde yaz; kameraya doğru uzanan özellik
+  kısalır ve model kendi alışkanlığına döner:** iki armut parmak boyunca ve uçları zıt yönde. "Büyük taşın ucu kameraya
+  doğru" yazdığım önden ve 45° karelerde (01/03/05/06/09) model armutları bant boyunca, çapraz ya da aynı yöne dizdi; sahip
+  "damlaların yönü doğru değil" dedi. Yalnız taşların kameraya yüzü dönük olduğu 02 ve 07 doğruydu. v2'de her poz taşları
+  kameraya yüzü dönük gösterdi ve yön kadrajın kendi terimleriyle yazıldı ("larger pear on the left with its point toward
+  the bottom of the frame"); 7 karenin 5'i ilk denemede tuttu. Kalan ikisi iki ayrı sınıftı. Parmaklar sola bakınca taşlar
+  parmak boyunca arka arkaya dizildi; parmağı yukarı, bandı yatay koyunca, yani referans fotoğrafın kadrajında tuttu. Üç
+  yüzüklü karede iki damla da aşağı döndü; kabul edilen hero'nun taş kırpımı siyah-beyaz referans verilince tuttu. El
+  yönü de sabitlenir: 07 v1 yönde doğruydu ama referansın aynasıydı. Kural: bir özellik bir pozda kameraya doğru uzanıyorsa
+  pozu, özellik kadraj düzleminde yatacak şekilde değiştir; yönü "kameraya doğru" değil "kadrajın altına doğru" diye yaz.
 
 - **Etsy 403 verince sayfa çeviri vekilinden okunur; rakibin beyanı fotoğraftan ölçülür ve fizikle sınanır; ölçek
   karesinde oran, uzvun GÖRÜNEN boyutuyla kurulur (2026-11-08, EON-FR6):** Sahibin referans linki (4512052520)

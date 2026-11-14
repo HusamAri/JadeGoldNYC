@@ -249,6 +249,20 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
   Etsy'de değil, 75 varyant, mühür `f6db68fc…`, başlık/açıklama/tag/malzeme/onay md5'i listing.json ile aynı, audit
   1 + 75. Üreteç uygulanan gövdeyi md5 ile kilitler (`85007f77…`). Varyanttaki `stone_carat` (1,22) yalnız iç maliyet
   verisi; Etsy itişi onu okumaz (`lib/` içinde tek okuyucu uyarı merkezi).
+- Galeri (2026-11-14, `images/status.json`): 18 üretim = 36 kredi (tavan 40; bakiye 5.083,4 → 5.047,4, fark yok). Hero v1
+  referans kırpımlarıyla tuttu, ilk parti gitti; sahip "görsellerde damlaların yönü doğru değil" dedi. Yön yalnız taşların
+  kameraya yüzünü döndüğü 02 (tepeden) ve 07'de (yatık, önden) doğruydu; halkanın dik durup önden ya da 45°'den göründüğü
+  01/03/05/06/09'da model damlaları bant boyunca, çapraz ya da aynı yöne dizdi, 04'te büyük taş ele baktı. v2 ("devam"):
+  her poz taşları kameraya yüzü dönük gösterir; yön fotoğrafın kendi düzleminde ve referansın el yönünde yazılır (bant
+  yatayken büyük taş solda ucu aşağıda, küçük sağda ucu yukarıda; 07 v1 bunun aynasıydı). v2 01/03/06/07/09'da tuttu;
+  04 v3'te (parmaklar yukarı, bant yatay: referans fotoğrafın kadrajı) ve 05 v3'te (v2 üç yüzükte de iki damlayı aşağı
+  çevirdi; kabul edilen hero'nun taş kırpımı siyah-beyaz referans verildi) tuttu. Sıra: 01 hero (yatık, mavi-gri karo),
+  02 taşlar tepeden, 03 yukarıdan (şambre), 04 elde, 05 üç metal, 06 beyaz, 07 rose, 08 profil, 09 iki parmak arası,
+  10 ölçü kartı (`images/spec_card.py`, listing.json'dan, metin kapılı, karat yok). Dosyalar
+  `public/eon/lab-grown-pear2/01-10.jpg` (2400×1792, meta veri yok, <1 MB); migration
+  `0194_eon_lab_grown_pear2_gallery.sql` (üreteç `scripts/eon/gen_lab_grown_pear_gallery_migration.mjs`, md5
+  `d78c61b4…`, galeri mührü `md5(sıra|url|alt)` = `5e9bcc95…`). Uygulama: PR merge edilip prod dağıtımı hazır olduktan,
+  10 URL canlıda 200 dönüp md5'leri status.json ile tuttuktan ve ürünün galerisi hâlâ boşken.
 
 ## Üreticiye açık sorular (cevap gelmeden Etsy'ye çıkmaz)
 0. **(2026-11-07, DSP canlı)** $550 (Model 1) ve $1.150 (Model 2) fiyatlarına taş ve taş takma dahil mi? Model 2'de

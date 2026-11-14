@@ -1,0 +1,272 @@
+{
+  "product": "EON-PEAR2",
+  "note": "Owner card 2026-11-14 (1a,2a,3a): 9 frames + typeset spec card, hero first. Hero v1 matched the reference crops and the first batch went out, but the owner then wrote 'görsellerde damlaların yönü doğru değil' (the direction of the drops is wrong). Only 02 (top-down) and 07 (lying, stones facing the camera) had the pears at right angles to the band with opposite points; wherever the ring was upright and seen from the front or at 45 degrees (01, 03, 05, 06, 09) the model laid the pears along the band, diagonally or pointing the same way, and 04 pointed the larger stone at the hand. Prompt set v2 (approved: 'devam') shows the stones face-on in every pose and states the direction in the photo's own terms, in the reference's handedness (band horizontal: larger pear left pointing down, smaller right pointing up). v2 held for 01, 03, 06, 07, 09; 04 needed v3 (fingers up, band horizontal, exactly like the worn reference photo) and 05 v3 (the accepted hero's stones as a black-and-white reference, because v2 drew both pears pointing down on all three rings). 02 and 08 stayed v1.",
+  "credits": {
+    "generations": 18,
+    "creditsAt2PerImage": 36,
+    "balanceBefore": 5083.4,
+    "balanceAfter": 5047.4,
+    "balanceDrop": 36.0,
+    "difference": "none: the drop equals this job's 18 IDs x 2",
+    "cap": 40,
+    "jobs": [
+      "e5118a7d-d535-4bb0-aaa9-6bdc638f1b57",
+      "fbd45e1b-9574-44da-a3ad-47ee0a0fab45",
+      "d69407b7-49e2-47b1-8f61-bfa8960b2655",
+      "cd99e897-ec40-475f-a871-db84c1c5b5d3",
+      "e552fbab-9beb-41c5-9eaf-98e453783d97",
+      "1ace9568-02a6-4173-a66c-4e5a99736e44",
+      "ef2feee5-eb09-42bc-8214-2caa12385397",
+      "814185d5-8dcd-4de8-b139-1e1aab234c24",
+      "42920de3-e91e-4cb7-8a0e-dd598fc8a694",
+      "8e7c707f-f312-48f0-9a96-636ba30ecb1a",
+      "f8fc6507-cf4d-421f-985a-3508c966f405",
+      "bf3c8988-2b13-43f9-bbbe-ca23e9a4b1bd",
+      "84dc7e40-ffb1-463f-9a57-3596c7e758e9",
+      "fbba1d51-7e7c-4ece-b6e5-e47ca7b9e489",
+      "d68a8bd1-3467-4cad-bce6-8a5c7077d388",
+      "3d4d2167-0865-4a12-a1ff-fa608b289f28",
+      "fe56133b-0a3a-46c0-96b8-680555ee46eb",
+      "1ae04f32-9474-4937-b7e4-e8371f065b58"
+    ]
+  },
+  "frames": [
+    {
+      "id": "01-hero",
+      "chosen": {
+        "take": "v2",
+        "job": "8e7c707f-f312-48f0-9a96-636ba30ecb1a",
+        "promptMd5": "bae2c08241ce25a6bd2968c116615ee9",
+        "file": "public/eon/lab-grown-pear2/01.jpg"
+      },
+      "rejected": [
+        {
+          "take": "v1",
+          "job": "e5118a7d-d535-4bb0-aaa9-6bdc638f1b57",
+          "promptMd5": "2e1a68a8ec437d88f9eab1dce91bda5f",
+          "reason": "upright ring seen from the front at about 45 degrees: the pears read as lying along the band, diagonal (owner: direction wrong)"
+        }
+      ]
+    },
+    {
+      "id": "02-pair",
+      "chosen": {
+        "take": "v1",
+        "job": "fbd45e1b-9574-44da-a3ad-47ee0a0fab45",
+        "promptMd5": "31fae195ec0546ab051f9c6576afc358",
+        "file": "public/eon/lab-grown-pear2/02.jpg"
+      },
+      "rejected": []
+    },
+    {
+      "id": "03-above",
+      "chosen": {
+        "take": "v2",
+        "job": "f8fc6507-cf4d-421f-985a-3508c966f405",
+        "promptMd5": "a94200b6973d69cbf38cc15b49cfc6fb",
+        "file": "public/eon/lab-grown-pear2/03.jpg"
+      },
+      "rejected": [
+        {
+          "take": "v1",
+          "job": "d69407b7-49e2-47b1-8f61-bfa8960b2655",
+          "promptMd5": "38fb75c9dcd1fab98d492b448cda442d",
+          "reason": "level front view (frame 03-front): both pears drawn lengthwise along the band, pointing the same way"
+        }
+      ]
+    },
+    {
+      "id": "04-hand",
+      "chosen": {
+        "take": "v3",
+        "job": "fbba1d51-7e7c-4ece-b6e5-e47ca7b9e489",
+        "promptMd5": "522b7005a6dd9ecb44a9771000a2d275",
+        "file": "public/eon/lab-grown-pear2/04.jpg"
+      },
+      "rejected": [
+        {
+          "take": "v1",
+          "job": "cd99e897-ec40-475f-a871-db84c1c5b5d3",
+          "promptMd5": "6c44cf8f6cba272d9cdfe651423e2b7d",
+          "reason": "larger pear pointed at the hand, axes diagonal"
+        },
+        {
+          "take": "v2",
+          "job": "bf3c8988-2b13-43f9-bbbe-ca23e9a4b1bd",
+          "promptMd5": "5e3118f05e73e44fb399cb8c88d6b2d8",
+          "reason": "fingers to the left: the two stones sat one behind the other along the finger, the smaller one tilted, speckled stones"
+        }
+      ]
+    },
+    {
+      "id": "05-metals",
+      "chosen": {
+        "take": "v3",
+        "job": "1ae04f32-9474-4937-b7e4-e8371f065b58",
+        "promptMd5": "b483fe6a751484df670b6c7eb9262d1d",
+        "file": "public/eon/lab-grown-pear2/05.jpg"
+      },
+      "rejected": [
+        {
+          "take": "v1",
+          "job": "e552fbab-9beb-41c5-9eaf-98e453783d97",
+          "promptMd5": "a215dada8b22990cdd85f8e4cd44dfac",
+          "reason": "upright rings from the front: pears diagonal, not opposite"
+        },
+        {
+          "take": "v2",
+          "job": "d68a8bd1-3467-4cad-bce6-8a5c7077d388",
+          "promptMd5": "537cecb2354ce77611284a310f8f39d6",
+          "reason": "lying rings: on all three rings both pears pointed down"
+        }
+      ]
+    },
+    {
+      "id": "06-white",
+      "chosen": {
+        "take": "v2",
+        "job": "3d4d2167-0865-4a12-a1ff-fa608b289f28",
+        "promptMd5": "9022ad66024001e328f7864f2de6818d",
+        "file": "public/eon/lab-grown-pear2/06.jpg"
+      },
+      "rejected": [
+        {
+          "take": "v1",
+          "job": "1ace9568-02a6-4173-a66c-4e5a99736e44",
+          "promptMd5": "6f0fecb09ffa60fd3e7162a10a9c7ccc",
+          "reason": "upright ring from the front: pears in a line along the band, both pointing the same way"
+        }
+      ]
+    },
+    {
+      "id": "07-rose",
+      "chosen": {
+        "take": "v2",
+        "job": "fe56133b-0a3a-46c0-96b8-680555ee46eb",
+        "promptMd5": "72b446e537856a0ce390093a2ab24a41",
+        "file": "public/eon/lab-grown-pear2/07.jpg"
+      },
+      "rejected": [
+        {
+          "take": "v1",
+          "job": "ef2feee5-eb09-42bc-8214-2caa12385397",
+          "promptMd5": "25dead881f8013512aebc05f1dfb78a6",
+          "reason": "direction right but the mirror image of the reference arrangement (larger pear pointing up on the left); retaken for one consistent design across the set"
+        }
+      ]
+    },
+    {
+      "id": "08-profile",
+      "chosen": {
+        "take": "v1",
+        "job": "814185d5-8dcd-4de8-b139-1e1aab234c24",
+        "promptMd5": "4c02bf5380b1aa31e18cd1c57b54d34a",
+        "file": "public/eon/lab-grown-pear2/08.jpg"
+      },
+      "rejected": []
+    },
+    {
+      "id": "09-scale",
+      "chosen": {
+        "take": "v2",
+        "job": "84dc7e40-ffb1-463f-9a57-3596c7e758e9",
+        "promptMd5": "6d228eae16f066fd6a42885cb02ee83c",
+        "file": "public/eon/lab-grown-pear2/09.jpg"
+      },
+      "rejected": [
+        {
+          "take": "v1",
+          "job": "42920de3-e91e-4cb7-8a0e-dd598fc8a694",
+          "promptMd5": "9bddea4318a762760afdad17b5b0757f",
+          "reason": "upright pinch from the front: pears along the band, fingertip pressing the stones, speckled stones"
+        }
+      ]
+    }
+  ],
+  "accepted": 9,
+  "rejected": 9,
+  "typeset": 1,
+  "references": {
+    "note": "black-and-white crops (not committed): refPair, refTop, refFront, refSide from the owner's reference link; heroStones = crop of the accepted 01 v2 take (our own image), used only for 05 v3",
+    "media": {
+      "refPair": "f4749168-cc53-4b81-8ec7-a85ec0cd043f",
+      "refTop": "0d3ed0e0-593f-4212-a129-663ab6f43b00",
+      "refFront": "f592131a-d3e7-4973-9d0a-97fbe000dfea",
+      "refSide": "06909890-5f4e-421e-89bd-8de7ed5ccd63",
+      "heroStones": "134b8c59-1db7-409a-ba84-33eae1c0ee82"
+    }
+  },
+  "gallery": [
+    {
+      "position": 0,
+      "file": "public/eon/lab-grown-pear2/01.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-pear2/01.jpg",
+      "alt": "14K yellow gold toi et moi ring with two pear cut lab grown diamonds side by side, points facing opposite ways, lying on a pale blue-grey ceramic tile in soft window light.",
+      "md5": "d88bfcd156a7bce1bb7296abce1207b5"
+    },
+    {
+      "position": 1,
+      "file": "public/eon/lab-grown-pear2/02.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-pear2/02.jpg",
+      "alt": "Close view of the two pear cut lab grown diamonds on the slim 14K yellow gold band, the larger pointing down and the smaller pointing up, each held by three claw prongs, on blue slate.",
+      "md5": "0c99c216f012fddbfc3f3f8c08595663"
+    },
+    {
+      "position": 2,
+      "file": "public/eon/lab-grown-pear2/03.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-pear2/03.jpg",
+      "alt": "14K yellow gold toi et moi ring on light indigo chambray, its two pear cut lab grown diamonds facing up, the slim band and its shadow behind them.",
+      "md5": "635ea73254b8883bb228d15b2a2b322b"
+    },
+    {
+      "position": 3,
+      "file": "public/eon/lab-grown-pear2/04.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-pear2/04.jpg",
+      "alt": "The 14K yellow gold toi et moi ring worn on the ring finger, two pear cut lab grown diamonds side by side across the finger, the larger pointing to the fingertip.",
+      "md5": "4d3444dce646e8dfdb88ed97140361cf"
+    },
+    {
+      "position": 4,
+      "file": "public/eon/lab-grown-pear2/05.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-pear2/05.jpg",
+      "alt": "Three toi et moi rings in 14K yellow, white and rose gold on grey limestone, each with two pear cut lab grown diamonds pointing opposite ways.",
+      "md5": "16bc5d87e509f10ef1c492ebae216eee"
+    },
+    {
+      "position": 5,
+      "file": "public/eon/lab-grown-pear2/06.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-pear2/06.jpg",
+      "alt": "14K white gold toi et moi ring with two pear cut lab grown diamonds, standing on a warm terracotta tile, seen from above.",
+      "md5": "bc66a94977aeae0a005c4a7e49c93624"
+    },
+    {
+      "position": 6,
+      "file": "public/eon/lab-grown-pear2/07.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-pear2/07.jpg",
+      "alt": "14K rose gold toi et moi ring with two pear cut lab grown diamonds lying on sage green linen, eucalyptus leaves behind.",
+      "md5": "d458c07313a33de9c56d3e5b42e89d89"
+    },
+    {
+      "position": 7,
+      "file": "public/eon/lab-grown-pear2/08.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-pear2/08.jpg",
+      "alt": "Side view of the 14K yellow gold toi et moi ring on dark slate: the slim band and the two pear cut lab grown diamonds in their low claw baskets on top.",
+      "md5": "4172e43e92176c194020a771a4a79ded"
+    },
+    {
+      "position": 8,
+      "file": "public/eon/lab-grown-pear2/09.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-pear2/09.jpg",
+      "alt": "The 14K yellow gold toi et moi ring held between thumb and index finger, showing the real size of its two pear cut lab grown diamonds.",
+      "md5": "5ed5af751ddad7e6c04a5ee054d72e48"
+    },
+    {
+      "position": 9,
+      "file": "public/eon/lab-grown-pear2/10.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-pear2/10.jpg",
+      "alt": "Detail card: two pear cut lab grown diamonds, about 8 x 6 mm and 5 x 3.5 mm, on a 14K gold band about 1.8 mm wide and 1.6 mm thick; sizes US 4 to US 16.",
+      "md5": "8c9aaab965b5647c8df5c30f7db573c0"
+    }
+  ],
+  "promptCheck": "chosen.promptMd5 / rejected.promptMd5 = md5 of the exact text sent: v1 texts in prompts-v1.json, v2 texts in prompts.json at commit 896caea (01, 03, 06, 07, 09 unchanged since and asserted equal), 04 v3 and 05 v3 in the current prompts.json."
+}

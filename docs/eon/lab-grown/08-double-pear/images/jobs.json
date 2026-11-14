@@ -14,14 +14,15 @@
     "refPair": "r5 (560,660)-(1240,1290): iki taşın yakın çekimi, büyük solda ucu aşağıda, küçük sağda ucu yukarıda, tırnaklar",
     "refTop": "r1 (420,580)-(1000,900): parmakta üstten, küçük solda ucu aşağıda, büyük sağda ucu yukarıda, bant iki yana",
     "refFront": "r3 (640,560)-(1340,1080): halka dik, önden; sepetler ince yuvarlak bandın tepesinde",
-    "refSide": "r6 (720,650)-(1180,1430): yandan profil; sepet ve tırnaklar bandın biraz üstünde"
+    "refSide": "r6 (720,650)-(1180,1430): yandan profil; sepet ve tırnaklar bandın biraz üstünde",
+    "heroStones": "kabul edilen 01 v2 karesinin (bizim üretimimiz) taş kırpımı (900,700)-(1560,1280), siyah-beyaz: büyük taş solda ucu aşağıda, küçük sağda ucu yukarıda; 05 v3 için düzenin kendisi"
   },
   "byFrame": {
     "01-hero": ["refPair", "refTop"],
     "02-pair": ["refPair", "refTop"],
     "03-above": ["refPair", "refTop"],
     "04-hand": ["refTop"],
-    "05-metals": ["refPair", "refTop"],
+    "05-metals": ["heroStones", "refPair"],
     "06-white": ["refPair", "refTop"],
     "07-rose": ["refTop", "refPair"],
     "08-profile": ["refSide", "refFront"],
