@@ -106,12 +106,12 @@
     "marketAnchors": "lab-grown toi et moi 1 to 1.25 ct t.w., 14K, 2026-11-14 web search snapshot: Simon 1 1/4 ct pear 786.49 USD (sale, reg 1,572.98); Ross-Simons 1.00 ct t.w. pear bypass 1,015.75 USD (sale); RareCarat 1.00 ct oval + pear 1,200 USD; Leo Hamel 1.00 ct pear + oval 1,495 USD (from 1,725); James Allen pave toi et moi with a 1.00 ct pear 1,925 USD (page also showed 1,254); Allurez 8 x 6 mm 1.00 ct pear + round (2.00 ct t.w.) 2,288 USD. Reference (moissanite, not comparable stone) 537.11 USD. Sources: docs/eon/lab-grown/2026-11-14-double-pear-pricing.md."
   },
   "approval": {
-    "authority": "",
-    "panelDraftAuthorized": false,
-    "etsyDraftCreationAuthorized": false,
+    "authority": "Owner 2026-11-14 (reply '1a,2a,3a' to the decision card): 1a = list 1,450 USD -> 25% sale 1,087.50, one price for every size; scope 14K, Metal Color Yellow/White/Rose x Ring Size US 4-16 with half sizes (75 variants); 1.8 x 1.6 mm band, 8 x 6 mm + 5 x 3.5 mm lab grown pears, sculptural_ring; 2a = gallery: 9 frames from the prompt sheet (images/PROMPTS-REVIEW.md), hero first and checked side by side against the reference crops, then the other 8, plus the locally typeset spec card, about 20-26 credits, cap 40; 3a = no carat weight in public text until the maker confirms the stones.",
+    "panelDraftAuthorized": true,
+    "etsyDraftCreationAuthorized": true,
     "livePublicationAuthorized": false,
     "blockers": [
-      "Owner decision pending: price, spec and gallery (owner card 2026-11-14)",
+      "Photos come from a separate gallery migration (README section 08); until it is applied the draft has no photos",
       "Etsy activation needs at least one unedited photo of the physical piece (draft allowed)",
       "No maker quote for this design: cost is the maker's band list (3.45 g x 100 USD at US 8.5, baskets estimated) + stones 261.60 (1 ct at the maker's single-stone scale, 0.22 ct at 280 USD/ct) + two claw settings 40, all estimates",
       "Maker to confirm: stone sizes and carat (design 8 x 6 mm + 5 x 3.5 mm pear, about 1.0 + 0.22 ct), stone color/clarity grade, band thickness (design 1.8 x 1.6 mm), basket and prong weight, setting fee, how far the band can be resized, white gold rhodium plating, preparation time, price per size",

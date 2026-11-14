@@ -20,6 +20,7 @@
  * Kullanım: node scripts/eon/gen_lab_grown_pear_migration.mjs
  */
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -132,5 +133,10 @@ const sql = bandMigrationSql({
   cells,
   seal,
 });
+// 0193 canlıya uygulandı (2026-11-14, 20261114175218; mühür, başlık/açıklama/tag/malzeme/onay md5'leri, 75 varyant ve
+// 76 audit satırı doğrulandı): gövde donuk. Paket değişirse düzeltme yeni bir koşullu UPDATE migration'ıdır.
+const APPLIED_0193_MD5 = "85007f779a846cc3375d068af4c74929";
+assert.equal(createHash("md5").update(sql).digest("hex"), APPLIED_0193_MD5,
+  "0193 canlıya uygulandı; gövdesi değişmez, düzeltme yeni migration'dır");
 await writeFile(outFile, sql);
-console.log(`wrote ${path.relative(repoRoot, outFile)}`);
+console.log(`wrote ${path.relative(repoRoot, outFile)} (byte-identical to the applied body)`);

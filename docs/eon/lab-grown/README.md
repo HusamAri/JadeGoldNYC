@@ -242,7 +242,13 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
   yalnız el karelerinde, yansıma cümlesi, yasak sözcükler (toi et moi, engagement, solitaire, moissanite, halo, sparkle,
   carat…). Kredi harcamadan önce kendi okumam üç kusur düzeltti: 07'de birbiriyle çelişen duruş ("on its side" +
   "looks down"), 04 ve 09'da taşları ~%40 büyük çizdirecek ölçek oranları.
-- Karar bekleniyor (sahip kartı 2026-11-14): fiyat ve kapsam, galeri ve kredi, karatın metne girişi.
+- Karar (sahip 2026-11-14, "1a,2a,3a"): 1a fiyat $1.450 → $1.087,50 ve yukarıdaki ölçü/kapsam; 2a galeri 9 kare (önce
+  hero, referans kırpımlarıyla yan yana kontrol) + ölçü kartı, ~20–26 kredi, tavan 40; 3a karat, üretici teyidine kadar
+  kamuya açık metne girmez. `listing.json` `approval.authority`.
+- Panel taslağı: `0193_eon_lab_grown_pear2.sql` canlıda (MCP 2026-11-14, sürüm `20261114175218`): ürün `4ea794fa`, taslak,
+  Etsy'de değil, 75 varyant, mühür `f6db68fc…`, başlık/açıklama/tag/malzeme/onay md5'i listing.json ile aynı, audit
+  1 + 75. Üreteç uygulanan gövdeyi md5 ile kilitler (`85007f77…`). Varyanttaki `stone_carat` (1,22) yalnız iç maliyet
+  verisi; Etsy itişi onu okumaz (`lib/` içinde tek okuyucu uyarı merkezi).
 
 ## Üreticiye açık sorular (cevap gelmeden Etsy'ye çıkmaz)
 0. **(2026-11-07, DSP canlı)** $550 (Model 1) ve $1.150 (Model 2) fiyatlarına taş ve taş takma dahil mi? Model 2'de
