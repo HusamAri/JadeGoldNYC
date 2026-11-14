@@ -204,6 +204,18 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
 - Galeri planı: `07-two-tone-milgrain-channel/images/` (prompts.py → prompts.json, PROMPTS-REVIEW.md, jobs.json): 9 kare,
   referans sahibin fotoğraflarından yalnız yüzüğe kırpılmış renkli kesitler; 10. kare ölçü kartı (kredisiz). Sahibin
   düzenlenmemiş fotoğrafı Etsy'nin "en az bir gerçek fotoğraf" kuralını karşılayabilir (sahip kararı).
+- Galeri (2026-11-14, `images/status.json`): 14 üretim = 28 kredi (tavan 40). Hero v1 sekiz taş verdi, kendisinden yalnız
+  taş sayısı düzenlenerek dokuza çıktı. Set incelemesi: 08'de yedi taş ve pembe orta, tek düzenleme ikisini düzeltti; 06
+  (yatan yüzüğün alçak önden görünüşü) iki kez sekiz taş verdi ve 01/07'yi tekrarlıyordu, profil karesine döndü (dik, kenar
+  önde: 7 mm boyunca ray, milgrain, kubbe; tepede iki-üç taş ve kanalın yuvarlak ucu). Profilin tek kusuru cilalı sarıda
+  fotoğrafçı ve kamera yansımasıydı, kendisinden tek düzenlemeyle silindi. Sıra: 01 hero, 02 sıra, 03 dik, 04 el, 05 düz
+  arka, 06 profil, 07 koyu zemin, 08 avuçta ölçek, 09 kanal ucu, 10 ölçü kartı (`images/spec_card.py`, listing.json'dan,
+  metin kapılı), 11 sahibin fotoğrafı (1512×2016, pikseller aynı; yalnız EXIF ve APP13 segmentleri söküldü).
+  Dosyalar `public/eon/lab-grown-tmc9/01-11.jpg`; migration `0192_eon_lab_grown_tmc9_gallery.sql` (üreteç
+  `scripts/eon/gen_lab_grown_tmc_gallery_migration.mjs`, md5 `847c283a…`). **Uygulanmadı:** önce merge + prod dağıtımı,
+  11 URL canlıda 200 ve md5 eşleşmesi, ürünün galerisi hâlâ boş mu kontrolü; sonra MCP. Paneldeki
+  `metadata.approval.blockers` içindeki "Gallery not attached yet" satırı 0191'in kilitli gövdesinden gelir ve 0192'den
+  sonra bayat kalır; panel bu listeyi göstermez ve itişi bloke etmez.
 
 ## Üreticiye açık sorular (cevap gelmeden Etsy'ye çıkmaz)
 0. **(2026-11-07, DSP canlı)** $550 (Model 1) ve $1.150 (Model 2) fiyatlarına taş ve taş takma dahil mi? Model 2'de

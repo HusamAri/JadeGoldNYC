@@ -247,6 +247,26 @@ for fid, feature, ref, frame in FRAMES:
     prompts.append({"id": fid, "feature": feature, "prompt": p, "words": len(p.split()),
                     "md5": hashlib.md5(p.encode()).hexdigest()})
 
+# 06 profil (2026-11-14): set incelemesinde 06-face iki kez sekiz taş verdi ve 01/07'yi tekrarlıyordu; kare playbook'un
+# profil karesine döndü (dik, kenar önde, göz hizası). Gönderilen v3 metni burada bayt bayt yeniden üretilir (md5
+# status.json'da); kabul edilen v4 onun kendisinden yalnız yansımayı silen düzenlemedir. prompts.json plan setidir,
+# değişmez. Referans sırası metindeki gibi: refFace, refEnd.
+PROFILE_V3_FRAME = (
+    'The ring stands upright on its edge on matte charcoal slate, turned edge-on to the camera, and the camera is '
+    'level with the ring and close to it, so the ring appears as a tall, narrow, upright band: the camera sees '
+    'the outside of the band straight on, from the top of the ring down to the slate, and across its 7 mm width, '
+    'from left to right, the band shows a polished white gold rail with a softly rounded edge, a fine line of '
+    'milgrain beads, the softly domed polished yellow gold centre, the second line of beads and the second white '
+    'rail. This part of the band, facing the camera, is plain: no stones. Only at the very top, where the band '
+    'curves away over the top of the ring, the first two or three round stones of the row are just visible on the '
+    'yellow centre before the band turns out of view. The two side edges of the band show its thickness, about 2 '
+    'mm, as clean polished rims. Daylight from the left draws long soft highlights down the yellow dome and the '
+    'white rails. Colour: the charcoal slate is a cool dark grey, so the gold reads warm and bright against it. '
+    'The ring is the only object in the image.'
+)
+PROFILE_V3 = " ".join([PROFILE_V3_FRAME, RING, LIGHT, PHOTO, REF_FACE])
+assert hashlib.md5(PROFILE_V3.encode()).hexdigest() == "cb488426ea31cdf75684f23c612c5823", "06 v3 metni kaydı"
+
 assert len(prompts) == 9 and len({x["prompt"] for x in prompts}) == 9
 (HERE / "prompts.json").write_text(json.dumps(prompts, indent=2, ensure_ascii=False) + "\n")
 for x in prompts:

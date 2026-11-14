@@ -1974,6 +1974,12 @@ repodaki hedefidir.
   cümlesi ("ortada beşinci, iki yanda dörder") de tutmadı; halkayı avuç içine yatırmak, yani 01, 05 ve 07'de dokuz taşı her
   seferinde tutan yatık-önden pozu ödünç almak tek denemede tuttu (15 üretim, 30 kredi). Yan ders: alt metinleri seçimden
   önce yazmıştım, 08'inki reddedilen pozu anlatıyordu; migration'dan önce son kareye karşı grep yakaladı.
+  **Güçlendirme-4 (2026-11-14, EON-TMC9) — referansların SIRASI da prompt'tur; cilalı kubbeye göz hizasından yakın bakış
+  kamerayı yansıtır:** onayı kapanan 06 çağrısını yeniden kurarken metin "ilk görsel önden kesit, ikinci kanal ucu" diyordu,
+  `medias` ters sıradaydı; göndermeden önce çağrının kendi parametrelerini okuyunca düzeldi (sıra kare başına jobs.json'da
+  veri, yeniden deneme oradan kopyalar). O karenin (dik, kenar önde, göz hizası) tek kusuru sarı kubbede fotoğrafçı ve kamera
+  yansımasıydı, kendisinden tek düzenleme sildi; böyle karede "yalnız pencere yansır, kişi/kamera/el yansımaz" ilk prompt'a
+  yazılır. Sahibin gerçek fotoğrafı galeriye meta veri segmentleri söküp çözülen pikselleri karşılaştırarak girer.
 
 - **Etsy 403 verince sayfa çeviri vekilinden okunur; rakibin beyanı fotoğraftan ölçülür ve fizikle sınanır; ölçek
   karesinde oran, uzvun GÖRÜNEN boyutuyla kurulur (2026-11-08, EON-FR6):** Sahibin referans linki (4512052520)

@@ -1,0 +1,349 @@
+{
+  "product": "EON-TMC9",
+  "note": "Owner card 2026-11-14 (1a 2a 3a): 9 Higgsfield frames from the prompt sheet + typeset spec card, hero first and checked against the owner's photos, then the other 8; the owner's first photo (close-up on the blue holder, five stones and the rounded channel end) is the last frame, unedited and uncropped. Hero v1 had eight stones, edited from itself to nine. Set review: 06 (low front view of the lying ring) gave eight stones twice and repeated 01/07, so it became the profile frame (v3), whose only defect, a photographer reflection on the polished yellow, one edit removed (v4); 08 had seven stones and a pink centre, one edit fixed both.",
+  "references": {
+    "refFace": "e6802c39-8b97-4f00-8788-a68b3fad478e",
+    "refEnd": "58ab4baa-ef97-4d90-bb67-88f4895f3822",
+    "refRow": "30621c00-5125-495f-b682-cb52f927063a"
+  },
+  "frames": {
+    "01-hero": {
+      "accepted": "v2",
+      "runs": [
+        {
+          "v": "v1",
+          "job": "6baf0046-b1ec-4ba3-b59b-712861c6b67d",
+          "result": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261114_080614_6baf0046-b1ec-4ba3-b59b-712861c6b67d.png",
+          "promptMd5": "f8cbc523cf22903d26bf749729458603",
+          "refs": [
+            "refFace",
+            "refEnd"
+          ],
+          "verdict": "rejected",
+          "reason": "eight stones, the design has nine; everything else held (white rails, two milgrain lines, domed yellow centre, row about a third of the circle)"
+        },
+        {
+          "v": "v2",
+          "job": "2a7c33a2-c974-4065-83b2-6021e82f2a3b",
+          "result": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261114_080854_2a7c33a2-c974-4065-83b2-6021e82f2a3b.png",
+          "edit": "v1 edited from itself (reference = v1 job), only the stone count changed: 'exactly nine … the fifth at the front with four on each side'",
+          "refs": [
+            "01-hero v1"
+          ],
+          "verdict": "accepted",
+          "reason": "nine stones counted in a full-resolution crop; row centres at about 4 to 8 o'clock (a third of the circle); composition, rails, milgrain and dome as in v1"
+        }
+      ]
+    },
+    "02-row": {
+      "accepted": "v1",
+      "runs": [
+        {
+          "v": "v1",
+          "job": "6aee2825-a0ed-4df7-8321-437816a88caa",
+          "promptMd5": "fa4352e9f31ae7ee28bbbbe0fbc5299c",
+          "refs": [
+            "refRow",
+            "refFace"
+          ],
+          "verdict": "accepted",
+          "result": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261114_081123_6aee2825-a0ed-4df7-8321-437816a88caa.png",
+          "reason": "nine stones counted in a full-resolution crop, rounded channel ends and plain domed yellow beyond each end, white rails with milgrain"
+        }
+      ]
+    },
+    "03-stand": {
+      "accepted": "v1",
+      "runs": [
+        {
+          "v": "v1",
+          "job": "a390cd30-8722-4ecc-acb5-16e6c725e24d",
+          "promptMd5": "09149d85e8c74062db61f30da64b0318",
+          "refs": [
+            "refFace",
+            "refEnd"
+          ],
+          "verdict": "accepted",
+          "result": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261114_081124_a390cd30-8722-4ecc-acb5-16e6c725e24d.png",
+          "reason": "row covers about a third of the circle (about 12:30 to 8:30), turned toward the camera-facing side rather than centred on 12 o'clock; on an upright ring that is a rotation, not a different design; eight stones visible, the ninth behind the curve at the top; right side and bottom plain two tone"
+        }
+      ]
+    },
+    "04-hand": {
+      "accepted": "v1",
+      "runs": [
+        {
+          "v": "v1",
+          "job": "273bb389-69f5-4c8b-8d28-2868ec4393d0",
+          "promptMd5": "29b744d2e5a3f12d9ae5759e691a9625",
+          "refs": [
+            "refRow",
+            "refFace"
+          ],
+          "verdict": "accepted",
+          "result": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261114_081123_273bb389-69f5-4c8b-8d28-2868ec4393d0.png",
+          "reason": "ring on the fourth finger, two tone with milgrain, row across the top of the finger; eight stones visible in a diagonal row (the ring is small in the frame, the count is not legible at listing size)"
+        }
+      ]
+    },
+    "05-tones": {
+      "accepted": "v1",
+      "runs": [
+        {
+          "v": "v1",
+          "job": "cb67ae30-c0d6-4f93-b167-56aac754be64",
+          "promptMd5": "b6e6f7264668eeccd9ca93f659343545",
+          "refs": [
+            "refEnd"
+          ],
+          "verdict": "accepted",
+          "result": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261114_081123_cb67ae30-c0d6-4f93-b167-56aac754be64.png",
+          "reason": "plain back: white rails, two milgrain lines, domed yellow centre, no stones, no channel"
+        }
+      ]
+    },
+    "06-profile": {
+      "accepted": "v4",
+      "runs": [
+        {
+          "v": "v1",
+          "job": "c127359c-1bab-4fab-8617-c28f303c10b5",
+          "promptMd5": "6a8965685e1ec14f454c500534d25d5a",
+          "refs": [
+            "refFace",
+            "refEnd"
+          ],
+          "verdict": "rejected",
+          "result": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261114_081257_c127359c-1bab-4fab-8617-c28f303c10b5.png",
+          "reason": "eight stones, the design has nine; composition, rails, milgrain and dome right"
+        },
+        {
+          "v": "v2",
+          "job": "8e0f8512-c7b1-4369-b812-aa2706599b88",
+          "edit": "v1 edited from itself, only the stone count: exactly nine, the fifth in front of the lens with four on each side",
+          "refs": [
+            "06-face v1"
+          ],
+          "verdict": "rejected",
+          "result": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261114_081748_8e0f8512-c7b1-4369-b812-aa2706599b88.png",
+          "reason": "still eight stones after the edit; the pose (low front view of the lying ring) also repeats 01 and 07, so a third try in this pose was dropped"
+        },
+        {
+          "v": "v3",
+          "job": "55d1755a-9e53-4d48-b37e-29be8fcdb6d7",
+          "promptMd5": "cb488426ea31cdf75684f23c612c5823",
+          "change": "pose changed to the profile frame the playbook asks for: ring upright and edge-on, camera level, the plain outside of the band across its 7 mm width (rail, beads, domed yellow, beads, rail) and the 2 mm rims; only two or three stones at the very top",
+          "refs": [
+            "refFace",
+            "refEnd"
+          ],
+          "note": "the first (unsent) try at 08:19 listed refEnd before refFace while the prompt describes refFace first; the sent call uses the prompt's order",
+          "verdict": "rejected",
+          "result": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261114_130021_55d1755a-9e53-4d48-b37e-29be8fcdb6d7.png",
+          "reason": "design right in the new pose (rails, milgrain, domed yellow, two or three stones and the rounded channel end at the top, white gold inside); one defect: the polished yellow centre reflects a person holding a camera (dark hair, black lens, pink fingers) in the middle of the frame"
+        },
+        {
+          "v": "v4",
+          "job": "8fa953a3-8041-4dd4-8f7f-af58e8d14cac",
+          "edit": "v3 edited from itself, only the reflection: no person, camera, hand or dark shapes on the yellow centre, only a long soft window highlight",
+          "refs": [
+            "06-face v3"
+          ],
+          "verdict": "accepted",
+          "result": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261114_130253_8fa953a3-8041-4dd4-8f7f-af58e8d14cac.png",
+          "reason": "reflection gone; ring, pose, stones, channel end and slate unchanged from v3"
+        }
+      ]
+    },
+    "07-dark": {
+      "accepted": "v1",
+      "runs": [
+        {
+          "v": "v1",
+          "job": "60f77511-c263-48f7-a985-892a83801379",
+          "promptMd5": "2affa6191293b3b5dfd90bf244258b55",
+          "refs": [
+            "refFace",
+            "refEnd"
+          ],
+          "verdict": "accepted",
+          "result": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261114_081257_60f77511-c263-48f7-a985-892a83801379.png",
+          "reason": "nine stones counted in a full-resolution crop; surface reads dark grey rather than black, matte, acceptable"
+        }
+      ]
+    },
+    "08-scale": {
+      "accepted": "v2",
+      "runs": [
+        {
+          "v": "v1",
+          "job": "a694ba45-6809-4e61-b082-e713c03e56a6",
+          "promptMd5": "0d54e8ec208aae80e7bf1ca8b7d0b4d6",
+          "refs": [
+            "refFace",
+            "refEnd"
+          ],
+          "verdict": "rejected",
+          "result": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261114_081257_a694ba45-6809-4e61-b082-e713c03e56a6.png",
+          "reason": "seven stones; the yellow centre reads pink/rose and the inside is yellow instead of white gold; pose and scale right"
+        },
+        {
+          "v": "v2",
+          "job": "0427f329-7669-4245-948a-e9be363d4472",
+          "edit": "v1 edited from itself: exactly nine stones; centre warm soft yellow (not pink/rose/copper); rails, beads and the inside white gold",
+          "refs": [
+            "08-scale v1"
+          ],
+          "verdict": "accepted",
+          "result": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261114_081748_0427f329-7669-4245-948a-e9be363d4472.png",
+          "reason": "nine stones counted in a full-resolution crop; centre warm yellow, rails and beads white; the warm tint inside the band is the palm's reflection on polished white gold, not yellow metal; pose and scale kept from v1"
+        }
+      ]
+    },
+    "09-end": {
+      "accepted": "v1",
+      "runs": [
+        {
+          "v": "v1",
+          "job": "c96da134-8cae-4fb2-99f5-3a67e391a1a1",
+          "promptMd5": "469f95143cac5c74072ef27d7f9e4ddf",
+          "refs": [
+            "refEnd",
+            "refFace"
+          ],
+          "verdict": "accepted",
+          "result": "https://d8j0ntlcm91z4.cloudfront.net/user_2y2d8GaiZx1n1TAQvt4Zj3UOc3e/hf_20261114_081257_c96da134-8cae-4fb2-99f5-3a67e391a1a1.png",
+          "reason": "long rounded channel end past the last stone, plain domed yellow beyond, as in the owner's photo"
+        }
+      ]
+    }
+  },
+  "credits": {
+    "generations": 14,
+    "creditsAt2PerImage": 28,
+    "jobs": [
+      "6baf0046-b1ec-4ba3-b59b-712861c6b67d",
+      "2a7c33a2-c974-4065-83b2-6021e82f2a3b",
+      "6aee2825-a0ed-4df7-8321-437816a88caa",
+      "a390cd30-8722-4ecc-acb5-16e6c725e24d",
+      "273bb389-69f5-4c8b-8d28-2868ec4393d0",
+      "cb67ae30-c0d6-4f93-b167-56aac754be64",
+      "60f77511-c263-48f7-a985-892a83801379",
+      "a694ba45-6809-4e61-b082-e713c03e56a6",
+      "0427f329-7669-4245-948a-e9be363d4472",
+      "c96da134-8cae-4fb2-99f5-3a67e391a1a1",
+      "c127359c-1bab-4fab-8617-c28f303c10b5",
+      "8e0f8512-c7b1-4369-b812-aa2706599b88",
+      "55d1755a-9e53-4d48-b37e-29be8fcdb6d7",
+      "8fa953a3-8041-4dd4-8f7f-af58e8d14cac"
+    ],
+    "balanceBefore": 5605.76,
+    "balanceBeforeAt": "2026-11-14T07:55Z",
+    "difference": "the balance is not used as evidence: other sessions spent on the same account in the same hours (Seedance 2.5, Nano Banana 2.1, background remover); this job's spends are the 14 'Nano Banana 2' lines at 08:06-08:17 and 13:00-13:02 UTC in the transaction list, 2 credits each",
+    "cap": "owner card 2a: about 30 credits, cap 40"
+  },
+  "accepted": 9,
+  "rejected": 5,
+  "typeset": {
+    "frame": 10,
+    "script": "docs/eon/lab-grown/07-two-tone-milgrain-channel/images/spec_card.py",
+    "note": "drawn locally from listing.json (no model, no credits); text gated (lab grown qualifier, no carat)"
+  },
+  "ownerPhoto": {
+    "frame": 11,
+    "source": "the owner's first photo of the four sent on 2026-11-13 (1512x2016 JPEG)",
+    "processing": "none to the image: APP1 (EXIF) and APP13 segments removed byte-wise, scan data copied, decoded pixels verified identical",
+    "decision": "owner card 3a (2026-11-14): last frame, unedited and uncropped"
+  },
+  "gallery": [
+    {
+      "position": 0,
+      "file": "public/eon/lab-grown-tmc9/01.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-tmc9/01.jpg",
+      "source": "01-hero v2",
+      "alt": "Two tone gold band lying on a pale blue-grey tile: white gold rails edged with milgrain, a domed yellow gold centre and nine round lab-grown diamonds channel set across the front.",
+      "md5": "25117bf4ef62edb089d6a1919ec607be"
+    },
+    {
+      "position": 1,
+      "file": "public/eon/lab-grown-tmc9/02.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-tmc9/02.jpg",
+      "source": "02-row v1",
+      "alt": "Close view of the nine round lab-grown diamonds set side by side in the channel of the domed yellow gold centre, framed by white gold rails with fine milgrain bead lines, over blue-grey slate.",
+      "md5": "8e616bff33bf6d246f21082aacf79f87"
+    },
+    {
+      "position": 2,
+      "file": "public/eon/lab-grown-tmc9/03.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-tmc9/03.jpg",
+      "source": "03-stand v1",
+      "alt": "The band standing on light indigo chambray, its row of round lab-grown diamonds along the upper part of the ring and the rest of the band plain white gold milgrain rails and polished yellow gold.",
+      "md5": "03b1a1c9fb951e5b13aea9b2d349fa95"
+    },
+    {
+      "position": 3,
+      "file": "public/eon/lab-grown-tmc9/04.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-tmc9/04.jpg",
+      "source": "04-hand v1",
+      "alt": "A man's hand resting on charcoal grey wool by a window, wearing the two tone band on the ring finger with its row of lab-grown diamonds across the top of the finger.",
+      "md5": "81de8329dd3e5565d7587b4dc71cb3aa"
+    },
+    {
+      "position": 4,
+      "file": "public/eon/lab-grown-tmc9/05.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-tmc9/05.jpg",
+      "source": "05-tones v1",
+      "alt": "The plain back of the band over pale concrete: two white gold rails, two fine milgrain bead lines and the softly domed, polished yellow gold centre between them.",
+      "md5": "355cb8c6411224439e693b1cab4afbee"
+    },
+    {
+      "position": 5,
+      "file": "public/eon/lab-grown-tmc9/06.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-tmc9/06.jpg",
+      "source": "06-profile v4",
+      "alt": "The band standing upright on charcoal slate, seen edge-on: its 7 mm width across the white gold rails, milgrain lines and domed yellow gold centre, with the first stones of the row at the top.",
+      "md5": "a38c102b64407559aee77168c1407ff6"
+    },
+    {
+      "position": 6,
+      "file": "public/eon/lab-grown-tmc9/07.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-tmc9/07.jpg",
+      "source": "07-dark v1",
+      "alt": "The band lying on matte black basalt, its nine round lab-grown diamonds channel set in the yellow gold centre between the white gold milgrain rails.",
+      "md5": "1d4dc1dcbbf6d5ab70ec1ec628392bef"
+    },
+    {
+      "position": 7,
+      "file": "public/eon/lab-grown-tmc9/08.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-tmc9/08.jpg",
+      "source": "08-scale v2",
+      "alt": "The band resting in a man's open palm to show its size, its row of round lab-grown diamonds facing up.",
+      "md5": "29a65078d3ebe56646a4395e571f3695"
+    },
+    {
+      "position": 8,
+      "file": "public/eon/lab-grown-tmc9/09.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-tmc9/09.jpg",
+      "source": "09-end v1",
+      "alt": "Close view of the end of the stone row: the last round lab-grown diamonds, the channel closing in a rounded end and the plain domed yellow gold beyond it, between white gold milgrain rails.",
+      "md5": "9e69b063111d6628e9d4843157ecc086"
+    },
+    {
+      "position": 9,
+      "file": "public/eon/lab-grown-tmc9/10.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-tmc9/10.jpg",
+      "source": "spec card (typeset)",
+      "alt": "Drawing of the band from the top and in cross-section: about 7 mm wide and 2 mm thick, nine round lab-grown diamonds of about 2.75 mm in one channel, in 10K, 14K or 18K, US 4 to US 16.",
+      "md5": "e2139c845a117348177313b207a085a5"
+    },
+    {
+      "position": 10,
+      "file": "public/eon/lab-grown-tmc9/11.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-tmc9/11.jpg",
+      "source": "owner photo",
+      "alt": "The ring on a blue holder over a white paper towel, close up: round lab-grown diamonds side by side in the channel, its rounded end in the yellow gold centre and the white gold milgrain rails.",
+      "md5": "d40f767fef4ac66ea7c31c4d84698966"
+    }
+  ],
+  "promptCheck": "chosen v1 frames carry promptMd5 = md5 of that frame's prompt in prompts.json (01 v1, 02-05, 07, 09 v1 were sent from it); edits (01 v2, 06 v4, 08 v2) carry their edit sentence instead; 06 v3's prompt is the profile text (md5 cb488426...), echoed by the API identical to it"
+}
