@@ -174,8 +174,36 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
   09 kadraj dışı halka) ve 08'in ölçeğini düzeltti; 08 sıkıştırma pozunda iki kez 8 taş verdi (simetrik sayı cümlesi de
   tutmadı), v4'te halka avuç içine yatırıldı ve 9 taş + ölçek tuttu. 15 üretim, 30 kredi (5.650,76 → 5.620,76).
   Dosyalar `public/eon/lab-grown-pc9/01-10.jpg` (2400×1792, meta veri sökülmüş, <1 MB). Galeri migration'ı
-  `0190_eon_lab_grown_pc9_gallery.sql` (üreteç `scripts/eon/gen_lab_grown_pc_gallery_migration.mjs`) **henüz
-  uygulanmadı**: dosyalar main'e girip prod'da 10 URL 200 dönünce uygulanır.
+  `0190_eon_lab_grown_pc9_gallery.sql` (üreteç `scripts/eon/gen_lab_grown_pc_gallery_migration.mjs`) **canlıda**
+  (MCP 2026-11-14, sürüm `20261114065902`): PR #505 merge edildikten sonra prod'da 10 URL'in 10'u 200 döndü ve indirilen
+  dosyaların md5'i `status.json` ile birebir tuttu; ön koşul (taslak, Etsy'de yok, `image_url` boş, 0 görsel) sağlandı. Ürün
+  `9e1bb52e`: 10 `listing_images` (sıra 0-9, 01-10.jpg), `image_url` 01.jpg, `num_images` 10, galeri mührü
+  `md5(url|alt, sıraya göre)` = `52c1ea6a2fdc8f26d2855bc1d2c610ad` = status.json; audit 12 satır (ürün 2 + görsel 10).
+
+## 07 Two-Tone Milgrain Channel, dokuz taş, 10K/14K/18K (EON-TMC9), 2026-11-13
+- Girdi: sahibin 4 gerçek fotoğrafı (yapılmış parça, atölyede) + "New model. 10k 14k ve 18k 3 varyantlı". Repoya alınmadı.
+- Tasarım: iki tonlu bant, beyaz altın raylar, her rayın iç kenarında beyaz milgrain hattı (tam tur), arada kubbeli cilalı sarı
+  orta; önde sarı ortaya kesilmiş tek kanalda dokuz round taş kenar kenara, kanal son taşın biraz ötesinde yuvarlak uçla
+  biter. Ölçek nesnesi yok, oranla ölçüldü (taş/milgrain arası 0,56-0,59, bant/dış çap 0,28-0,30, taş/dış çap 0,116, sıra
+  çemberin ~üçte biri): **7,0 × 2,0 mm, 9 × 2,75 mm round lab-grown (~0,08 ct, toplam ~0,72 ct)**. Renk eksen değil, sabit;
+  eksen **Karat (10K/14K/18K) × Ring Size US 4-16** yarım bedenler, 75 varyant `EON-TMC9-{10K,14K,18K}-US040..160`, `ring_band`.
+- Fiyat önerisi (ayar başına her bedende tek fiyat, %25 vitrin): **10K $2.400 → $1.800, 14K $3.100 → $2.325, 18K $4.000 →
+  $3.000**. Maliyet ayar ve beden başına üretici konvansiyonu (14K gram × $100; 10K/18K `derivePurchaseCentsPerGram`) ile
+  iki tonlu $250 kuralının yükseği + taş $201,60 + kanal takma $90. Her beden ≥ $50 tabanları 2.305 / 2.980 / 3.830. Piyasa:
+  Cirelli dokuz taşlı iki tonlu 1 ctw $2.425, Kay 6,7 mm iki tonlu milgrain $2.310 (indirimli). Kanıt:
+  `2026-11-13-two-tone-milgrain-channel-pricing.md` + `price_model.py tmc`.
+- Paket `07-two-tone-milgrain-channel/listing.json`; üreteç `scripts/eon/gen_lab_grown_tmc_migration.mjs` (ayar eksenli satırlar
+  `scripts/eon/lab_grown_karat_band.mjs`; ayar kuralı ve V4 panelden doğrudan içe aktarılır). Kuru koşu mührü
+  `e535d9acc96dd1e77d6c03e307eef31c`; sorgu DSP'ninki gibi, `Metal Color` yerine `Karat`. Sekiz negatif kontrol yakalandı.
+- Karar (sahip 2026-11-14, "1a 2a 3a"): 1a fiyat ve 7 mm ölçü yukarıdaki gibi; 2a galeri 9 kare (önce hero, sahibin
+  fotoğraflarıyla yan yana kontrol) + ölçü kartı, ~30 kredi, tavan 40; 3a sahibin ilk fotoğrafı (yakın çekim) son kare,
+  düzenlenmeden. `listing.json` `approval.authority`.
+- Panel taslağı: `0191_eon_lab_grown_tmc9.sql` canlıda (MCP 2026-11-14, sürüm `20261114075355`): ürün `c71b8664`, 75 varyant,
+  mühür `e535d9ac…`, fiyatlar 2.400/3.100/4.000 (ürün satırı en düşük ayar), başlık/açıklama/tag/malzeme md5'i listing.json
+  ile aynı, audit 1 + 75. Üreteç uygulanan gövdeyi md5 ile kilitler (`dcc554ed…`).
+- Galeri planı: `07-two-tone-milgrain-channel/images/` (prompts.py → prompts.json, PROMPTS-REVIEW.md, jobs.json): 9 kare,
+  referans sahibin fotoğraflarından yalnız yüzüğe kırpılmış renkli kesitler; 10. kare ölçü kartı (kredisiz). Sahibin
+  düzenlenmemiş fotoğrafı Etsy'nin "en az bir gerçek fotoğraf" kuralını karşılayabilir (sahip kararı).
 
 ## Üreticiye açık sorular (cevap gelmeden Etsy'ye çıkmaz)
 0. **(2026-11-07, DSP canlı)** $550 (Model 1) ve $1.150 (Model 2) fiyatlarına taş ve taş takma dahil mi? Model 2'de
@@ -203,6 +231,11 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
    taş başı kanal takma mı, kanal takma kaç $?); 2 mm prenses için en az kalınlık (öneri 1,8 mm; referans ~1,6 mm), iç
    yüzey konfor mu düz mü; ~18 mm'lik dokuz taşlık sıra her bedende aynı mı, resize arkadaki düz kısımdan kaç beden
    yapılır; taş rengi/berraklığı, beyaz altında rodyum, üretim süresi.
+
+10. **(2026-11-13, TMC9)** Fotoğraftaki iki tonlu milgrain kanal bandın ölçüsü: genişlik ve kalınlık (tasarım 7,0 × 2,0 mm,
+    yalnız oranla ölçüldü), taş boyu ve sayısı (tasarım 9 × 2,75 mm round, ~0,72 ct; bedenle sabit mi), numune hangi beden;
+    fiyat gram × $100 + taş + taş başı kanal takma mı, iki ton ayrıca ücret mi, 10K ve 18K $/g; iç yüzey beyaz mı; resize
+    aralığı; taş rengi/berraklığı, beyaz altında rodyum, üretim süresi.
 
 ## Diğer teklifler (aynı not, ileride)
 - Model 2: 6 mm baguette eternity, 2,20 mm min kalınlık, 6×2 mm taş 0,35 ct, taş $280/ct,

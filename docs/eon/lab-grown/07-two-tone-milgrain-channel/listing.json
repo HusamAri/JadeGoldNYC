@@ -1,0 +1,194 @@
+{
+  "sourcePackage": "2026-11-13-eon-lab-grown-tmc9",
+  "productSku": "EON-TMC9",
+  "productType": "ring",
+  "listingProtocol": "ring_band",
+  "referenceUrl": null,
+  "referenceNote": "Owner 2026-11-13: four unedited photos of a real made piece (workshop: rubber-tipped tweezers, paper towel, fingers) with 'New model. 10k 14k ve 18k 3 varyantlı'. Not committed (the owner's photos; frame use is the owner's decision). Design from the photos: two tone band, white gold rails with a softly rounded outer edge, a fine white milgrain bead line along the inner edge of each rail running all the way around, a domed polished yellow gold centre between them; at the front one channel cut into the yellow centre holds nine round brilliant stones edge to edge, and the channel runs a little past the last stone at each end and closes in a rounded end; the rest of the yellow centre is plain and domed; the inside looks white gold. Measured by pixel ratios (no scale object in the photos): stone / milgrain-to-milgrain 0.56-0.59 (three photos), stone / band about 0.40, band / outer diameter 0.28-0.30 and stone / outer diameter 0.116 (the two hanging photos agree), the nine stones cover about a third of the circle (foreshortening of the end stones in the side photo, about 117-130 degrees). The sample's size is unknown: for a men's size (outer diameter about 23-24 mm) the band is about 6.4-7.3 mm and a stone about 2.7-2.8 mm. Design: 7.0 mm wide, about 2.0 mm at the crown of the dome (a 2.75 mm round is about 1.68 mm deep), nine 2.75 mm round lab grown diamonds, about 0.08 ct each.",
+  "title": "Two Tone 10K 14K 18K Gold Lab Grown Diamond Band, Channel Set, Milgrain, 7mm",
+  "description": "A solid gold two tone band, 7 mm wide, with nine round lab grown diamonds channel set across the top. White gold rails edged with a fine milgrain bead line frame a domed, polished yellow gold centre, and the stones sit side by side in a channel cut into the yellow gold.\n\nYOUR RING\nSolid gold in two tones of the same karat: white gold rails and a yellow gold centre, in 10K, 14K or 18K. About 7 mm wide and about 2 mm thick at the top of the dome, polished all over. Nine round brilliant lab grown diamonds, about 2.75 mm each, are channel set side by side in one row across the top of the band; the channel runs a little past the last stone at each end and closes in a rounded end. A fine milgrain bead line runs all the way around the band along each side of the yellow centre. About 10 grams in 14K at US 8.5. The price is for one ring in your selected karat and size; all nine lab grown diamonds are included.\n\nCHOOSE YOUR OPTIONS\n1. Karat: 10K, 14K or 18K gold. Both tones are the karat you choose.\n2. Ring Size: US 4 to US 16, including half sizes. One price for every size in each karat.\n\nABOUT THE LAB GROWN DIAMONDS\nLaboratory-grown diamonds are grown above ground and have the same crystal structure, hardness and brilliance as mined diamonds; they are not simulants. Each of the nine is a round brilliant cut, so the row reads as one line of light along the yellow gold.\n\nTHE CHANNEL SETTING\nEach stone sits in a channel cut into the yellow gold centre and is held along both sides by the channel walls. There are no prongs, so nothing stands proud to catch on clothing or gloves.\n\nSIZING AND RESIZING\nMade to order in your size. Message us before ordering if you are between sizes. A jeweler who works with two tone gold can usually resize the band by about half a size through the plain gold at the back, away from the stones.\n\nMADE FOR YOU\nMade to order from raw precious-metal materials. The preparation time before dispatch is shown in the shipping details of this listing; transit time is separate.\n\nCARE\nClean gently with mild soap, lukewarm water and a soft brush, then pat dry. Avoid harsh chemicals and abrasive cleaners. Remove the ring before heavy work or sport.",
+  "tags": [
+    "lab grown diamond",
+    "lab created diamond",
+    "two tone gold band",
+    "two tone ring",
+    "mens two tone band",
+    "milgrain band",
+    "channel set band",
+    "channel set ring",
+    "nine stone band",
+    "10k gold band",
+    "14k gold band",
+    "18k gold band",
+    "7mm gold band"
+  ],
+  "tagEvidence": "EON 30-day Etsy search terms (docs/eon/seo/2026-10-21-etsy-keyword/data/etsy-search-terms-30d.tsv, 188 terms / 215 visits; every tag word contained in the term, 2026-11-13 count): 10k gold band 15 terms / 18 visits, 14k gold band 12 / 12, milgrain band 9 / 9, 18k gold band 3 / 3, two tone gold band 2 / 2, two tone ring 2 / 2, mens two tone band 1 / 1, 7mm gold band 1 / 1. Lab-grown, channel and nine-stone terms: 0 (a new category for the shop; the tags define it, same as EON-PC9). 'mens' is the buyer's own word in EON's terms (68 terms / 80 visits; docs/second-brain.md 2026-11-02), not an occasion word. Unqualified 'diamond' cannot appear in a tag (FTC 16 CFR 23.25).",
+  "materials": [
+    "Solid 10K white gold",
+    "Solid 10K yellow gold",
+    "Solid 14K white gold",
+    "Solid 14K yellow gold",
+    "Solid 18K white gold",
+    "Solid 18K yellow gold",
+    "Lab grown diamond"
+  ],
+  "variationAxes": [
+    "Karat",
+    "Ring Size"
+  ],
+  "metalColor": "Two tone, fixed (not a variation): white gold rails and milgrain, yellow gold centre, both in the selected karat",
+  "colorLabel": "Two Tone",
+  "karats": [
+    {
+      "karat": "10K",
+      "priceCents": 240000
+    },
+    {
+      "karat": "14K",
+      "priceCents": 310000
+    },
+    {
+      "karat": "18K",
+      "priceCents": 400000
+    }
+  ],
+  "sizes": {
+    "from": 4,
+    "to": 16,
+    "step": 0.5
+  },
+  "band": {
+    "widthMm": 7,
+    "thicknessMm": 2.0,
+    "karats": "10K, 14K or 18K (both tones the same karat)",
+    "twoTone": "white gold rails (softly rounded outer edges) and inside; yellow gold domed centre",
+    "milgrain": "one fine white gold bead line along the inner edge of each rail, all the way around",
+    "profile": "white rails, milgrain, domed polished yellow centre; at the front one channel cut into the yellow centre",
+    "finish": "high polish all over",
+    "row": "nine 2.75 mm round brilliant stones edge to edge in one channel across the top front (about 25 mm, about a third of the circle at the sample's size); the channel runs a little past the last stone at each end and closes in a rounded end; the same nine stones at every size"
+  },
+  "gram": {
+    "model": "maker's 14K band list (docs/artifact-studio/maker_cost.py list_g14 = width x (0.836 + 0.0515 x US) x thickness / 1.5), full rectangular 7 x 2.0 mm section; 10K and 18K x alloy density 0.892 / 1.137. The channel (about 30 x 2.75 x 1.9 mm) removes about 2.1 g in 14K, kept in the cost as a buffer. Public text says 'about 10 grams in 14K at US 8.5' (11.89 - 2.1 = 9.8 g).",
+    "anchorUs": 8.5,
+    "anchorGrams": {
+      "10K": 10.6,
+      "14K": 11.89,
+      "18K": 13.52
+    },
+    "densityRatio": {
+      "10K": 0.892,
+      "14K": 1.0,
+      "18K": 1.137
+    },
+    "weightSource": "estimated"
+  },
+  "stone": {
+    "origin": "lab",
+    "shape": "round",
+    "count": 9,
+    "sizeMm": "2.75",
+    "totalCarat": 0.72,
+    "caratNote": "Design stones 9 x 2.75 mm round brilliant, about 0.08 ct each (0.72 ct t.w.), measured from the owner's photos by ratio (no scale object); channel set edge to edge in one row across the top front; the count does not change with size. Carat weight is NOT stated in public text until the maker confirms.",
+    "colorClarity": null,
+    "settingFeeCents": 1000,
+    "castingFeeCents": 0,
+    "stoneCostCentsEstimate": 20160,
+    "stoneCostNote": "No maker quote for this design. The maker's only known lab rate is 280 USD/ct (Model 2 baguette): 9 x 0.08 ct = 201.60 USD. Channel setting 10 USD a stone = the maker's Model 2 baguette (channel) fee, uncalibrated (same as EON-PC9). Panel cost view (variant_stone_cost) sees stones 201.60 + settings 9 x 10 (products.setting_fee_cents 1000) = 291.60."
+  },
+  "quantityPerVariant": 20,
+  "pricing": {
+    "makerQuote": null,
+    "costBasis": "per karat and size, the HIGHER of two readings: (a) the maker convention (same maker as EON-VB6/PC9): 14K grams x 100 USD (gold + labour), 10K/18K USD per gram from lib/gold-cost.ts derivePurchaseCentsPerGram (metal scales with spot x purity, the 14K labour premium does not); (b) the EON two-tone rule (CLAUDE.md 2026-09-29, V4.laborTwoToneUsd): melt x 1.07 + 250 USD. Reading (b) binds at small sizes (10K US 4-8.5, 14K US 4-7, 18K US 4-6), (a) above. Plus nine stones 201.60 and nine channel settings 90. US 8.5: 10K 840.72 + 291.60 = 1132.32; 14K 1188.83 + 291.60 = 1480.43; 18K 1630.15 + 291.60 = 1921.75.",
+    "packagingUsd": 8,
+    "shippingUsd": 22,
+    "multiplier": 1.55,
+    "storePromotionRate": 0.25,
+    "onePriceAllSizes": true,
+    "spotUsdPerOzt": 3883.17,
+    "spotDate": "2026-11-13",
+    "spotSource": "gold-api.com 2026-11-13T19:12Z",
+    "byKarat": {
+      "10K": {
+        "listUsd": 2400,
+        "buyerUsd": 1800,
+        "ratePerGramUsd": 78.9,
+        "gramsAtAnchor": 10.6,
+        "goldUsdAtAnchor": 840.72,
+        "goldReadingAtAnchor": "two-tone rule",
+        "landedUsdAtAnchor": 1162.32,
+        "engineUsd": 1802,
+        "engineListUsdAtAnchor": 2405,
+        "everySizeFloorListUsd": 2305,
+        "worstOffsiteProfitBySizeUsd": {
+          "US4": 474,
+          "US8.5": 366,
+          "US12": 252,
+          "US16": 117
+        }
+      },
+      "14K": {
+        "listUsd": 3100,
+        "buyerUsd": 2325,
+        "ratePerGramUsd": 100,
+        "gramsAtAnchor": 11.89,
+        "goldUsdAtAnchor": 1188.83,
+        "goldReadingAtAnchor": "maker convention",
+        "landedUsdAtAnchor": 1510.43,
+        "engineUsd": 2341,
+        "engineListUsdAtAnchor": 3125,
+        "everySizeFloorListUsd": 2980,
+        "worstOffsiteProfitBySizeUsd": {
+          "US4": 675,
+          "US8.5": 493,
+          "US12": 325,
+          "US16": 133
+        }
+      },
+      "18K": {
+        "listUsd": 4000,
+        "buyerUsd": 3000,
+        "ratePerGramUsd": 120.6,
+        "gramsAtAnchor": 13.52,
+        "goldUsdAtAnchor": 1630.15,
+        "goldReadingAtAnchor": "maker convention",
+        "landedUsdAtAnchor": 1951.75,
+        "engineUsd": 3025,
+        "engineListUsdAtAnchor": 4035,
+        "everySizeFloorListUsd": 3830,
+        "worstOffsiteProfitBySizeUsd": {
+          "US4": 935,
+          "US8.5": 663,
+          "US12": 432,
+          "US16": 168
+        }
+      }
+    },
+    "at35PercentSale": "every-size floors at a 35% sale are 10K 2,660 / 14K 3,440 / 18K 4,415; at the proposed prices a 35% sale stays above zero through US 12 and loses about 100 / 148 / 194 USD at US 16",
+    "marketAnchors": [
+      "Cirelli Jewelers 'Men's Two-Tone Diamond Band, 1 Carat Round Lab Grown Diamond 14K Gold Channel Set Band': nine round lab-grown stones, 1.00 ctw, 14K white and yellow, 2,425 USD (read 2026-11-13)",
+      "Kay 'Men's Now + Forever Lab-Grown Diamonds Round-Cut Wedding Band 1 ct tw 14K Two-Tone Gold': eleven round channel-set stones, 6.7 mm, milgrain edges, 2,309.99 USD on sale from 3,299.99 (search snippet 2026-11-13; sale end date 10/30/26 passed)",
+      "Zales 'Men's 1/2 CT. T.W. Diamond Channel Milgrain Band in 14K Two-Tone Gold' (natural J/I3): 1,399.99 USD from 1,999.99, out of stock (read 2026-11-13)",
+      "Jared 'Men's lab-grown diamond band 1 ct tw 14K two-tone': 6.4 mm, 3,990 USD on sale (search snippet 2026-11-13)",
+      "EON lab-grown line: DSP 1,200 -> 900; HEP 1,050 -> 787.50; PC9 1,500 -> 1,125; HS5 and FR6 1,800 -> 1,350; VB6 2,665 -> 1,999"
+    ],
+    "methodology": "docs/eon/lab-grown/price_model.py tmc; formula lib/pricing-engine/eon-cost.ts 457-472; karat rule lib/gold-cost.ts derivePurchaseCentsPerGram; two-tone rule lib/pricing/gold-index.ts V4"
+  },
+  "approval": {
+    "authority": "Owner 2026-11-14 (reply '1a 2a 3a' to the decision list): 1a = 7.0 x 2.0 mm, nine 2.75 mm round lab grown stones, list 10K 2,400 / 14K 3,100 / 18K 4,000 USD -> 25% sale 1,800 / 2,325 / 3,000, one price for every size in each karat; scope Karat 10K/14K/18K x Ring Size US 4-16 with half sizes (75 variants), two tone fixed; 2a = gallery: 9 frames from the prompt sheet (images/PROMPTS-REVIEW.md), hero first and checked against the owner's photos, then the other 8, plus the locally typeset spec card, about 30 credits, cap 40; 3a = the owner's first photo (close-up, tweezers behind, six stones and the rounded channel end) goes in the gallery as the last frame, unedited and uncropped (Etsy real-photo rule).",
+    "panelDraftAuthorized": true,
+    "etsyDraftCreationAuthorized": true,
+    "livePublicationAuthorized": false,
+    "blockers": [
+      "No maker quote for this design: cost is the higher of the maker's band list (grams x 100 USD in 14K) and the EON two-tone rule (melt x 1.07 + 250 USD), + nine stones 201.60 + nine channel settings 90, all estimates",
+      "Maker to confirm: width and thickness of the sample (design 7.0 x 2.0 mm, measured by ratio only), stone size and count (design 9 x 2.75 mm round, about 0.72 ct), whether two tone adds a fee to grams x 100 USD, 10K and 18K rates, inside metal, how far the band can be resized, stone colour/clarity grade, white gold rhodium plating, preparation time",
+      "Gallery not attached yet (the owner's real photo will be the last frame; until the gallery migration is applied the draft has no photos)",
+      "No shop section for lab grown pieces yet",
+      "Spanish translation not written"
+    ]
+  },
+  "classification": {
+    "protocol": "ring_band",
+    "taxonomy": "Jewelry > Rings > Bands (1232)",
+    "basis": "Owner 2026-11-04 for the lab-grown line (EON-DSP: 'bu wedding band değil'); ring_band is live in prod and needs no Width axis (width is fixed at 7 mm); Karat x Ring Size go to Etsy custom slots 513/514 (lib/etsy/create-listing.ts)"
+  }
+}

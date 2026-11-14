@@ -26,12 +26,20 @@ const DEAD = /\b(gift|anniversary|promise|his|hers|him|her|unisex|minimalist|chr
 const wset = (t) =>
   t.toLowerCase().split(/\s+/).map((w) => (w.length > 3 && w.endsWith("s") ? w.slice(0, -1) : w)).sort().join(" ");
 
-export function checkListingText(L, { allowNatural = false } = {}) {
+export function checkListingText(L, { allowNatural = false, karats = null } = {}) {
   const unqualified = allowNatural ? UNQUALIFIED_DIAMOND_ALLOW_NATURAL : UNQUALIFIED_DIAMOND;
   const words = L.title.trim().split(/\s+/);
   assert(words.length < 15, `başlık ${words.length} kelime`);
   assert(L.title.length <= 140, "başlık 140 kr");
-  assert(/\b14K Gold\b/.test(L.title) && !/\b1[08]K\b/.test(L.title), "başlıkta yalnız satılan ayar: 14K");
+  if (!karats) {
+    assert(/\b14K Gold\b/.test(L.title) && !/\b1[08]K\b/.test(L.title), "başlıkta yalnız satılan ayar: 14K");
+  } else {
+    // 07 TMC9 (ayar eksenli, 2026-11-13): satılan ayarların HEPSİ, sırayla ve "Gold"un hemen önünde (FTC §23.3);
+    // satılmayan ayar başlıkta yok. Seçenek verilmeyen paketlerin kapısı değişmez.
+    assert(new RegExp(`\\b${karats.join(" ")} Gold\\b`).test(L.title), `başlıkta "${karats.join(" ")} Gold" yok`);
+    const named = L.title.match(/\b\d{1,2}K\b/g) ?? [];
+    assert.deepEqual(named, karats, `başlıktaki ayarlar satılanla aynı değil: ${named}`);
+  }
   assert.equal(L.tags.length, 13);
   assert.equal(new Set(L.tags.map(wset)).size, 13, "tag kelime-kümesi tekrarı");
   for (const t of L.tags) {
