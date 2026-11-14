@@ -219,6 +219,31 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
   dokunulmadı. Paneldeki `listing_metadata.approval.blockers` içindeki "Gallery not attached yet" satırı 0191'in kilitli
   gövdesinden gelir ve artık bayattır; panel bu listeyi göstermez ve itişi bloke etmez.
 
+## 08 Double Pear Toi et Moi, iki armut taş (EON-PEAR2), 2026-11-14
+- Girdi: sahibin linki Etsy 1522527544 "1.55 TC Double Pear Cut Two Stone Ring • You N Me Wedding Ring" (moissanite,
+  14K $537,11): "new model". Etsy 403 verdi; sayfa Google çeviri vekiliyle okundu (JSON-LD + varyasyon seçicileri),
+  7 fotoğraf doğrudan indi; repoya alınmadı.
+- Tasarım: 14K, 1,8 × 1,6 mm ince düz bant; üstte yan yana iki armut lab-grown taş, 8 × 6 mm (~1,0 ct) ve 5 × 3,5 mm
+  (~0,22 ct). Uzun eksenler parmak boyunca, uçlar zıt yönde ve öbür taşa doğru hafif eğik; her taş alçak sepette üç
+  tırnakla tutuluyor (uçta V, yuvarlak uçta iki). Referansın "1.25 + 0.30 ct" beyanı fiziğe göre ~%25 fazla (Allurez de
+  8 × 6 mm armuta 1,00 ct diyor); karat, üretici teyidinden önce kamuya açık metne girmez.
+- Fiyat önerisi: liste **$1.450** → %25 vitrin → alıcı **$1.087,50**, her beden tek fiyat. Kötümser maliyet US 8½'te
+  $646,16: tam kesit gram + sepetler 1,0 g, 1 ct taş $200 (üreticinin ölçeği), 0,22 ct $280/ct, tırnak takma taş başı
+  $20. En kötü Offsite kârı en düşük US 16'da +$133; %35 vitrinde de her beden ≥ 0. Her beden ≥ $50 tabanı $1.330.
+  Piyasa: 1 ct lab-grown toi et moi $786–1.925. Kanıt: `2026-11-14-double-pear-pricing.md` + `price_model.py dp`.
+- Paket `08-double-pear/listing.json` (`sculptural_ring`, Jewelry > Rings; toi et moi bant değil, Width ekseni yok).
+  Üreteç `scripts/eon/gen_lab_grown_pear_migration.mjs` → `0193_eon_lab_grown_pear2.sql`, satırlar ortak
+  `lab_grown_band.mjs`. Kuru koşu mührü `f6db68fcc34f248c9054a194f5a67ed7`. Beş negatif kontrol yakalandı: moissanite,
+  metinde karat, kardeş listing sözcüğü, bayat kâr tablosu, niteliksiz diamond tag'i. Sahip onayı (`approval.authority`)
+  yazılmadan migration dosyası yazılmaz.
+- Galeri planı: `08-double-pear/images/` (prompts.py → prompts.json, PROMPTS-REVIEW.md, jobs.json). 9 kare; referanslar
+  sahibin linkindeki fotoğraflardan siyah-beyaz sıkı kırpımlar (refPair, refTop, refFront, refSide), renk yalnız metinden.
+  10. kare ölçü kartı (kredisiz). Prompt kapıları: iki taş, üç tırnak, zıt yön ve iç içe duruş, her pozda uçların yönü, el
+  yalnız el karelerinde, yansıma cümlesi, yasak sözcükler (toi et moi, engagement, solitaire, moissanite, halo, sparkle,
+  carat…). Kredi harcamadan önce kendi okumam üç kusur düzeltti: 07'de birbiriyle çelişen duruş ("on its side" +
+  "looks down"), 04 ve 09'da taşları ~%40 büyük çizdirecek ölçek oranları.
+- Karar bekleniyor (sahip kartı 2026-11-14): fiyat ve kapsam, galeri ve kredi, karatın metne girişi.
+
 ## Üreticiye açık sorular (cevap gelmeden Etsy'ye çıkmaz)
 0. **(2026-11-07, DSP canlı)** $550 (Model 1) ve $1.150 (Model 2) fiyatlarına taş ve taş takma dahil mi? Model 2'de
    11,5 g × $100 = $1.150 tam tuttuğu için konvansiyon "gram × $100 + taş + takma ayrı" görünüyor; DSP'de taş ve takma
@@ -250,6 +275,12 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
     yalnız oranla ölçüldü), taş boyu ve sayısı (tasarım 9 × 2,75 mm round, ~0,72 ct; bedenle sabit mi), numune hangi beden;
     fiyat gram × $100 + taş + taş başı kanal takma mı, iki ton ayrıca ücret mi, 10K ve 18K $/g; iç yüzey beyaz mı; resize
     aralığı; taş rengi/berraklığı, beyaz altında rodyum, üretim süresi.
+
+11. **(2026-11-14, PEAR2)** 1,8 × 1,6 mm ince bant, üstte 8 × 6 mm ve 5 × 3,5 mm armut lab-grown, her biri üç tırnaklı
+    alçak sepette: fiyat gram × $100 + taş + taş başı tırnak takma mı, takma kaç $; 8 × 6 mm armut ~1,0 ct mı ve "1 ct
+    $200" ölçeği armuta da uyar mı, 5 × 3,5 mm armut (~0,22 ct) kaç $; bant kalınlığı (tasarım 1,6 mm), sepet ve tırnak
+    gramı (tasarım 1,0 g), taşların banttan yüksekliği; resize aralığı; taş rengi/berraklığı, beyaz altında rodyum,
+    üretim süresi, fiyat bedenle değişir mi.
 
 ## Diğer teklifler (aynı not, ileride)
 - Model 2: 6 mm baguette eternity, 2,20 mm min kalınlık, 6×2 mm taş 0,35 ct, taş $280/ct,

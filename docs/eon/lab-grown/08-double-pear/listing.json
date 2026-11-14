@@ -1,0 +1,127 @@
+{
+  "sourcePackage": "2026-11-14-eon-lab-grown-pear2",
+  "productSku": "EON-PEAR2",
+  "productType": "ring",
+  "listingProtocol": "sculptural_ring",
+  "referenceUrl": "https://www.etsy.com/listing/1522527544/155-tc-double-pear-cut-two-stone-ring",
+  "referenceNote": "Owner's reference 2026-11-14: Etsy 1522527544 '1.55 TC Double Pear Cut Two Stone Ring • You N Me Wedding Ring • 14k Solid Yellow Gold' (TheAmericanGoldHouse, 15 reviews, 5.0). Etsy returns 403 to the container; the page was read through the Google Translate proxy (JSON-LD and variation selectors) and its 7 photos downloaded directly (not committed). Stated: MOISSANITE stones, 8x6 mm pear '1.25 CT' and 5x3.5 mm pear '0.30 CT' (1.55 TC), band 1.8 mm at the bottom, VVS/VS colorless; metals 925 silver to 950 platinum; 14K sale price 537.11 USD (any color), sizes 000 to 9 shown. Design from the photos: a slim plain polished band; on top, the two pear stones side by side across the band, points facing opposite ways (the larger toward the fingertip, the smaller toward the hand in the worn photos), their sides almost touching; each stone in a low gold basket with three claw prongs (one at the point, two at the rounded end). Our listing uses lab-grown diamonds, not moissanite: at standard depth an 8x6 mm pear is about 1.0 ct and a 5x3.5 mm pear about 0.22 ct; carat is not stated in public text until the maker confirms.",
+  "title": "14K Gold Lab Grown Diamond Toi et Moi Ring, Two Pear Cut Stones",
+  "description": "A solid 14K gold toi et moi ring with two pear cut lab grown diamonds set side by side, a larger stone and a smaller one with their points facing opposite ways. A slim polished band keeps the attention on the two stones.\n\nYOUR RING\nSolid 14K gold in yellow, white or rose. A slim band about 1.8 mm wide and 1.6 mm thick, polished all over. Two pear cut lab grown diamonds sit side by side on top: one about 8 x 6 mm and one about 5 x 3.5 mm, their points facing opposite ways and their sides almost touching. Each stone is held by three claw prongs, one guarding its point and two at its rounded end. About 3.5 grams in US 8.5. The price is for one ring in your selected metal color and size; both lab grown diamonds are included.\n\nCHOOSE YOUR OPTIONS\n1. Metal Color: Yellow Gold, White Gold or Rose Gold.\n2. Ring Size: US 4 to US 16, including half sizes. One price for every size.\n\nABOUT THE LAB GROWN DIAMONDS\nLaboratory-grown diamonds are grown above ground and have the same crystal structure, hardness and brilliance as mined diamonds; they are not simulants. A pear cut is a brilliant cut with one rounded end and one point, so each stone ends in a fine tip of light.\n\nTHE PRONG SETTING\nEach stone sits in its own low basket of gold and is held by three claw prongs. The prong at the point covers the tip, the most delicate part of a pear cut stone. Have the prongs checked by a jeweler once a year.\n\nSIZING AND RESIZING\nMade to order in your size. Message us before ordering if you are between sizes. A jeweler can usually resize the band by about half a size through the plain gold at the back, away from the stones.\n\nMADE FOR YOU\nMade to order from raw precious-metal materials. The preparation time before dispatch is shown in the shipping details of this listing; transit time is separate.\n\nCARE\nClean gently with mild soap, lukewarm water and a soft brush, then pat dry. Avoid harsh chemicals and abrasive cleaners. Remove the ring before heavy work or sport.",
+  "tags": [
+    "lab grown diamond",
+    "lab created diamond",
+    "toi et moi ring",
+    "pear toi et moi",
+    "two stone ring",
+    "pear cut ring",
+    "double pear ring",
+    "you and me ring",
+    "pear engagement ring",
+    "14k gold ring",
+    "yellow gold ring",
+    "white gold ring",
+    "rose gold ring"
+  ],
+  "tagEvidence": "EON 30-day Etsy search terms (docs/eon/seo/2026-10-21-etsy-keyword/data/etsy-search-terms-30d.tsv, 188 terms / 215 visits; every tag word contained in the term, 2026-11-14 count): white gold ring 2 (10k white gold ring, mens white gold ring), yellow gold ring 1 (10 k yellow gold ring), engagement ring 3 (all 'mens ... engagement ring'). Pear, toi et moi, two stone and you-and-me terms: 0 (a new category for the shop; the tags define it, taken from the reference title 'Double Pear Cut Two Stone Ring • You N Me' and the common name of the design). Unqualified 'diamond' cannot appear in a tag (FTC 16 CFR 23.25), so 'pear cut ring', 'double pear ring' and 'two stone ring' carry the design; no occasion words (03-seo 2026-11-02).",
+  "materials": [
+    "Solid 14K yellow gold",
+    "Solid 14K white gold",
+    "Solid 14K rose gold",
+    "Lab grown diamond"
+  ],
+  "variationAxes": [
+    "Metal Color",
+    "Ring Size"
+  ],
+  "colors": [
+    [
+      "YG",
+      "Yellow Gold"
+    ],
+    [
+      "WG",
+      "White Gold"
+    ],
+    [
+      "RG",
+      "Rose Gold"
+    ]
+  ],
+  "sizes": {
+    "from": 4,
+    "to": 16,
+    "step": 0.5
+  },
+  "band": {
+    "widthMm": 1.8,
+    "thicknessMm": 1.6,
+    "karat": "14K",
+    "profile": "slim plain band with softly rounded edges, about 1.8 mm wide (the reference states 1.8 mm at the bottom); thickness 1.6 mm is the design value, not stated by the reference",
+    "finish": "high polish all over, inside and out",
+    "setting": "two low gold baskets side by side on top of the band, each with three claw prongs (one at the point, two at the rounded end)",
+    "stones": "an 8 x 6 mm pear and a 5 x 3.5 mm pear side by side across the top, points facing opposite ways, sides almost touching"
+  },
+  "gram": {
+    "model": "maker's 14K band list (docs/artifact-studio/maker_cost.py list_g14 = width x (0.836 + 0.0515 x US) x thickness / 1.5), full rectangular 1.8 x 1.6 mm section (the real profile is rounded, so this is a buffer) + 1.0 g for the two baskets and six claw prongs (8x6 basket about 0.6 g, 5x3.5 about 0.3 g, rounded up; not calibrated). Public text says 'about 3.5 grams in US 8.5'.",
+    "anchorUs": 8.5,
+    "anchorGrams": 3.45,
+    "weightSource": "estimated"
+  },
+  "stone": {
+    "origin": "lab",
+    "shape": "pear",
+    "count": 2,
+    "sizeMm": "8x6 + 5x3.5",
+    "totalCarat": 1.22,
+    "caratNote": "Design stones: one 8 x 6 mm pear (about 1.0 ct at standard depth) and one 5 x 3.5 mm pear (about 0.22 ct), lab-grown diamonds; the reference sells moissanite and states '1.25 CT' + '0.30 CT' (1.55 TC). Carat weight is NOT stated in public text until the maker confirms.",
+    "colorClarity": null,
+    "settingFeeCents": 2000,
+    "castingFeeCents": 0,
+    "stoneCostCentsEstimate": 26160,
+    "stoneCostNote": "No maker quote for this design. The maker's single-stone scale (per stone): 1 ct 200 USD (2 ct 400, 3 ct 700); the 0.22 ct pear at the maker's only known small-stone lab rate 280 USD/ct = 61.60 USD; total 261.60 USD. Claw-prong setting 20 USD a stone, not calibrated (known fees: 4 USD shared micro-prong, 10 USD baguette)."
+  },
+  "quantityPerVariant": 20,
+  "priceCents": 145000,
+  "pricing": {
+    "makerQuote": null,
+    "costBasis": "maker convention (same maker as EON-VB6): 14K grams x 100 USD (gold + labor), stones and settings on top. US 8.5: 3.45 g x 100 = 344.56 + stones 261.60 + two claw settings 40 = 646.16",
+    "packagingUsd": 8,
+    "shippingUsd": 22,
+    "landedUsdAtAnchor": 676.16,
+    "multiplier": 1.55,
+    "engineUsd": 1048,
+    "engineListUsdAtAnchor": 1400,
+    "storePromotionRate": 0.25,
+    "listUsd": 1450,
+    "buyerUsd": 1088,
+    "onePriceAllSizes": true,
+    "everySizeFloorListUsd": 1330,
+    "worstOffsiteProfitBySizeUsd": {
+      "US4": 252,
+      "US8.5": 208,
+      "US12": 173,
+      "US16": 133
+    },
+    "at35PercentSale": "every size stays at or above zero at the worst Offsite fee (US 16 +2); at 1,400 USD US 14-16 would lose up to 27 USD",
+    "marketAnchors": "lab-grown toi et moi 1 to 1.25 ct t.w., 14K, 2026-11-14 web search snapshot: Simon 1 1/4 ct pear 786.49 USD (sale, reg 1,572.98); Ross-Simons 1.00 ct t.w. pear bypass 1,015.75 USD (sale); RareCarat 1.00 ct oval + pear 1,200 USD; Leo Hamel 1.00 ct pear + oval 1,495 USD (from 1,725); James Allen pave toi et moi with a 1.00 ct pear 1,925 USD (page also showed 1,254); Allurez 8 x 6 mm 1.00 ct pear + round (2.00 ct t.w.) 2,288 USD. Reference (moissanite, not comparable stone) 537.11 USD. Sources: docs/eon/lab-grown/2026-11-14-double-pear-pricing.md."
+  },
+  "approval": {
+    "authority": "",
+    "panelDraftAuthorized": false,
+    "etsyDraftCreationAuthorized": false,
+    "livePublicationAuthorized": false,
+    "blockers": [
+      "Owner decision pending: price, spec and gallery (owner card 2026-11-14)",
+      "Etsy activation needs at least one unedited photo of the physical piece (draft allowed)",
+      "No maker quote for this design: cost is the maker's band list (3.45 g x 100 USD at US 8.5, baskets estimated) + stones 261.60 (1 ct at the maker's single-stone scale, 0.22 ct at 280 USD/ct) + two claw settings 40, all estimates",
+      "Maker to confirm: stone sizes and carat (design 8 x 6 mm + 5 x 3.5 mm pear, about 1.0 + 0.22 ct), stone color/clarity grade, band thickness (design 1.8 x 1.6 mm), basket and prong weight, setting fee, how far the band can be resized, white gold rhodium plating, preparation time, price per size",
+      "No shop section for lab grown pieces yet",
+      "Spanish translation not written"
+    ]
+  },
+  "classification": {
+    "protocol": "sculptural_ring",
+    "taxonomy": "Jewelry > Rings",
+    "basis": "A toi et moi ring is not a band (ring_band is Bands 1232) and needs no Width axis; sculptural_ring is the live ring protocol on plain Jewelry > Rings (52 products, 50 on Etsy, 2026-11-14). An Engagement Rings or Multi-Stone Rings node would need a new protocol (code + live taxonomy read + deploy)."
+  }
+}
