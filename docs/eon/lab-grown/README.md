@@ -212,10 +212,12 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
   arka, 06 profil, 07 koyu zemin, 08 avuçta ölçek, 09 kanal ucu, 10 ölçü kartı (`images/spec_card.py`, listing.json'dan,
   metin kapılı), 11 sahibin fotoğrafı (1512×2016, pikseller aynı; yalnız EXIF ve APP13 segmentleri söküldü).
   Dosyalar `public/eon/lab-grown-tmc9/01-11.jpg`; migration `0192_eon_lab_grown_tmc9_gallery.sql` (üreteç
-  `scripts/eon/gen_lab_grown_tmc_gallery_migration.mjs`, md5 `847c283a…`). **Uygulanmadı:** önce merge + prod dağıtımı,
-  11 URL canlıda 200 ve md5 eşleşmesi, ürünün galerisi hâlâ boş mu kontrolü; sonra MCP. Paneldeki
-  `metadata.approval.blockers` içindeki "Gallery not attached yet" satırı 0191'in kilitli gövdesinden gelir ve 0192'den
-  sonra bayat kalır; panel bu listeyi göstermez ve itişi bloke etmez.
+  `scripts/eon/gen_lab_grown_tmc_gallery_migration.mjs`, md5 `847c283a…`). **Canlıda** (MCP 2026-11-14, sürüm
+  `20261114163837`), #506 merge'ünden ve prod dağıtımından sonra: 11 URL canlıda 200 ve md5'leri status.json ile aynı;
+  ön koşul tuttu (taslak, Etsy'de değil, galeri boş, son audit 0191). Ürün `c71b8664`: 11 `listing_images` (sıra 0-10),
+  `image_url` 01.jpg, `num_images` 11, galeri mührü `md5(sıra|url|alt)` = `0cf49667…` = status.json, 75 varyant
+  dokunulmadı. Paneldeki `listing_metadata.approval.blockers` içindeki "Gallery not attached yet" satırı 0191'in kilitli
+  gövdesinden gelir ve artık bayattır; panel bu listeyi göstermez ve itişi bloke etmez.
 
 ## Üreticiye açık sorular (cevap gelmeden Etsy'ye çıkmaz)
 0. **(2026-11-07, DSP canlı)** $550 (Model 1) ve $1.150 (Model 2) fiyatlarına taş ve taş takma dahil mi? Model 2'de
