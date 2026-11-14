@@ -1,0 +1,30 @@
+{
+  "product": "EON-TMC9",
+  "model": "nano_banana_2",
+  "aspect_ratio": "4:3",
+  "resolution": "2k",
+  "count": 1,
+  "why": "nano_banana_2 resolution varsayılanı 1k (second-brain 2026-09-13, 2026-10-13): 2k AÇIKÇA geçilir. count DAİMA 1 (CLAUDE.md). Tüm kareler 4:3 (2400x1792), 10. kare (ölçü kartı) de 2400x1792. İlk fotoğraf 1:1 kırpımda kesilmesin diye halka ortada, yanlarda boşluk.",
+  "costCreditsPerImage": 2,
+  "costSource": "EON-PC9 2026-11-13 (nano_banana_2, 2k, 4:3, 15 üretim = 30 kredi); üretimden önce bakiye yeniden okunur",
+  "artDirection": "PC9 ile aynı: tek pencere gün ışığı; iki tonda sıcak olan sarı, zeminler onun tamamlayıcısı düşük doygunlukta (mavi-gri karo / arduvaz / şambre / kömür grisi yün / soğuk beton), 07 nötr siyah bazalt. Erkek bandı: el kareleri erkek eli. Ayrıntı prompts.py başlığında ve PROMPTS-REVIEW.md.",
+  "plan": "Önce yalnız 01 hero; sahibin fotoğraflarıyla yan yana kontrol (dokuz round taş, sıra çemberin üçte biri, kanalın iki yuvarlak ucu, milgrain hatları, beyaz raylar + kubbeli sarı orta), sonra kalan 8 kare (en çok 7'lik gruplar). Kusurlu kareye yalnız o kare için yeniden çekim, tek kusur adlandırılarak.",
+  "references": {
+    "source": "Sahibin 4 gerçek fotoğrafı (2026-11-13, atölye; sohbet ekleri, 1512x2016). Repoya ALINMADI: sahibin fotoğrafı, listing'de kullanımı sahibin kararı. Kırpımlar yalnız yüzüğü taşır, çevresi nötr gri (170,170,170) ile maskelendi; renkli (ürün aynı iki tonda satılıyor).",
+    "refFace": "6d7c3df0 (önden bant yüzü: altı taş + sağda kanalın yuvarlak ucu), çokgen maske, kırpım 270,585-1512,1220, 1242x635",
+    "refEnd": "ffc9d618 (son üç taş, yuvarlak uç, kubbeli sarı devam), çokgen maske (sağdaki açıklık hariç), kırpım 370,765-1160,1310, ×1,3 → 1027x708",
+    "refRow": "00b3c9bd (dokuz taşlık sıra boydan boya, dik), kırpım 497,600-800,1400 (parmaklar dışarıda), ×1,6 → 484x1280",
+    "byFrame": {
+      "01-hero": ["refFace", "refEnd"],
+      "02-row": ["refRow", "refFace"],
+      "03-stand": ["refFace", "refEnd"],
+      "04-hand": ["refRow", "refFace"],
+      "05-tones": ["refEnd"],
+      "06-face": ["refFace", "refEnd"],
+      "07-dark": ["refFace", "refEnd"],
+      "08-scale": ["refFace", "refEnd"],
+      "09-end": ["refEnd", "refFace"]
+    }
+  },
+  "runs": []
+}
