@@ -174,8 +174,11 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
   09 kadraj dışı halka) ve 08'in ölçeğini düzeltti; 08 sıkıştırma pozunda iki kez 8 taş verdi (simetrik sayı cümlesi de
   tutmadı), v4'te halka avuç içine yatırıldı ve 9 taş + ölçek tuttu. 15 üretim, 30 kredi (5.650,76 → 5.620,76).
   Dosyalar `public/eon/lab-grown-pc9/01-10.jpg` (2400×1792, meta veri sökülmüş, <1 MB). Galeri migration'ı
-  `0190_eon_lab_grown_pc9_gallery.sql` (üreteç `scripts/eon/gen_lab_grown_pc_gallery_migration.mjs`) **henüz
-  uygulanmadı**: dosyalar main'e girip prod'da 10 URL 200 dönünce uygulanır.
+  `0190_eon_lab_grown_pc9_gallery.sql` (üreteç `scripts/eon/gen_lab_grown_pc_gallery_migration.mjs`) **canlıda**
+  (MCP 2026-11-14, sürüm `20261114065902`): PR #505 merge edildikten sonra prod'da 10 URL'in 10'u 200 döndü ve indirilen
+  dosyaların md5'i `status.json` ile birebir tuttu; ön koşul (taslak, Etsy'de yok, `image_url` boş, 0 görsel) sağlandı. Ürün
+  `9e1bb52e`: 10 `listing_images` (sıra 0-9, 01-10.jpg), `image_url` 01.jpg, `num_images` 10, galeri mührü
+  `md5(url|alt, sıraya göre)` = `52c1ea6a2fdc8f26d2855bc1d2c610ad` = status.json; audit 12 satır (ürün 2 + görsel 10).
 
 ## 07 Two-Tone Milgrain Channel, dokuz taş, 10K/14K/18K (EON-TMC9), 2026-11-13
 - Girdi: sahibin 4 gerçek fotoğrafı (yapılmış parça, atölyede) + "New model. 10k 14k ve 18k 3 varyantlı". Repoya alınmadı.
