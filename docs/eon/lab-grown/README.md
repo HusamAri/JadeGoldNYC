@@ -261,8 +261,13 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
   10 ölçü kartı (`images/spec_card.py`, listing.json'dan, metin kapılı, karat yok). Dosyalar
   `public/eon/lab-grown-pear2/01-10.jpg` (2400×1792, meta veri yok, <1 MB); migration
   `0194_eon_lab_grown_pear2_gallery.sql` (üreteç `scripts/eon/gen_lab_grown_pear_gallery_migration.mjs`, md5
-  `d78c61b4…`, galeri mührü `md5(sıra|url|alt)` = `5e9bcc95…`). Uygulama: PR merge edilip prod dağıtımı hazır olduktan,
-  10 URL canlıda 200 dönüp md5'leri status.json ile tuttuktan ve ürünün galerisi hâlâ boşken.
+  `d78c61b4…`, galeri mührü `md5(sıra|url|alt)` = `5e9bcc95…`). **Canlıda** (MCP 2026-11-14, sürüm `20261114191133`),
+  #507 merge'ünden ve prod dağıtımından (READY, alan adı bağlı) sonra: 10 URL canlıda 200 ve md5'leri status.json ve
+  repo dosyasıyla aynı; ön koşul tuttu (taslak, Etsy'de değil, galeri boş, son audit 0193). Ürün `4ea794fa`: 10
+  `listing_images` (sıra 0-9), `image_url` 01.jpg, `num_images` 10, galeri mührü `5e9bcc95…` = status.json; 75 varyant
+  dokunulmadı (varyant mührü önce ve sonra `0ea11e47…`); uygulanan gövdenin md5'i dosyayla aynı (`d78c61b4…`); audit
+  10 + 1. Paneldeki `listing_metadata.approval.blockers` içindeki ilk satır ("Photos come from a separate gallery
+  migration…") 0193'ün kilitli gövdesinden gelir ve artık bayattır; panel bu listeyi göstermez ve itişi bloke etmez.
 
 ## Üreticiye açık sorular (cevap gelmeden Etsy'ye çıkmaz)
 0. **(2026-11-07, DSP canlı)** $550 (Model 1) ve $1.150 (Model 2) fiyatlarına taş ve taş takma dahil mi? Model 2'de
