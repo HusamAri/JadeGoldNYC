@@ -39,9 +39,18 @@
   "metalColor": "Two tone, fixed (not a variation): white gold rails and milgrain, yellow gold centre, both in the selected karat",
   "colorLabel": "Two Tone",
   "karats": [
-    { "karat": "10K", "priceCents": 240000 },
-    { "karat": "14K", "priceCents": 310000 },
-    { "karat": "18K", "priceCents": 400000 }
+    {
+      "karat": "10K",
+      "priceCents": 240000
+    },
+    {
+      "karat": "14K",
+      "priceCents": 310000
+    },
+    {
+      "karat": "18K",
+      "priceCents": 400000
+    }
   ],
   "sizes": {
     "from": 4,
@@ -61,8 +70,16 @@
   "gram": {
     "model": "maker's 14K band list (docs/artifact-studio/maker_cost.py list_g14 = width x (0.836 + 0.0515 x US) x thickness / 1.5), full rectangular 7 x 2.0 mm section; 10K and 18K x alloy density 0.892 / 1.137. The channel (about 30 x 2.75 x 1.9 mm) removes about 2.1 g in 14K, kept in the cost as a buffer. Public text says 'about 10 grams in 14K at US 8.5' (11.89 - 2.1 = 9.8 g).",
     "anchorUs": 8.5,
-    "anchorGrams": { "10K": 10.6, "14K": 11.89, "18K": 13.52 },
-    "densityRatio": { "10K": 0.892, "14K": 1.0, "18K": 1.137 },
+    "anchorGrams": {
+      "10K": 10.6,
+      "14K": 11.89,
+      "18K": 13.52
+    },
+    "densityRatio": {
+      "10K": 0.892,
+      "14K": 1.0,
+      "18K": 1.137
+    },
     "weightSource": "estimated"
   },
   "stone": {
@@ -102,7 +119,12 @@
         "engineUsd": 1802,
         "engineListUsdAtAnchor": 2405,
         "everySizeFloorListUsd": 2305,
-        "worstOffsiteProfitBySizeUsd": { "US4": 474, "US8.5": 366, "US12": 252, "US16": 117 }
+        "worstOffsiteProfitBySizeUsd": {
+          "US4": 474,
+          "US8.5": 366,
+          "US12": 252,
+          "US16": 117
+        }
       },
       "14K": {
         "listUsd": 3100,
@@ -115,7 +137,12 @@
         "engineUsd": 2341,
         "engineListUsdAtAnchor": 3125,
         "everySizeFloorListUsd": 2980,
-        "worstOffsiteProfitBySizeUsd": { "US4": 675, "US8.5": 493, "US12": 325, "US16": 133 }
+        "worstOffsiteProfitBySizeUsd": {
+          "US4": 675,
+          "US8.5": 493,
+          "US12": 325,
+          "US16": 133
+        }
       },
       "18K": {
         "listUsd": 4000,
@@ -128,7 +155,12 @@
         "engineUsd": 3025,
         "engineListUsdAtAnchor": 4035,
         "everySizeFloorListUsd": 3830,
-        "worstOffsiteProfitBySizeUsd": { "US4": 935, "US8.5": 663, "US12": 432, "US16": 168 }
+        "worstOffsiteProfitBySizeUsd": {
+          "US4": 935,
+          "US8.5": 663,
+          "US12": 432,
+          "US16": 168
+        }
       }
     },
     "at35PercentSale": "every-size floors at a 35% sale are 10K 2,660 / 14K 3,440 / 18K 4,415; at the proposed prices a 35% sale stays above zero through US 12 and loses about 100 / 148 / 194 USD at US 16",
@@ -142,14 +174,14 @@
     "methodology": "docs/eon/lab-grown/price_model.py tmc; formula lib/pricing-engine/eon-cost.ts 457-472; karat rule lib/gold-cost.ts derivePurchaseCentsPerGram; two-tone rule lib/pricing/gold-index.ts V4"
   },
   "approval": {
-    "authority": "",
-    "panelDraftAuthorized": false,
-    "etsyDraftCreationAuthorized": false,
+    "authority": "Owner 2026-11-14 (reply '1a 2a 3a' to the decision list): 1a = 7.0 x 2.0 mm, nine 2.75 mm round lab grown stones, list 10K 2,400 / 14K 3,100 / 18K 4,000 USD -> 25% sale 1,800 / 2,325 / 3,000, one price for every size in each karat; scope Karat 10K/14K/18K x Ring Size US 4-16 with half sizes (75 variants), two tone fixed; 2a = gallery: 9 frames from the prompt sheet (images/PROMPTS-REVIEW.md), hero first and checked against the owner's photos, then the other 8, plus the locally typeset spec card, about 30 credits, cap 40; 3a = the owner's first photo (close-up, tweezers behind, six stones and the rounded channel end) goes in the gallery as the last frame, unedited and uncropped (Etsy real-photo rule).",
+    "panelDraftAuthorized": true,
+    "etsyDraftCreationAuthorized": true,
     "livePublicationAuthorized": false,
     "blockers": [
-      "Owner decision pending: spec and price per karat, gallery and credits, use of the owner's real photo in the listing",
       "No maker quote for this design: cost is the higher of the maker's band list (grams x 100 USD in 14K) and the EON two-tone rule (melt x 1.07 + 250 USD), + nine stones 201.60 + nine channel settings 90, all estimates",
       "Maker to confirm: width and thickness of the sample (design 7.0 x 2.0 mm, measured by ratio only), stone size and count (design 9 x 2.75 mm round, about 0.72 ct), whether two tone adds a fee to grams x 100 USD, 10K and 18K rates, inside metal, how far the band can be resized, stone colour/clarity grade, white gold rhodium plating, preparation time",
+      "Gallery not attached yet (the owner's real photo will be the last frame; until the gallery migration is applied the draft has no photos)",
       "No shop section for lab grown pieces yet",
       "Spanish translation not written"
     ]

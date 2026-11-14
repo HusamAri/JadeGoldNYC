@@ -20,6 +20,7 @@
  * Kullanım: node scripts/eon/gen_lab_grown_tmc_migration.mjs
  */
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -167,5 +168,10 @@ const sql = karatMigrationSql({
   cells,
   seal,
 });
+// 0191 canlıya uygulandı (2026-11-14, 20261114075355; mühür, başlık/açıklama/tag/malzeme md5'leri, 75 varyant ve
+// 76 audit satırı doğrulandı): gövde donuk. Paket değişirse düzeltme yeni bir koşullu UPDATE migration'ıdır.
+const APPLIED_0191_MD5 = "dcc554ed0fce8df81f7faadee5770578";
+assert.equal(createHash("md5").update(sql).digest("hex"), APPLIED_0191_MD5,
+  "0191 canlıya uygulandı; gövdesi değişmez, düzeltme yeni migration'dır");
 await writeFile(outFile, sql);
-console.log(`wrote ${path.relative(repoRoot, outFile)}`);
+console.log(`wrote ${path.relative(repoRoot, outFile)} (byte-identical to the applied body)`);

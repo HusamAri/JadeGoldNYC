@@ -194,8 +194,13 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
   `2026-11-13-two-tone-milgrain-channel-pricing.md` + `price_model.py tmc`.
 - Paket `07-two-tone-milgrain-channel/listing.json`; üreteç `scripts/eon/gen_lab_grown_tmc_migration.mjs` (ayar eksenli satırlar
   `scripts/eon/lab_grown_karat_band.mjs`; ayar kuralı ve V4 panelden doğrudan içe aktarılır). Kuru koşu mührü
-  `e535d9acc96dd1e77d6c03e307eef31c` (önerilen fiyatlarla); sorgu DSP'ninki gibi, `Metal Color` yerine `Karat`.
-  `0191_eon_lab_grown_tmc9.sql` sahip kartından sonra yazılır. Sekiz negatif kontrol yakalandı.
+  `e535d9acc96dd1e77d6c03e307eef31c`; sorgu DSP'ninki gibi, `Metal Color` yerine `Karat`. Sekiz negatif kontrol yakalandı.
+- Karar (sahip 2026-11-14, "1a 2a 3a"): 1a fiyat ve 7 mm ölçü yukarıdaki gibi; 2a galeri 9 kare (önce hero, sahibin
+  fotoğraflarıyla yan yana kontrol) + ölçü kartı, ~30 kredi, tavan 40; 3a sahibin ilk fotoğrafı (yakın çekim) son kare,
+  düzenlenmeden. `listing.json` `approval.authority`.
+- Panel taslağı: `0191_eon_lab_grown_tmc9.sql` canlıda (MCP 2026-11-14, sürüm `20261114075355`): ürün `c71b8664`, 75 varyant,
+  mühür `e535d9ac…`, fiyatlar 2.400/3.100/4.000 (ürün satırı en düşük ayar), başlık/açıklama/tag/malzeme md5'i listing.json
+  ile aynı, audit 1 + 75. Üreteç uygulanan gövdeyi md5 ile kilitler (`dcc554ed…`).
 - Galeri planı: `07-two-tone-milgrain-channel/images/` (prompts.py → prompts.json, PROMPTS-REVIEW.md, jobs.json): 9 kare,
   referans sahibin fotoğraflarından yalnız yüzüğe kırpılmış renkli kesitler; 10. kare ölçü kartı (kredisiz). Sahibin
   düzenlenmemiş fotoğrafı Etsy'nin "en az bir gerçek fotoğraf" kuralını karşılayabilir (sahip kararı).
