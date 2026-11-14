@@ -530,5 +530,80 @@ def tmc():
                 print(f"  {k} liste {lst} @ {1 - sale:.0%} (alıcı {buyer:.2f}): {row}")
 
 
+# ---- 08 Double Pear Toi et Moi (2026-11-14) -----------------------------------------------------------------
+# Girdi: sahibin linki Etsy 1522527544 "1.55 TC Double Pear Cut Two Stone Ring" (TheAmericanGoldHouse; taşlar
+# MOISSANITE: 8×6 mm armut "1.25 CT" + 5×3,5 mm armut "0.30 CT", bant "1.8 MM (Bottom)"; 14K satış $537,11).
+# Tasarım (7 fotoğraf): ince düz cilalı bant, üstte yan yana iki armut taş, ZIT yönde (büyüğün ucu bir yana, küçüğün
+# ucu öbür yana; gövdeleri neredeyse değiyor), her taş üç tırnakta (uçta bir, yuvarlak tarafta iki), alçak sepet.
+# Lab-grown elmas armut karatı ≈ boy × en × derinlik(%60 en) × 0,0060: 8×6 → ~1,04 ct ("about 1 ct"), 5×3,5 → ~0,22 ct.
+# Üretici teklifi YOK. Taş: üreticinin tek taş ölçeği (taş başına) 1 ct $200; küçük taş bilinen tek lab oranı $280/ct.
+# Gram: bant üreticinin 14K bant listesinden, 1,8 × 1,6 mm TAM dikdörtgen kesit (gerçek profil yuvarlak, dolayısıyla
+# tampon) + iki sepet ve altı tırnak ~1,0 g (8×6 sepet + 3 tırnak ~0,6 g, 5×3,5 ~0,3 g, yukarı yuvarlandı; kalibre değil).
+SPOT_DP = 3887.60          # gold-api.com 2026-11-14 17:12 UTC
+DP_W, DP_T = 1.8, 1.6
+DP_HEADS_G = 1.0
+DP_STONES = [("8 × 6 mm pear", 1.00, 200.0), ("5 × 3.5 mm pear", 0.22, 0.22 * 280)]   # ad, ct, USD
+DP_SETTING_EACH = 20       # tırnak + sepet takma, taş başı (kalibre değil; bilinenler DSP $4 mikro, Model 2 $10 baget)
+DP_SIZES = [4, 5, 6, 7, 8, 8.5, 9, 10, 11, 12, 13, 14, 15, 16]
+DP_LISTS = [1400, 1450, 1500, 1550]
+DP_REF_14K_SALE = 537.11   # referans 14K moissanite, indirimli fiyat (2026-11-14)
+
+
+def dp_g(us):
+    """Bant (üreticinin 14K listesi, 1,8 × 1,6 mm tam kesit) + iki sepet."""
+    return DP_W * (0.836 + 0.0515 * us) * DP_T / 1.5 + DP_HEADS_G
+
+
+def dp_extras():
+    return sum(usd for _, _, usd in DP_STONES) + len(DP_STONES) * DP_SETTING_EACH
+
+
+def dp_cost(us):
+    return dp_g(us) * VB_USD_G + dp_extras()
+
+
+def dp_profit(buyer, us):
+    return 0.905 * buyer - min(0.15 * buyer, 100) - FIX - (dp_cost(us) + PACK + SHIP)
+
+
+def dp_floor(sale=0.75):
+    """Her bedende en kötü Offsite kârı ≥ MIN_PROFIT olan en düşük liste (5'in katı); bağlayan beden US 16."""
+    lst = 5
+    while min(dp_profit(lst * sale, us) for us in DP_SIZES) < MIN_PROFIT:
+        lst += 5
+    return lst
+
+
+def dp():
+    m14 = SPOT_DP / TROY * PURITY["14K"]
+    print(f"spot {SPOT_DP}: melt 14K ${m14:.2f}/g; üretici $100/g içinde işçilik ~${VB_USD_G - m14:.2f}/g")
+    for name, ct, usd in DP_STONES:
+        print(f"  taş {name}: ~{ct:.2f} ct, ${usd:.2f}")
+    print(f"  toplam ~{sum(ct for _, ct, _ in DP_STONES):.2f} ct; tırnak takma {len(DP_STONES)} × ${DP_SETTING_EACH}; "
+          f"ekler ${dp_extras():.2f}")
+    print("beden  gram   maliyet  landed")
+    for us in DP_SIZES:
+        print(f"  US{us:<4g} {dp_g(us):.2f}   ${dp_cost(us):.2f}  ${dp_cost(us) + PACK + SHIP:.2f}")
+    landed = dp_cost(8.5) + PACK + SHIP
+    print(f"\n-- US 8½: maliyet ${dp_cost(8.5):.2f}  landed ${landed:.2f} --")
+    for sale, lbl in [(0.75, "%25"), (0.65, "%35"), (1.0, "indirimsiz")]:
+        eng, lst, s, p = retail(landed, MULT_NARROW, sale)
+        print(f"  {lbl:10s} engine {eng}  liste {lst}  alıcı {s}  kâr(en kötü Offsite) {p}")
+    for sale in (0.75, 0.65):
+        print(f"  her beden ≥ ${MIN_PROFIT} (%{(1 - sale) * 100:.0f}): liste ≥ {dp_floor(sale)}")
+    print(f"  referans 14K moissanite indirimli: ${DP_REF_14K_SALE}")
+    print("\n-- tek fiyat, bedene göre kâr (en kötü Offsite) --")
+    for lst in DP_LISTS:
+        for sale in (0.75, 0.65):
+            buyer = lst * sale
+            row = "  ".join(f"US{us:g} {dp_profit(buyer, us):+.0f}" for us in (4, 7, 8.5, 12, 16))
+            print(f"  liste {lst} @ {1 - sale:.0%} (alıcı {buyer:.2f}): {row}")
+    print("\n-- duyarlılık (US 8½, liste 1400 @ %25) --")
+    base = dp_profit(1050, 8.5)
+    for lbl, dcost in [("1 ct taş $300 (üreticinin ölçeği aşılırsa)", 100), ("küçük taş $100", 100 - 0.22 * 280),
+                       ("takma $10/taş", -20), ("sepet 1,5 g", 50), ("bant 2,0 × 1,8 mm", 2.0 * 1.27375 * 1.8 / 1.5 * 100 - 1.8 * 1.27375 * 1.6 / 1.5 * 100)]:
+        print(f"  {lbl}: kâr {base - dcost:+.0f} (taban {base:+.0f})")
+
+
 if __name__ == "__main__":
-    {"vb": vb, "fr": fr, "hs": hs, "hep": hep, "pc": pc, "tmc": tmc}.get(sys.argv[1] if len(sys.argv) > 1 else "", dsp)()
+    {"vb": vb, "fr": fr, "hs": hs, "hep": hep, "pc": pc, "tmc": tmc, "dp": dp}.get(sys.argv[1] if len(sys.argv) > 1 else "", dsp)()

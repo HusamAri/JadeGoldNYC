@@ -212,10 +212,57 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
   arka, 06 profil, 07 koyu zemin, 08 avuçta ölçek, 09 kanal ucu, 10 ölçü kartı (`images/spec_card.py`, listing.json'dan,
   metin kapılı), 11 sahibin fotoğrafı (1512×2016, pikseller aynı; yalnız EXIF ve APP13 segmentleri söküldü).
   Dosyalar `public/eon/lab-grown-tmc9/01-11.jpg`; migration `0192_eon_lab_grown_tmc9_gallery.sql` (üreteç
-  `scripts/eon/gen_lab_grown_tmc_gallery_migration.mjs`, md5 `847c283a…`). **Uygulanmadı:** önce merge + prod dağıtımı,
-  11 URL canlıda 200 ve md5 eşleşmesi, ürünün galerisi hâlâ boş mu kontrolü; sonra MCP. Paneldeki
-  `metadata.approval.blockers` içindeki "Gallery not attached yet" satırı 0191'in kilitli gövdesinden gelir ve 0192'den
-  sonra bayat kalır; panel bu listeyi göstermez ve itişi bloke etmez.
+  `scripts/eon/gen_lab_grown_tmc_gallery_migration.mjs`, md5 `847c283a…`). **Canlıda** (MCP 2026-11-14, sürüm
+  `20261114163837`), #506 merge'ünden ve prod dağıtımından sonra: 11 URL canlıda 200 ve md5'leri status.json ile aynı;
+  ön koşul tuttu (taslak, Etsy'de değil, galeri boş, son audit 0191). Ürün `c71b8664`: 11 `listing_images` (sıra 0-10),
+  `image_url` 01.jpg, `num_images` 11, galeri mührü `md5(sıra|url|alt)` = `0cf49667…` = status.json, 75 varyant
+  dokunulmadı. Paneldeki `listing_metadata.approval.blockers` içindeki "Gallery not attached yet" satırı 0191'in kilitli
+  gövdesinden gelir ve artık bayattır; panel bu listeyi göstermez ve itişi bloke etmez.
+
+## 08 Double Pear Toi et Moi, iki armut taş (EON-PEAR2), 2026-11-14
+- Girdi: sahibin linki Etsy 1522527544 "1.55 TC Double Pear Cut Two Stone Ring • You N Me Wedding Ring" (moissanite,
+  14K $537,11): "new model". Etsy 403 verdi; sayfa Google çeviri vekiliyle okundu (JSON-LD + varyasyon seçicileri),
+  7 fotoğraf doğrudan indi; repoya alınmadı.
+- Tasarım: 14K, 1,8 × 1,6 mm ince düz bant; üstte yan yana iki armut lab-grown taş, 8 × 6 mm (~1,0 ct) ve 5 × 3,5 mm
+  (~0,22 ct). Uzun eksenler parmak boyunca, uçlar zıt yönde ve öbür taşa doğru hafif eğik; her taş alçak sepette üç
+  tırnakla tutuluyor (uçta V, yuvarlak uçta iki). Referansın "1.25 + 0.30 ct" beyanı fiziğe göre ~%25 fazla (Allurez de
+  8 × 6 mm armuta 1,00 ct diyor); karat, üretici teyidinden önce kamuya açık metne girmez.
+- Fiyat önerisi: liste **$1.450** → %25 vitrin → alıcı **$1.087,50**, her beden tek fiyat. Kötümser maliyet US 8½'te
+  $646,16: tam kesit gram + sepetler 1,0 g, 1 ct taş $200 (üreticinin ölçeği), 0,22 ct $280/ct, tırnak takma taş başı
+  $20. En kötü Offsite kârı en düşük US 16'da +$133; %35 vitrinde de her beden ≥ 0. Her beden ≥ $50 tabanı $1.330.
+  Piyasa: 1 ct lab-grown toi et moi $786–1.925. Kanıt: `2026-11-14-double-pear-pricing.md` + `price_model.py dp`.
+- Paket `08-double-pear/listing.json` (`sculptural_ring`, Jewelry > Rings; toi et moi bant değil, Width ekseni yok).
+  Üreteç `scripts/eon/gen_lab_grown_pear_migration.mjs` → `0193_eon_lab_grown_pear2.sql`, satırlar ortak
+  `lab_grown_band.mjs`. Kuru koşu mührü `f6db68fcc34f248c9054a194f5a67ed7`. Beş negatif kontrol yakalandı: moissanite,
+  metinde karat, kardeş listing sözcüğü, bayat kâr tablosu, niteliksiz diamond tag'i. Sahip onayı (`approval.authority`)
+  yazılmadan migration dosyası yazılmaz.
+- Galeri planı: `08-double-pear/images/` (prompts.py → prompts.json, PROMPTS-REVIEW.md, jobs.json). 9 kare; referanslar
+  sahibin linkindeki fotoğraflardan siyah-beyaz sıkı kırpımlar (refPair, refTop, refFront, refSide), renk yalnız metinden.
+  10. kare ölçü kartı (kredisiz). Prompt kapıları: iki taş, üç tırnak, zıt yön ve iç içe duruş, her pozda uçların yönü, el
+  yalnız el karelerinde, yansıma cümlesi, yasak sözcükler (toi et moi, engagement, solitaire, moissanite, halo, sparkle,
+  carat…). Kredi harcamadan önce kendi okumam üç kusur düzeltti: 07'de birbiriyle çelişen duruş ("on its side" +
+  "looks down"), 04 ve 09'da taşları ~%40 büyük çizdirecek ölçek oranları.
+- Karar (sahip 2026-11-14, "1a,2a,3a"): 1a fiyat $1.450 → $1.087,50 ve yukarıdaki ölçü/kapsam; 2a galeri 9 kare (önce
+  hero, referans kırpımlarıyla yan yana kontrol) + ölçü kartı, ~20–26 kredi, tavan 40; 3a karat, üretici teyidine kadar
+  kamuya açık metne girmez. `listing.json` `approval.authority`.
+- Panel taslağı: `0193_eon_lab_grown_pear2.sql` canlıda (MCP 2026-11-14, sürüm `20261114175218`): ürün `4ea794fa`, taslak,
+  Etsy'de değil, 75 varyant, mühür `f6db68fc…`, başlık/açıklama/tag/malzeme/onay md5'i listing.json ile aynı, audit
+  1 + 75. Üreteç uygulanan gövdeyi md5 ile kilitler (`85007f77…`). Varyanttaki `stone_carat` (1,22) yalnız iç maliyet
+  verisi; Etsy itişi onu okumaz (`lib/` içinde tek okuyucu uyarı merkezi).
+- Galeri (2026-11-14, `images/status.json`): 18 üretim = 36 kredi (tavan 40; bakiye 5.083,4 → 5.047,4, fark yok). Hero v1
+  referans kırpımlarıyla tuttu, ilk parti gitti; sahip "görsellerde damlaların yönü doğru değil" dedi. Yön yalnız taşların
+  kameraya yüzünü döndüğü 02 (tepeden) ve 07'de (yatık, önden) doğruydu; halkanın dik durup önden ya da 45°'den göründüğü
+  01/03/05/06/09'da model damlaları bant boyunca, çapraz ya da aynı yöne dizdi, 04'te büyük taş ele baktı. v2 ("devam"):
+  her poz taşları kameraya yüzü dönük gösterir; yön fotoğrafın kendi düzleminde ve referansın el yönünde yazılır (bant
+  yatayken büyük taş solda ucu aşağıda, küçük sağda ucu yukarıda; 07 v1 bunun aynasıydı). v2 01/03/06/07/09'da tuttu;
+  04 v3'te (parmaklar yukarı, bant yatay: referans fotoğrafın kadrajı) ve 05 v3'te (v2 üç yüzükte de iki damlayı aşağı
+  çevirdi; kabul edilen hero'nun taş kırpımı siyah-beyaz referans verildi) tuttu. Sıra: 01 hero (yatık, mavi-gri karo),
+  02 taşlar tepeden, 03 yukarıdan (şambre), 04 elde, 05 üç metal, 06 beyaz, 07 rose, 08 profil, 09 iki parmak arası,
+  10 ölçü kartı (`images/spec_card.py`, listing.json'dan, metin kapılı, karat yok). Dosyalar
+  `public/eon/lab-grown-pear2/01-10.jpg` (2400×1792, meta veri yok, <1 MB); migration
+  `0194_eon_lab_grown_pear2_gallery.sql` (üreteç `scripts/eon/gen_lab_grown_pear_gallery_migration.mjs`, md5
+  `d78c61b4…`, galeri mührü `md5(sıra|url|alt)` = `5e9bcc95…`). Uygulama: PR merge edilip prod dağıtımı hazır olduktan,
+  10 URL canlıda 200 dönüp md5'leri status.json ile tuttuktan ve ürünün galerisi hâlâ boşken.
 
 ## Üreticiye açık sorular (cevap gelmeden Etsy'ye çıkmaz)
 0. **(2026-11-07, DSP canlı)** $550 (Model 1) ve $1.150 (Model 2) fiyatlarına taş ve taş takma dahil mi? Model 2'de
@@ -248,6 +295,12 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
     yalnız oranla ölçüldü), taş boyu ve sayısı (tasarım 9 × 2,75 mm round, ~0,72 ct; bedenle sabit mi), numune hangi beden;
     fiyat gram × $100 + taş + taş başı kanal takma mı, iki ton ayrıca ücret mi, 10K ve 18K $/g; iç yüzey beyaz mı; resize
     aralığı; taş rengi/berraklığı, beyaz altında rodyum, üretim süresi.
+
+11. **(2026-11-14, PEAR2)** 1,8 × 1,6 mm ince bant, üstte 8 × 6 mm ve 5 × 3,5 mm armut lab-grown, her biri üç tırnaklı
+    alçak sepette: fiyat gram × $100 + taş + taş başı tırnak takma mı, takma kaç $; 8 × 6 mm armut ~1,0 ct mı ve "1 ct
+    $200" ölçeği armuta da uyar mı, 5 × 3,5 mm armut (~0,22 ct) kaç $; bant kalınlığı (tasarım 1,6 mm), sepet ve tırnak
+    gramı (tasarım 1,0 g), taşların banttan yüksekliği; resize aralığı; taş rengi/berraklığı, beyaz altında rodyum,
+    üretim süresi, fiyat bedenle değişir mi.
 
 ## Diğer teklifler (aynı not, ileride)
 - Model 2: 6 mm baguette eternity, 2,20 mm min kalınlık, 6×2 mm taş 0,35 ct, taş $280/ct,
