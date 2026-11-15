@@ -67,9 +67,39 @@ mağaza geneli %25.
 3. price-sync kuru koşu: listing başına `offeringFarki` = plandaki değişen sayı; kanarya;
    partiler; taze token'la bağımsız geri okuma (hepsi `unchanged`).
 
-## Sonuç
+## Sonuç (2026-11-15, 10:21-10:53 UTC)
 
-(uygulamadan sonra doldurulur: sayılar, mühürler, audit satırları)
+| Adım | Sonuç |
+| :--- | :--- |
+| Mirror | 117 listing / 24.218 offering; toplu mühür `ab58c068893cfb7e5e50a00d8752cbb6` = sabah canlı okuması (Etsy arada değişmemiş) |
+| Plan (kuru) | 35.093 offering kapsamda; 99 listing'de 12.344 değişiklik: 11.969 kesinti, 375 yükseltme |
+| Panel yazımı | A 5.414, B1 3.530, B2 3.400 satır; üçü de ön mühür CAS'ıyla yazıldı, panel mührü = son mühür |
+| Etsy kuru koşu | 99 listing, 12.344 fark = plan, listing başına 0 uyuşmazlık |
+| Kanarya | 4539493533: 9 yazıldı, kalan 0; taze token'la okuma `unchanged` (panelVaryant 275) |
+| Push | **96 listing, 11.273 offering** yazıldı, her listing'de read-back kalan 0 |
+| Engellenen | 3 Flat Milgrain listing (4570232103, 4570232571, 4570233049; 1.071 planlı kesinti): `putListingInventory` koruması yalnız doğrulanmış 378 satırlık taslak akışına izin veriyor. Etsy fiyatı değişmedi; panel aynası mirror ile Etsy'ye geri döndürüldü |
+| Bağımsız okuma | taze token'la 99/99 `unchanged`, 0 fark |
+| Audit | `etsy.reprice` 96, `etsy.variant_sync` 120, varyant fiyat satırı 37.633 (= 24.218 + 12.344 + 1.071) |
+| Token | 92 basıldı, açık token 0 |
+
+Kesinti ortalaması (planda): A %11,90, B1 %14,22, B2 %13,48. Yükseltme ortalaması %29,48
+(375 offering; çoğu 10K rose gold düz bantlar 2-4 mm, 4 mm satin-center, 10K basketweave,
+10K rose milgrain).
+
+Son panel mühürleri (`md5(sku|cent)`, C sırası, kapsam filtresiyle):
+A `0970c600c8a00f152b326b04371599c4` (= plan), B1 `c9d2927be1aef4a7050147221d28e9a7`
+(plan eksi 3 Flat Milgrain), B2 `879475d099830505d356d7ac552c10ef` (= plan).
+Ön mühürler: A `6c31a2c87bc9983bc09a953d761881b8`, B1 `7addb98b41ede85d3a56b497639b3ed8`,
+B2 `122fd3d52a7bb907049c99815d326525`.
+
+Örnek (US 9, liste → liste; %25 indirimde alıcı):
+- 10K rose beveled 2 mm: $309 → $412 (alıcı $232 → $309), her satışta zarar ediyordu.
+- 14K yellow flat 6 mm: $1.186 → $1.106 (alıcı $890 → $830), tabana kadar; piyasa medyanı $818.
+- Cadence 14K 6 mm: $1.790 → $1.525 (alıcı $1.343 → $1.144), %15 tavan.
+
+Açık iş: Flat Milgrain üç listing için doğrulanmış ızgarayı koruyan, yalnız fiyat değiştiren
+bir push yolu (sahip kararı); QS26 SKU onarımı; satin/Greek SKU çakışmasının çözümü; CRGRN
+yalnız US 13 sorusu.
 
 ## Sahip için Cyber runbook (Shop Manager, API yok)
 

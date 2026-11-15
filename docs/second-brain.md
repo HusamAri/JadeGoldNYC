@@ -2092,6 +2092,16 @@ repodaki hedefidir.
   kalanı sayısıyla söyle (189); (d) elle yazdığın karşılaştırma tablosunu üretilen CSV'ye karşı satır satır doğrula:
   ilk taslakta 12 satırın 3'ü yanlıştı. Zincir tuttu: ön mühür = canlı, son mühür = repo (gümüş 94350936, altın
   aef08ece), kuru 144 ve 4.914 fark, kanarya, taze token'la bağımsız okuma 144/144 ve 4.914/4.914, 28 audit satırı.
+  **Güçlendirme (2026-11-15, EON Cyber) — bayat aynanın üstüne plan yazma; canlıyı panelden türetme, aynayı tazele ve
+  iki sayımı eşitle:** sahip 10 Kasım'da EON fiyatlarını Etsy'de elle değiştirmişti; panel 117 listing / 24.218
+  offering'de eskiydi ve price-sync apply listing'in TÜM panel SKU'larını bastığı için plan dışı varyantlar da geri
+  dönecekti. İlk analizde canlıyı `panel × listing oranı` diye kurdum; gece senkronu arada 7 listing'i tazelemişti ve oran
+  ikinci kez uygulandı: Greek key'de "150 offering her satışta zarar" çıktı, gerçekte 0'dı (listing mühürlerini canlı
+  okumayla karşılaştırmak yakaladı). Hayalet panel satırları da sayıyı şişirdi (satin kesintilerinin %95'i Etsy'de yoktu).
+  Kural: (1) yazmadan önce aynayı Etsy'den tazele (`price-sync ?mirror=1`) ve toplu mühürle canlı okumaya eşitle;
+  (2) push'tan önce Etsy kuru koşusunun listing başına fark sayısı planın değişiklik sayısına birebir eşit olsun (12.344,
+  0 uyuşmazlık), bu hem aynayı hem planı kanıtlar; (3) yalnız Etsy'de var olan SKU'ları say; (4) bir koruma (Flat Milgrain
+  378 satır kapısı) yazmayı reddederse onu delme, o listing'in aynasını geri al ve sahibe sor.
 
 ## Ürün/UX dersleri
 
