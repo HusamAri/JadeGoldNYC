@@ -11,6 +11,7 @@ import {
 } from "@/lib/etsy/inventory";
 import { logAudit } from "@/lib/audit";
 import { etsyMoneyToUnit } from "@/lib/etsy/types";
+import { syncOneListingVariants } from "@/lib/etsy/variants";
 
 export const maxDuration = 300;
 
@@ -35,6 +36,16 @@ export const maxDuration = 300;
  *  - Apply sonrası AYNI turda read-back: envanter yeniden okunur ve kalan
  *    fark sayısının 0 olduğu kanıtlanır ("200 OK" teslim sayılmaz).
  *  - Fiyatı 0/NULL panel varyantı haritaya girmez (canlı fiyatı ezemez).
+ *  - `?mirror=1`: TERS yön, Etsy'ye tek bayt gitmez. Her listing için
+ *    `syncOneListingVariants` koşar (Etsy envanterini okur, panel aynasına
+ *    fiyat/adet yazar; gram ve taş maliyetine dokunmaz). `apply` ile birlikte
+ *    verilemez.
+ *    NEDEN: apply, listing'in panelde fiyatı olan TÜM SKU'larını basar. Panel
+ *    eskiyse, plana girmeyen varyantlar da eski panel fiyatına geri döner.
+ *    2026-11-15'te EON'da 117 listing / 24.218 offering bu durumdaydı: sahip
+ *    10 Kasım'da Etsy'de fiyatları elle değiştirmişti, gece senkronu süre
+ *    bütçesine takılıp aynayı günlerce erteliyordu. Fiyat planı yazmadan önce
+ *    hedef listing'lerde ayna bu modla tazelenir, sonra mühürle doğrulanır.
  */
 
 async function authorize(request: Request): Promise<boolean> {
@@ -68,6 +79,13 @@ export async function GET(request: Request) {
   const url = new URL(request.url);
   const apply = url.searchParams.get("apply") === "1";
   const detail = url.searchParams.get("detail") === "1";
+  const mirror = url.searchParams.get("mirror") === "1";
+  if (mirror && apply) {
+    return NextResponse.json(
+      { error: "mirror ve apply birlikte verilemez (mirror yalnız panele yazar)" },
+      { status: 400 },
+    );
+  }
   const listingsParam = url.searchParams.get("listings") ?? "";
   const listingIds = listingsParam
     .split(",")
@@ -122,6 +140,30 @@ export async function GET(request: Request) {
       continue;
     }
     const productId = (prod as { id: string }).id;
+
+    if (mirror) {
+      // Panel aynası ← Etsy. Etsy'ye yazmaz; sonuç satırı aynanın kaç SKU
+      // yazdığını söyler (0 ise Etsy'de SKU'lu offering yok demektir).
+      const s = await syncOneListingVariants(orgId, productId);
+      results.push({
+        listing: listingId,
+        status: s.error ? "error" : "mirrored",
+        variants: s.variants,
+        detail: s.error ?? null,
+      });
+      if (!s.error) {
+        await logAudit(admin, {
+          orgId,
+          action: "etsy.variant_sync",
+          entityType: "product",
+          entityId: productId,
+          summary:
+            `Panel aynası Etsy'den tazelendi (ops price-sync mirror): listing ${listingId} — ` +
+            `${s.variants} varyant yazıldı; Etsy'ye yazım yok.`,
+        });
+      }
+      continue;
+    }
 
     const { data: vars } = await admin
       .from("product_variants")
@@ -209,5 +251,5 @@ export async function GET(request: Request) {
     }
   }
 
-  return NextResponse.json({ ok: true, apply, results });
+  return NextResponse.json({ ok: true, apply, mirror, results });
 }
