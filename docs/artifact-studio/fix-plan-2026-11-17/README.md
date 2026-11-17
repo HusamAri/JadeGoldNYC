@@ -19,7 +19,7 @@ Sources: panel mirror of the shop synced 2026-11-16 06:20 UTC; `etsy_ledger_entr
 | A2: 393.97 USD, 660 clicks, about 0.54 USD a click | 0.60 USD a click; ledger 141.54 USD for 1 to 16 Nov, 0 orders | holds, number corrected |
 | A3: 20 Evil Eye listings at quantity 1 | 20 Evil Eye and the stub at 1; hammered band 4590704706 at 19 | holds, one more listing |
 | A4: 7 inch stub 4612132585 | created 8 Nov, no tags, no variants; parent 4590689501 sells 7.5, 8 and 8.5 in from 440 | holds |
-| A5: 98 listings say 3 to 5 days, 117 say nothing | 127 say 3 to 5 days, 2 say 2 business days, 88 say nothing | counts differ; the real gap is in Etsy, see 2.2 |
+| A5: 98 listings say 3 to 5 days, 117 say nothing | 127 say 3 to 5 days, 2 say 2 business days, 88 say nothing; the Etsy profile itself is 3 to 5 days | counts differ, see 2.2 |
 | A6: old brand name | 0 descriptions carry it; it lives in shop settings and messages | holds |
 | B1: reprice from weight | gold is about a fifth of the cost of a small piece | does not work as written, see 2.3 |
 | B2: 211 of 217 descriptions give no weight | 6 give one | holds |
@@ -46,14 +46,18 @@ The order carried an expected ship date of 19 Oct, the next business day. So the
 the first hour, not the result of a parcel that failed to move. Possible causes: the buyer asked to cancel, the
 promised date could not be met (2.2), or a test purchase. Only the owner can say which.
 
-### 2.2 The production time is wrong in Etsy itself
-On 12 Nov every listing page read said "Get it by Nov 14-24 if you order today". The 18 Oct order had one
-business day to ship. Descriptions say 3 to 5 business days (127), 2 business days (2) or nothing (88); the
-order message says 2 business days. A made to order gold piece cannot arrive two days after purchase, and Etsy
-counts on-time shipping and the case window from its own setting, not from the description.
-Fix order: the owner picks the real number, sets it in the Etsy processing profile and the order message, and
-the copy pass (P3) writes the same number into every description. Playbook 06 baseline is 5 to 7 production
-plus 3 to 5 transit business days.
+### 2.2 Production time: the Etsy profile is right, the messages around it are not
+Corrected on 17 Nov. The quantity dry run (P1) read the shop's processing profile from the API: one definition,
+made to order, 3 to 5 days, on every one of the 2,079 offerings read. The first version of this section said
+Etsy promised about one business day. That was inferred from the buyer estimate and is wrong for the setting.
+What is still off: the order message says 2 business days (report), two silver descriptions say 2 business
+days, 88 descriptions give no time, and the buyer estimate starts two days out ("Get it by Nov 19-Dec 1" on
+17 Nov). Etsy builds that estimate from carrier times and shipping history as well, and the shop's only order
+was marked shipped on the day it was placed. The 18 Oct order carried a ship date of 19 Oct, so the profile was
+shorter then or has been edited since.
+Fix order: the owner confirms that 3 to 5 days is the real number (the report says Leander's standard is 4 to
+5), the order message and templates follow, and the copy pass (P3) writes the same number into every
+description. Playbook 06 baseline is 5 to 7 production plus 3 to 5 transit business days.
 
 ### 2.3 Prices: the formula is not the problem, the maker quote for small pieces is
 Buyer price is the Etsy price after today's 15% sale. Rule = the 12 Nov break-even rule:
@@ -131,9 +135,9 @@ dry run, canary, apply, read back with a fresh token, audit check.
 | O1 | owner | Pause the six silver ads | 2 min | |
 | O2 | owner | Deactivate coupon MAKEITYOURS; no offer above 25% | 3 min | |
 | O3 | owner | Find and stop whatever rewrote 18 descriptions, 19 titles and 21 tag sets on 14 to 16 Nov; keep the Alura no-sales automation paused | 5 min | |
-| O4 | owner | Pick the real production time; set it in the Etsy processing profile | 5 min | |
+| O4 | owner | Confirm the production time. The Etsy profile reads 3 to 5 days; change it only if the real number differs | 2 min | |
 | O5 | owner | One line on the 18 Oct order: who asked for the refund | 2 min | |
-| P1 | panel | Quantity 20 on the 20 Evil Eye listings and on 4590704706 (19). New small route around `pushListingQuantity` | 40 min | |
+| P1 | panel | DONE 17 Nov. Quantity 20 on the 20 Evil Eye listings and on 4590704706 (19), through `ops/quantity-set` | | |
 | P2 | panel | Stub 4612132585: title, description and 13 tags from parent 4590689501, typo fixed. Section and photos in the Etsy editor | 20 min | |
 | P3 | panel | One copy pass over the live text of all 217: photo clauses (30+), "listed as" (5), dash characters (85 descriptions, 5 titles), one production line, weight line on the 28 listings with firm grams | half a day, one dry run to read | O3, O4 |
 | P4 | panel | 2027 enamel set, 20 listings: break-even rule, buyer price about 38% lower. Mirror refresh first (`price-sync ?mirror=1`) | 1 h | owner confirms quotes 350, 375, 380, 365 |
@@ -160,8 +164,15 @@ Heart Ring.
 
 ## 4. Not readable from here
 Alura (scores, automations, costs, follow-ups), buyer messages, the order message and About text, the list of
-coupons and targeted offers, per listing ad clicks, the Offsite Ads switch, the value of the Etsy processing
-profile, whether Cyber Specials is joined, whether any listing has a real photo.
+coupons and targeted offers, per listing ad clicks, the Offsite Ads switch, whether Cyber Specials is joined,
+whether any listing has a real photo.
 
 ## 5. Log
 - 2026-11-17: report checked, plan written. No writes.
+- 2026-11-17: P1 applied on the owner's "start with 4". Route `app/api/ops/quantity-set` (commit b3e6b1c, tests
+  `tests/quantity-set.test.ts` 11 of 11). Dry run 21 of 21 would-set: 20 listings at 1, 4590704706 at 19, 2,079
+  offerings, no quantity on a variation, no mixed quantities. Canary 4592082029 set, re-read with a fresh token
+  20 seconds later. The other 20 set in three calls. Fresh-token re-read of all 21: quantity 20, 2,079 offerings.
+  Every write kept the price and structure fingerprint. Panel `products.quantity` is 20 on all 21; 21
+  `etsy.stock_push` audit rows (source `ops/quantity-set`); 12 tokens minted, 11 used, 1 closed, 0 open.
+  The same dry run read the processing profile and corrected section 2.2.

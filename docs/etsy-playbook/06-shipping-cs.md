@@ -32,3 +32,4 @@ Sipariş onayı · prova onayı · gecikme (ship-by'dan önce) · gönderildi ·
 - Fiyat motorlarında kargo sabit: EON $22 + $8 paket (`lib/pricing-engine/eon-cost.ts:119`, `scripts/eon/gen_*`), Jade $5 (`lib/jade/pricing.ts:26`); sigorta + imza değere göre büyüyor.
 - EON üreteçleri "Allow 4 to 5 business days" yazıyor (ör. `scripts/eon/gen_willow_package.mjs:244`); temel 5-7. Canlı readiness state doğrulanmalı.
 - `lib/star-seller.ts` ≥5 sipariş şartını kontrol etmiyor. Mesaj şablonu modülü ve case/chargeback akışı yok.
+- **2026-11-17, Leander:** canlı işlem profili API'den okundu (`ops/quantity-set` kuru çalışması): tek tanım, `made_to_order`, 3-5 gün, okunan 2.079 offering'in hepsinde. Alıcıya gösterilen tahmin yine de 2 gün sonradan başlıyor ("Get it by Nov 19-Dec 1", 17 Kas): Etsy tahmine taşıyıcı süresini ve sevk geçmişini de katıyor. Tahmin, profilin değeri sayılmaz.

@@ -2103,6 +2103,22 @@ repodaki hedefidir.
   0 uyuşmazlık), bu hem aynayı hem planı kanıtlar; (3) yalnız Etsy'de var olan SKU'ları say; (4) bir koruma (Flat Milgrain
   378 satır kapısı) yazmayı reddederse onu delme, o listing'in aynasını geri al ve sahibe sor.
 
+- **Türetilmiş gösterge ayarın kendisi değildir; bir ayarı "yanlış" ilan etmeden önce kaynağından oku, o okumayı da
+  kuru çalışmaya bedavaya ekle (2026-11-17, Leander düzeltme planı):** Dış bir raporu denetlerken iki nedensel okuma
+  çıktı, ikisini de zaman damgası ve kaynak ayar çürüttü. (1) Rapor "tek sipariş postada kalmadı, iade edildi"
+  diyordu; ledger sırayı tersine çevirdi: ödeme 03:55, tam iade 05:04 (68 dakika sonra), etiketler 08:10 ve 16:24.
+  İade bir kargo arızasının sonucu değil, ilk saatte verilmiş bir karardı. (2) Aynı hatayı ben de yaptım: listing
+  sayfasındaki "Get it by Nov 14-24" tahmininden ve eski siparişin sevk tarihinden "Etsy işlem süresi 1 iş günü"
+  sonucunu çıkarıp plana yazdım. Adet rotasının kuru çalışmasına eklediğim salt okunur işlem profili dökümü aynı gün
+  çürüttü: tek tanım, made_to_order, 3-5 gün. Etsy tahmine taşıyıcı süresini ve sevk geçmişini de katıyor (tek
+  sipariş aynı gün "gönderildi" işaretlenmişti). Kural: (a) bir raporun anlattığı NEDEN, olayların saat sırası
+  okunmadan kabul edilmez; (b) alıcıya gösterilen tahmin, rozet ya da skor bir ayarın çıktısıdır, ayarın değeri
+  API'den okunur; (c) yeni bir ops rotasının kuru çalışmasına o işe komşu, ucuz bir salt okuma ekle (burada tek GET):
+  bir sonraki adımın sorusunu sormadan cevaplar; (d) yanlış çıkan iddiayı aynı turda plan dosyasında ve sahibe düzelt.
+  Yürütme zinciri tuttu: kuru 21/21 (20 listing adet 1, biri 19; 2.079 offering), kanarya ve 20 sn sonra taze
+  token'la okuma, 20 listing daha, taze token'la 21/21 adet 20, her yazımda fiyat ve yapı izi birebir, 21 audit
+  satırı, açık token 0.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
