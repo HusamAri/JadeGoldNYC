@@ -8,10 +8,15 @@ import { publicTextProblem } from "@/lib/etsy/strip-internal";
  * kopyalar (2026-11-17, Leander: mesajlardan açılmış özel sipariş listing'i
  * 4612132585 yalnız Etsy'nin yer tutucu grafiğini taşıyordu).
  *
- * Kimlik iki yerde sabitlenir:
- *  - KAYNAK: spec, gözle incelenmiş karelerin `listing_image_id` sırasını ve
- *    indirilen baytların sha256'sını taşır. Canlı galeri bu sıradan farklıysa
- *    (sahip bir kareyi değiştirdiyse) kopya yapılmaz.
+ * Kimlik üç yerde sabitlenir:
+ *  - KAYNAK: spec, gözle incelenmiş karelerin `listing_image_id` sırasını
+ *    taşır. Canlı galeri bu sıradan farklıysa (sahip bir kareyi değiştirdiyse)
+ *    kopya yapılmaz.
+ *  - BAYT: yüklenen dosya Etsy'nin görsel adresinden DEĞİL, karenin panel alan
+ *    adındaki özgün dosyasından gelir ve sha256'sı spec'te mühürlüdür. Etsy'nin
+ *    görsel sunucuları aynı adrese istemciye göre farklı bayt döndürür
+ *    (2026-11-17: on karenin altısında), yani oradan alınan bayt mühürlenemez.
+ *    Özgün dosyanın canlı kareyle aynı resim olduğu spec yazılırken ölçülür.
  *  - HEDEF: yüklenen her kare kendi alt text'iyle tanınır. Alt text'ler spec
  *    içinde tekildir; aynı kare iki kez yüklenmez ve yarım kalan koşu kaldığı
  *    yerden devam eder.
@@ -25,7 +30,9 @@ import { publicTextProblem } from "@/lib/etsy/strip-internal";
 export type PhotosCopyFrame = {
   /** Kaynak listing'deki listing_image_id. */
   image: number;
-  /** İncelenen url_fullxfull baytlarının sha256'sı. */
+  /** Karenin özgün dosyası, panel alan adındaki yolu (repoda `public` altında). */
+  file: string;
+  /** Özgün dosyanın sha256'sı. */
   sha256: string;
   /** Hedefte yazılacak alt text; hedefte karenin kimliğidir. */
   alt: string;
@@ -69,6 +76,8 @@ const ALT_MAX = 250;
 const DASH = /[\u2013\u2014]/;
 /** Etsy'nin kaçışlı döndürebileceği karakterler alt text'te kimliği bulandırır. */
 const ESCAPABLE = /[&<>"']/;
+/** Özgün dosya yolu: panel alan adında, düz bir .jpg yolu. */
+const FILE_PATH = /^(\/[A-Za-z0-9][A-Za-z0-9_-]*)+\.jpg$/;
 
 export const altKey = (s: string | null | undefined) =>
   decodeHtmlEntities(s ?? "").replace(/\s+/g, " ").trim();
@@ -101,6 +110,7 @@ export function specProblems(spec: PhotosCopySpec): string[] {
     out.push(`frames: ${frames.length} kare (1 ile ${MAX_FRAMES} arası olmalı)`);
   }
   const ids = new Set<number>();
+  const files = new Set<string>();
   const alts = new Set<string>();
   frames.forEach((f, i) => {
     const no = `kare ${i + 1}`;
@@ -108,6 +118,9 @@ export function specProblems(spec: PhotosCopySpec): string[] {
     if (ids.has(f.image)) out.push(`${no}: görsel id tekrar (${f.image})`);
     ids.add(f.image);
     if (f.image === spec.placeholder) out.push(`${no}: yer tutucu ile aynı görsel`);
+    if (!FILE_PATH.test(f.file ?? "")) out.push(`${no}: dosya yolu geçersiz`);
+    if (files.has(f.file)) out.push(`${no}: dosya tekrar (${f.file})`);
+    files.add(f.file);
     if (!/^[0-9a-f]{64}$/.test(f.sha256 ?? "")) out.push(`${no}: sha256 geçersiz`);
     const alt = f.alt ?? "";
     if (!alt.trim()) out.push(`${no}: alt text boş`);
@@ -134,11 +147,6 @@ export function sourceProblems(source: LivePhoto[], spec: PhotosCopySpec): strin
   if (live.length !== want.length || live.some((id, i) => id !== want[i])) {
     out.push(`kaynak: canlı galeri incelenen galeri değil (canlı ${live.join(",") || "-"}; spec ${want.join(",")})`);
   }
-  const byId = new Map(source.map((p) => [p.listing_image_id, p]));
-  spec.frames.forEach((f, i) => {
-    const p = byId.get(f.image);
-    if (p && !p.url_fullxfull) out.push(`kaynak: kare ${i + 1} için tam boy adres yok`);
-  });
   return out;
 }
 

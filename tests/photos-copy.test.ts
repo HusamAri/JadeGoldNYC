@@ -1,5 +1,9 @@
 import { strict as assert } from "node:assert";
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 import test from "node:test";
+
+import { jpegSize } from "@/lib/artifact-2027/jpeg-size";
 
 import {
   altKey,
@@ -37,8 +41,9 @@ const sourceLive = (): LivePhoto[] =>
   spec.frames.map((f, i) => ({
     listing_image_id: f.image,
     rank: i + 1,
-    alt_text: null,
-    url_fullxfull: `https://i.etsystatic.com/68033014/r/il/000000/${f.image}/il_fullxfull.${f.image}_xxxx.jpg`,
+    alt_text: "Mens Long Link Bracelet, 3mm Solid Gold Elongated Cable Chain, Modern Gold Bracelet for Him",
+    full_width: 2048,
+    full_height: 2048,
   }));
 
 test("repodaki spec kusursuz: on kare, incelenen sıra, alt text'ler ürünün söylemediğini söylemiyor", () => {
@@ -61,7 +66,16 @@ test("repodaki spec kusursuz: on kare, incelenen sıra, alt text'ler ürünün s
   });
 });
 
-test("spec kuralları: tekrar, kaçış karakteri, uzun tire, sha, yer tutucu, iç not", () => {
+test("yüklenecek bayt repodaki özgün dosyadır: mühür dosyayla tutar, kare 2048 kare JPEG", () => {
+  spec.frames.forEach((f, i) => {
+    assert.equal(f.file, `/artifact/him26/B10/${String(i + 1).padStart(2, "0")}.jpg`);
+    const bytes = new Uint8Array(readFileSync(`public${f.file}`));
+    assert.equal(createHash("sha256").update(bytes).digest("hex"), f.sha256, `kare ${i + 1}: sha256`);
+    assert.deepEqual(jpegSize(bytes), { height: 2048, width: 2048 }, `kare ${i + 1}: boyut`);
+  });
+});
+
+test("spec kuralları: tekrar, kaçış karakteri, uzun tire, sha, dosya yolu, yer tutucu, iç not", () => {
   const has = (s: PhotosCopySpec, part: string) => specProblems(s).some((p) => p.includes(part));
   assert.ok(has(withFrame(1, { alt: spec.frames[0].alt }), "aynı"));
   assert.ok(has(withFrame(1, { alt: spec.frames[0].alt.toUpperCase() }), "aynı"));
@@ -71,6 +85,10 @@ test("spec kuralları: tekrar, kaçış karakteri, uzun tire, sha, yer tutucu, i
   assert.ok(has(withFrame(1, { alt: "" }), "boş"));
   assert.ok(has(withFrame(1, { alt: "x".repeat(251) }), "250"));
   assert.ok(has(withFrame(1, { sha256: "abc" }), "sha256"));
+  for (const file of ["../secret.jpg", "https://example.com/a.jpg", "/a/b.png", "/a//b.jpg", "/a/../b.jpg", "a/b.jpg", ""]) {
+    assert.ok(has(withFrame(1, { file }), "dosya yolu"), file);
+  }
+  assert.ok(has(withFrame(1, { file: spec.frames[0].file }), "dosya tekrar"));
   assert.ok(has(withFrame(1, { image: spec.frames[0].image }), "tekrar"));
   assert.ok(has(withFrame(1, { image: spec.placeholder }), "yer tutucu"));
   assert.ok(has(withSpec({ to: spec.from }), "aynı listing"));
@@ -99,10 +117,6 @@ test("kaynak: yalnız incelenen galeri, aynı sırayla kabul edilir", () => {
   const tied = sourceLive();
   tied[1] = { ...tied[1], rank: 1 };
   assert.ok(sourceProblems(tied, spec).some((p) => p.includes("eşit sıra")));
-
-  const noUrl = sourceLive();
-  noUrl[2] = { ...noUrl[2], url_fullxfull: null };
-  assert.ok(sourceProblems(noUrl, spec).some((p) => p.includes("kare 3")));
 });
 
 test("plan: yalnız yer tutucu duran hedefe on kare sırayla yüklenir", () => {

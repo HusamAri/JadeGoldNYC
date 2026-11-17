@@ -37,8 +37,14 @@ export const maxDuration = 300;
  * Sözleşme:
  *  - `?org=` ve `?spec=<anahtar>` ZORUNLU. Kareler, sıraları ve alt text'ler
  *    BİREBİR spec'ten gelir (docs/artifact-studio/fix-plan-2026-11-17/photos-copy.json).
+ *  - Yüklenen bayt Etsy'nin görsel adresinden DEĞİL, karenin panel alan
+ *    adındaki özgün dosyasından gelir (spec `file` + `sha256`). Etsy'nin görsel
+ *    sunucuları aynı adrese istemciye göre farklı bayt döndürür: ilk kuru
+ *    çalışmada on karenin altısı incelenen dosyayla tutmadı. Kaynak listing'in
+ *    canlı galerisi yine de okunur: spec'teki görsel id sırası değilse
+ *    (sahip bir kareyi değiştirdiyse) kopya yapılmaz.
  *  - Varsayılan KURU ÇALIŞMA: iki listing'in canlı galerisini döker, kaynağın
- *    incelenen galeri olduğunu ve her karenin baytlarının spec'teki sha256 ile
+ *    incelenen galeri olduğunu ve her özgün dosyanın spec'teki sha256 ile
  *    tuttuğunu sınar, planı döner.
  *  - Her `apply=1` çağrısı TEK aşama yapar:
  *      would-copy    eksik kareleri sırayla yükler (`limit=N`: en çok N kare).
@@ -61,7 +67,6 @@ export const maxDuration = 300;
 const DEADLINE_MS = 200_000;
 const READ_BACK_TRIES = 4;
 const READ_BACK_PAUSE_MS = 1200;
-const IMAGE_HOST = /^https:\/\/i\.etsystatic\.com\//;
 
 type RawListing = Record<string, unknown>;
 type Gallery = { results?: LivePhoto[] };
@@ -174,16 +179,14 @@ export async function GET(request: Request) {
     }
     const plan = planPhotosCopy(targetPhotos, spec);
 
-    // Bir karenin baytları: Etsy'nin verdiği tam boy adresten, incelenen dosyayla aynı olmalı.
+    // Bir karenin baytları: panel alan adındaki özgün dosya, spec'teki mühürle aynı olmalı.
+    const origin = process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "") || url.origin;
     const sourceById = new Map(sourcePhotos.map((p) => [p.listing_image_id, p]));
     const fetchFrame = async (i: number): Promise<{ info: FrameCheck; data?: Bytes }> => {
       const f = spec.frames[i];
       const base = { frame: i + 1, image: f.image };
       try {
-        const src = sourceById.get(f.image)?.url_fullxfull;
-        if (!src) throw new Error("tam boy adres yok");
-        if (!IMAGE_HOST.test(src)) throw new Error("beklenmeyen görsel adresi");
-        const res = await fetch(src, { cache: "no-store" });
+        const res = await fetch(`${origin}${f.file}`, { cache: "no-store" });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = new Uint8Array(await res.arrayBuffer());
         const dim = jpegSize(data);
@@ -194,7 +197,14 @@ export async function GET(request: Request) {
           sha256: createHash("sha256").update(data).digest("hex"),
         };
         if (info.sha256 !== f.sha256) {
-          return { info: { ...info, ok: false, error: "sha256 incelenen dosyayla tutmuyor" } };
+          return { info: { ...info, ok: false, error: "sha256 spec'teki dosyayla tutmuyor" } };
+        }
+        // Özgün dosya, yerine geçtiği canlı kareyle aynı boyutta olmalı.
+        const live = sourceById.get(f.image);
+        if (live?.full_width && live?.full_height && (live.full_width !== dim.width || live.full_height !== dim.height)) {
+          return {
+            info: { ...info, ok: false, error: `boyut canlı kareyle tutmuyor (${live.full_width}x${live.full_height})` },
+          };
         }
         return { info: { ...info, ok: true }, data };
       } catch (e) {
@@ -263,11 +273,11 @@ export async function GET(request: Request) {
 
     if (plan.status === "would-copy") {
       const todo = limit == null ? plan.missing : plan.missing.slice(0, limit);
-      // Önce baytlar: hepsi incelenen dosya çıkmadan tek kare yüklenmez.
+      // Önce baytlar: hepsi mühürlü özgün dosya çıkmadan tek kare yüklenmez.
       const fetched = await Promise.all(todo.map((i) => fetchFrame(i)));
       const bad = fetched.filter((c) => !c.info.ok || !c.data).map((c) => c.info);
       if (bad.length > 0) {
-        return NextResponse.json({ ok: false, error: "kaynak baytları tutmadı", frames: bad }, { status: 400 });
+        return NextResponse.json({ ok: false, error: "özgün dosya tutmadı", frames: bad }, { status: 400 });
       }
 
       let current = targetPhotos;
