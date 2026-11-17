@@ -1,0 +1,65 @@
+{
+  "note": "Photo copy specs for ops/photos-copy. One target listing per spec. frames = the source listing's live images in display order, each pinned by its Etsy image id and by the sha256 of the full size file that was looked at; alt = the alt text written on the target, which is also how a copied frame is recognised there. If the source gallery is no longer this list, or the target holds an image that is neither the placeholder nor one of these frames, nothing is written.",
+  "specs": {
+    "elongated-cable-7in": {
+      "from": 4590689501,
+      "to": 4612132585,
+      "targetState": "active",
+      "targetIsPrivate": true,
+      "placeholder": 8815913736,
+      "note": "Private custom order listing; its only image was Etsy's placeholder graphic. The ten frames are the parent listing's live gallery, viewed on 2026-11-17: no text, no length and no karat on any frame. Frame 9 shows the design in yellow, white and rose gold; the other nine show yellow gold. Alt texts name no karat and no length; only frame 9 names metal colors, because that is what the frame shows.",
+      "frames": [
+        {
+          "image": 8688052015,
+          "sha256": "08bfb19673a0292df805fef4ca698f4000caf90a59c548bc2524ea83fa153c56",
+          "alt": "Elongated cable chain bracelet with a lobster clasp, lying on grey stone"
+        },
+        {
+          "image": 8688052135,
+          "sha256": "ee0ecf6d6a06ab7987c86a09bbb1314ff4b1e24e768be8f4696b089cf7bf5c3f",
+          "alt": "Elongated cable chain bracelet worn on the wrist, hand resting on burgundy wool"
+        },
+        {
+          "image": 8688052233,
+          "sha256": "053304aeedaf8c3fd42cf9af82e95a15965298ae265f56a6933f92beae4834e5",
+          "alt": "Elongated cable chain bracelet on the wrist, hand resting on a dark red wooden table"
+        },
+        {
+          "image": 8688052311,
+          "sha256": "fc794b0d3b70181777b30d361fbedde6b15b9e7cb9a001dc002f4d81b9558dd0",
+          "alt": "Elongated cable chain bracelet on a wrist, hand raised above a burgundy plinth"
+        },
+        {
+          "image": 8688052389,
+          "sha256": "ae0b97a483135d400d2d7bb6206482b990546e85b6b3ec058ec48f693cfdfe88",
+          "alt": "Close view of the bracelet on the wrist with a fingertip beside the links for scale"
+        },
+        {
+          "image": 8688052487,
+          "sha256": "3fe4d0364e5bd35851c80edbc7a942f3f0246df9402282f35bbcce69c42c9d37",
+          "alt": "Close-up of the elongated links and the lobster clasp"
+        },
+        {
+          "image": 8688052563,
+          "sha256": "3baca5bc2ea7e3e62f208985e842c40a7ba5e94bbe3e7b9c1b3c3cae1ccf3502",
+          "alt": "Elongated cable chain bracelet on dark red stone beside a black pen"
+        },
+        {
+          "image": 8640237606,
+          "sha256": "81d0680cdb7a21f264e3e3a26c39dcce135ca2d8b0968778e9bffa5e3b2070d5",
+          "alt": "Elongated cable chain bracelet in an open gift box lined with linen"
+        },
+        {
+          "image": 8640237712,
+          "sha256": "3b1e6e64a55cea83d0e88503074ae219af722e51671ffe937b54a6d0e313cba1",
+          "alt": "Elongated cable chain bracelet shown in yellow, white and rose gold"
+        },
+        {
+          "image": 8688052933,
+          "sha256": "29a3163024cd21a86a6c2de76f02ffaf45364cefc5c5cbf8dce612b57b370e4b",
+          "alt": "Elongated cable chain bracelet on the wrist below the cuff of a burgundy jacket"
+        }
+      ]
+    }
+  }
+}

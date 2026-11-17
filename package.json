@@ -16,7 +16,8 @@
     "test:seo-apply": "tsx --test tests/seo-apply.test.ts tests/seo-apply-artifact-studio.test.ts tests/seo-title-pass-2026-10-22.test.ts tests/seo-tag-pass-2026-11-02.test.ts tests/seo-tag-pass-leander-2026-11-03.test.ts tests/seo-rebuild-salad-2026-11-03.test.ts",
     "test:sale-item-pnl": "tsx --test tests/sale-item-pnl.test.ts",
     "test:quantity-set": "tsx --test tests/quantity-set.test.ts",
-    "test:listing-text": "tsx --test tests/listing-text.test.ts"
+    "test:listing-text-spec": "tsx --test tests/listing-text.test.ts",
+    "test:photos-copy": "tsx --test tests/photos-copy.test.ts"
   },
   "dependencies": {
     "@ai-sdk/google": "^2.0.78",
