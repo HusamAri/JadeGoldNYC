@@ -2118,6 +2118,16 @@ repodaki hedefidir.
   Yürütme zinciri tuttu: kuru 21/21 (20 listing adet 1, biri 19; 2.079 offering), kanarya ve 20 sn sonra taze
   token'la okuma, 20 listing daha, taze token'la 21/21 adet 20, her yazımda fiyat ve yapı izi birebir, 21 audit
   satırı, açık token 0.
+  **Güçlendirme (aynı gün, 7 inç listing): bir kaydı "tamamlamadan" önce NE olduğunu kaydın kendisinden oku; rapor
+  onu yanlış sınıfa koymuş olabilir.** Rapor 4612132585'i yarım kalmış canlı listing sayıp başlık, açıklama, 13 tag
+  ve bölüm istedi; adımı öyle planladım, sahip onayladı. Yazmadan önce listing'in tek fotoğrafını indirip baktım:
+  bilezik değil, Etsy'nin yer tutucu grafiğiydi. Sayfada "This is a private listing" yazıyordu, API `is_private: true`
+  döndü. Mesajlardan açılmış özel sipariş listing'i aramada ve mağazada görünmez; tag ve bölüm hiçbir işe yaramaz.
+  Yazım başlık ve açıklamayla sınırlandı; metal rengi, üretim günü ve ücretsiz kargo iddiası metne girmedi, çünkü üçü
+  de bu listing için okunamıyordu (kargo profili ana listing'inkinden farklı çıktı). Kural: (1) bir listing'e standart
+  düzeltmeyi uygulamadan önce fotoğrafına ve durum alanlarına bak (özel mi, taslak mı, hangi kategori); (2) onaylanan
+  iş yanlış bir sınıflandırmaya dayanıyorsa işi daralt ve neyi neden yapmadığını söyle; (3) kardeş listing'in metnini
+  kopyalarken yalnız bu listing için doğrulanabilen iddiaları taşı.
 
 ## Ürün/UX dersleri
 

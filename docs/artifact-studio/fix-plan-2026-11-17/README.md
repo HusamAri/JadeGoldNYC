@@ -18,7 +18,7 @@ Sources: panel mirror of the shop synced 2026-11-16 06:20 UTC; `etsy_ledger_entr
 | A1: the order "never moved in the mail" and was refunded | paid 18 Oct 03:55 UTC, refunded in full 05:04 UTC, labels bought 08:10 and 16:24 UTC | order of events is reversed, see 2.1 |
 | A2: 393.97 USD, 660 clicks, about 0.54 USD a click | 0.60 USD a click; ledger 141.54 USD for 1 to 16 Nov, 0 orders | holds, number corrected |
 | A3: 20 Evil Eye listings at quantity 1 | 20 Evil Eye and the stub at 1; hammered band 4590704706 at 19 | holds, one more listing |
-| A4: 7 inch stub 4612132585 | created 8 Nov, no tags, no variants; parent 4590689501 sells 7.5, 8 and 8.5 in from 440 | holds |
+| A4: 7 inch stub 4612132585 is an unfinished live listing | it is a private custom order listing; parent 4590689501 sells 7.5, 8 and 8.5 in from 440 | misread, see 2.9 |
 | A5: 98 listings say 3 to 5 days, 117 say nothing | 127 say 3 to 5 days, 2 say 2 business days, 88 say nothing; the Etsy profile itself is 3 to 5 days | counts differ, see 2.2 |
 | A6: old brand name | 0 descriptions carry it; it lives in shop settings and messages | holds |
 | B1: reprice from weight | gold is about a fifth of the cost of a small piece | does not work as written, see 2.3 |
@@ -125,6 +125,24 @@ listing when spend reaches its max CPA with no order: each silver listing spent 
 If gold is tested, judge each listing when its spend reaches its own cushion (37 to 64 USD on the 22 repriced
 listings), not at a fixed 150 clicks.
 
+### 2.9 The 7 inch stub is a private custom order listing
+Read on 17 Nov before writing to it. Its only photo is Etsy's placeholder graphic, not the bracelet. The public
+page says "This is a private listing" and the API returns `is_private: true`. Created 7 Nov.
+
+| Field | Stub 4612132585 | Parent 4590689501 |
+|---|---|---|
+| Private | yes | no |
+| Category | 1179, top level Jewelry | 1196, Chain & Link Bracelets |
+| Shipping profile | 319275908785 | 315603072096 |
+| Return policy | none | 1514623111550 |
+| Processing | 3 to 5 days | 3 to 5 days |
+| Quantity, price | 1, 400.00 | 20, from 440.00 |
+| Tags, section | none | 13, section 60800935 |
+
+A private listing is not in search and not in the shop, so 13 tags and a section do nothing there. What matters
+is what the buyer who opens the link sees: the text and the picture. The missing return policy is the likely
+reason Etsy marks it "Update required"; that is set in the editor.
+
 ## 3. Steps
 
 Owner steps happen in Etsy Shop Manager or Alura. Panel steps run through the ops routes with the usual chain:
@@ -138,7 +156,8 @@ dry run, canary, apply, read back with a fresh token, audit check.
 | O4 | owner | Confirm the production time. The Etsy profile reads 3 to 5 days; change it only if the real number differs | 2 min | |
 | O5 | owner | One line on the 18 Oct order: who asked for the refund | 2 min | |
 | P1 | panel | DONE 17 Nov. Quantity 20 on the 20 Evil Eye listings and on 4590704706 (19), through `ops/quantity-set` | | |
-| P2 | panel | Stub 4612132585: title, description and 13 tags from parent 4590689501, typo fixed. Section and photos in the Etsy editor | 20 min | |
+| P2 | panel | DONE 17 Nov. Stub 4612132585: title and description written through `ops/listing-text`. No tags and no section, the listing is private (2.9) | | |
+| O12 | owner | Stub 4612132585: replace the placeholder picture with the bracelet photos, attach a return policy in the editor, send the link to the buyer who asked for 7 inch | 5 min | |
 | P3 | panel | One copy pass over the live text of all 217: photo clauses (30+), "listed as" (5), dash characters (85 descriptions, 5 titles), one production line, weight line on the 28 listings with firm grams | half a day, one dry run to read | O3, O4 |
 | P4 | panel | 2027 enamel set, 20 listings: break-even rule, buyer price about 38% lower. Mirror refresh first (`price-sync ?mirror=1`) | 1 h | owner confirms quotes 350, 375, 380, 365 |
 | P6 | panel | Quote sheet for the maker: anklet, stud, evil eye bracelet and enamel ring archetypes with our assumed grams and labor | 30 min | |
@@ -176,3 +195,12 @@ whether any listing has a real photo.
   Every write kept the price and structure fingerprint. Panel `products.quantity` is 20 on all 21; 21
   `etsy.stock_push` audit rows (source `ops/quantity-set`); 12 tokens minted, 11 used, 1 closed, 0 open.
   The same dry run read the processing profile and corrected section 2.2.
+- 2026-11-17: P2 applied on the owner's "Go", narrowed after reading the listing (2.9). Route
+  `app/api/ops/listing-text` (commit a7160b4, tests `tests/listing-text.test.ts` 8 of 8), spec
+  `listing-text.json` key `elongated-cable-7in`. Dry run: plan would-write title and description, 0 spec
+  problems, live text equal to the expected old text. Apply: written, state active and private unchanged.
+  Fresh-token re-read 25 seconds later: already. Public page shows the new title and the 549 character
+  description, price 340.00 at the sale unchanged. Panel row equals the spec (description md5 e76be7cf),
+  1 `etsy.rewrite` audit row holding the old title and the old one-line description, 0 open tokens.
+  Left out on purpose: metal color, production days and a free shipping claim, none of which can be read
+  for this listing; tags, section, quantity and price untouched.
