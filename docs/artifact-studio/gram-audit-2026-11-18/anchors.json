@@ -1,0 +1,715 @@
+{
+ "spot_note": "grams only; no prices here",
+ "anchors": [
+  {
+   "set": "jade-xmas26",
+   "id": "B1",
+   "type": "bracelet",
+   "noun": "bracelet",
+   "max_mm": 11,
+   "enamel": false,
+   "estimate_g14": 0.805,
+   "maker_g14": 1.5,
+   "ratio": 1.86,
+   "quote": "1.5 gr , 300 zincir, 50 clean assamble stone"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "B2",
+   "type": "bracelet",
+   "noun": "bracelet",
+   "max_mm": 20.2,
+   "enamel": false,
+   "estimate_g14": 1.928,
+   "maker_g14": 2.5,
+   "ratio": 1.3,
+   "quote": "2,5 gr 150 chain 50 clean asamble"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "B3",
+   "type": "bracelet",
+   "noun": "bracelet",
+   "max_mm": 19,
+   "enamel": true,
+   "estimate_g14": 1.02,
+   "maker_g14": 2.0,
+   "ratio": 1.96,
+   "quote": "2gr, 50 assamble tas, 30 enemal , 250 chain"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "B4",
+   "type": "bracelet",
+   "noun": "bracelet",
+   "max_mm": 15,
+   "enamel": true,
+   "estimate_g14": 1.991,
+   "maker_g14": 2.0,
+   "ratio": 1.0,
+   "quote": "2gr, 200 chain , 50 assamble , 50 enemal"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "B5",
+   "type": "bracelet",
+   "noun": "bracelet",
+   "max_mm": 12,
+   "enamel": false,
+   "estimate_g14": 1.35,
+   "maker_g14": 2.0,
+   "ratio": 1.48,
+   "quote": "2 gr, 50 clean assamble stone, 300 chain"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "B6",
+   "type": "bracelet",
+   "noun": "bracelet",
+   "max_mm": 22.2,
+   "enamel": true,
+   "estimate_g14": 1.577,
+   "maker_g14": 2.0,
+   "ratio": 1.27,
+   "quote": "2 gr, 50 clean, 30 enemal, 250 chain"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "B7",
+   "type": "bracelet",
+   "noun": "bracelet",
+   "max_mm": 8.5,
+   "enamel": false,
+   "estimate_g14": 1.662,
+   "maker_g14": 2.5,
+   "ratio": 1.5,
+   "quote": "2,5 gr, 50 assamble, 20 chain"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "B8",
+   "type": "bracelet",
+   "noun": "bracelet",
+   "max_mm": 10.5,
+   "enamel": true,
+   "estimate_g14": 0.871,
+   "maker_g14": 2.0,
+   "ratio": 2.3,
+   "quote": "2 gr, 50, 30, 200"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "B9",
+   "type": "bracelet",
+   "noun": "bracelet",
+   "max_mm": 11,
+   "enamel": true,
+   "estimate_g14": 1.217,
+   "maker_g14": 2.0,
+   "ratio": 1.64,
+   "quote": "ayni"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "B10",
+   "type": "bracelet",
+   "noun": "bracelet",
+   "max_mm": 11,
+   "enamel": true,
+   "estimate_g14": 1.042,
+   "maker_g14": 2.0,
+   "ratio": 1.92,
+   "quote": "ayni"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "N1",
+   "type": "necklace",
+   "noun": "pendant necklace",
+   "max_mm": 23,
+   "enamel": false,
+   "estimate_g14": 1.808,
+   "maker_g14": 2.0,
+   "ratio": 1.11,
+   "quote": "2 GRAM 50 200 CAHIN"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "N2",
+   "type": "necklace",
+   "noun": "pendant necklace",
+   "max_mm": 31,
+   "enamel": false,
+   "estimate_g14": 1.552,
+   "maker_g14": 2.0,
+   "ratio": 1.29,
+   "quote": "2GR 50 30 250"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "N3",
+   "type": "necklace",
+   "noun": "pendant necklace",
+   "max_mm": 15.3,
+   "enamel": true,
+   "estimate_g14": 1.75,
+   "maker_g14": 2.0,
+   "ratio": 1.14,
+   "quote": "2 GR 50 50 200"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "N4",
+   "type": "necklace",
+   "noun": "pendant necklace",
+   "max_mm": 18,
+   "enamel": false,
+   "estimate_g14": 1.647,
+   "maker_g14": 2.0,
+   "ratio": 1.21,
+   "quote": "2 GR 50 10 200"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "N5",
+   "type": "necklace",
+   "noun": "pendant necklace",
+   "max_mm": 23,
+   "enamel": false,
+   "estimate_g14": 1.8,
+   "maker_g14": 2.0,
+   "ratio": 1.11,
+   "quote": "2 GR 50 200"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "N6",
+   "type": "necklace",
+   "noun": "pendant necklace",
+   "max_mm": 17,
+   "enamel": true,
+   "estimate_g14": 1.767,
+   "maker_g14": 1.5,
+   "ratio": 0.85,
+   "quote": "1,5 GR 50 50 200"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "N7",
+   "type": "necklace",
+   "noun": "pendant necklace",
+   "max_mm": 14.5,
+   "enamel": false,
+   "estimate_g14": 1.2,
+   "maker_g14": 2.0,
+   "ratio": 1.67,
+   "quote": "2 GR 50 200"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "N8",
+   "type": "necklace",
+   "noun": "necklace",
+   "max_mm": 33,
+   "enamel": false,
+   "estimate_g14": 1.556,
+   "maker_g14": 2.0,
+   "ratio": 1.29,
+   "quote": "2GR 50 200"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "N9",
+   "type": "necklace",
+   "noun": "pendant necklace",
+   "max_mm": 16,
+   "enamel": true,
+   "estimate_g14": 1.468,
+   "maker_g14": 3.5,
+   "ratio": 2.38,
+   "quote": "3,5 GR 50 50 200"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "N10",
+   "type": "necklace",
+   "noun": "pendant necklace",
+   "max_mm": 15,
+   "enamel": true,
+   "estimate_g14": 1.532,
+   "maker_g14": 2.0,
+   "ratio": 1.31,
+   "quote": "2 GR 50 50 200"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "E1",
+   "type": "earrings",
+   "noun": "stud earrings",
+   "max_mm": 11.4,
+   "enamel": false,
+   "estimate_g14": 0.9183,
+   "maker_g14": 2.5,
+   "ratio": 2.72,
+   "quote": "2,5 gr 100 push post 50"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "E2",
+   "type": "earrings",
+   "noun": "drop earrings",
+   "max_mm": 17,
+   "enamel": false,
+   "estimate_g14": 1.0487,
+   "maker_g14": 2.5,
+   "ratio": 2.38,
+   "quote": "ayni"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "E3",
+   "type": "earrings",
+   "noun": "drop earrings",
+   "max_mm": 12,
+   "enamel": true,
+   "estimate_g14": 1.0607,
+   "maker_g14": 2.5,
+   "ratio": 2.36,
+   "quote": "ayni plus 50 anemal"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "E4",
+   "type": "earrings",
+   "noun": "ear climber earrings",
+   "max_mm": 16.6,
+   "enamel": false,
+   "estimate_g14": 0.9637,
+   "maker_g14": 2.0,
+   "ratio": 2.08,
+   "quote": "2 GR, 50 + 100"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "E5",
+   "type": "earrings",
+   "noun": "hoop earrings",
+   "max_mm": 11.3,
+   "enamel": false,
+   "estimate_g14": 1.4337,
+   "maker_g14": 2.0,
+   "ratio": 1.39,
+   "quote": "BU 2 GR 50 EXTRA 200 KILIT MEKANOIZMASI"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "E6",
+   "type": "earrings",
+   "noun": "drop earrings",
+   "max_mm": 12.5,
+   "enamel": true,
+   "estimate_g14": 1.0593,
+   "maker_g14": 3.0,
+   "ratio": 2.83,
+   "quote": "3 GR 50 CLEANING 100 PUSH POST 50ENAMAL"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "E7",
+   "type": "earrings",
+   "noun": "stud earrings",
+   "max_mm": 8.9,
+   "enamel": true,
+   "estimate_g14": 1.0471,
+   "maker_g14": 3.0,
+   "ratio": 2.87,
+   "quote": "AYNISI"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "E8",
+   "type": "earrings",
+   "noun": "stud earrings",
+   "max_mm": 9.9,
+   "enamel": true,
+   "estimate_g14": 1.0136,
+   "maker_g14": 3.0,
+   "ratio": 2.96,
+   "quote": "BUNU ANLAMADIM KOLYEUCUMU KUPE MI, KUPE ISE AYNI"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "E9",
+   "type": "earrings",
+   "noun": "stud earrings",
+   "max_mm": 11.5,
+   "enamel": true,
+   "estimate_g14": 0.9592,
+   "maker_g14": 3.0,
+   "ratio": 3.13,
+   "quote": "AYNI"
+  },
+  {
+   "set": "jade-xmas26",
+   "id": "E10",
+   "type": "earrings",
+   "noun": "stud earrings",
+   "max_mm": 9.3,
+   "enamel": true,
+   "estimate_g14": 1.0311,
+   "maker_g14": 3.0,
+   "ratio": 2.91,
+   "quote": "AYNI"
+  },
+  {
+   "set": "leander-xmas26",
+   "id": "B09",
+   "type": "bracelet",
+   "noun": "station bracelet",
+   "max_mm": 6,
+   "enamel": true,
+   "estimate_g14": 0.8,
+   "maker_g14": 3.0,
+   "ratio": 3.75,
+   "quote": "3 g + 50 enamel + 100 chain + 50 assembly"
+  },
+  {
+   "set": "leander-xmas26",
+   "id": "N02",
+   "type": "necklace",
+   "noun": "pendant",
+   "max_mm": 16,
+   "enamel": true,
+   "estimate_g14": 1.0,
+   "maker_g14": 1.0,
+   "ratio": 1.0,
+   "quote": "1 g + 50 enamel"
+  }
+ ],
+ "factors": {
+  "earrings": {
+   "n": 10,
+   "ratio_min": 1.39,
+   "ratio_median": 2.78,
+   "ratio_p80": 2.91,
+   "ratio_max": 3.13,
+   "maker_g_min": 2.0,
+   "maker_g_median": 2.75,
+   "maker_g_max": 3.0
+  },
+  "necklace": {
+   "n": 11,
+   "ratio_min": 0.85,
+   "ratio_median": 1.21,
+   "ratio_p80": 1.31,
+   "ratio_max": 2.38,
+   "maker_g_min": 1.0,
+   "maker_g_median": 2.0,
+   "maker_g_max": 3.5
+  },
+  "bracelet": {
+   "n": 11,
+   "ratio_min": 1.0,
+   "ratio_median": 1.64,
+   "ratio_p80": 1.96,
+   "ratio_max": 3.75,
+   "maker_g_min": 1.5,
+   "maker_g_median": 2.0,
+   "maker_g_max": 3.0
+  }
+ },
+ "families": [
+  {
+   "catalog": "ss27-anklets",
+   "type": "anklet",
+   "pieces": 40,
+   "g14_total_now": [
+    1.49,
+    1.94
+   ],
+   "body_now": [
+    0.35,
+    0.8
+   ],
+   "note": "own geometry, never checked against the maker",
+   "body_likely": [
+    0.57,
+    1.31
+   ],
+   "body_high": [
+    0.69,
+    1.57
+   ],
+   "added_g14_likely": [
+    0.22,
+    0.51
+   ]
+  },
+  {
+   "catalog": "fw2627-enamel",
+   "type": "bracelet",
+   "pieces": 10,
+   "g14_total_now": [
+    1.5,
+    3.7
+   ],
+   "body_now": [
+    0.5,
+    3.7
+   ],
+   "note": "own geometry, never checked against the maker",
+   "body_likely": [
+    0.82,
+    6.07
+   ],
+   "body_high": [
+    0.98,
+    7.25
+   ],
+   "added_g14_likely": [
+    0.32,
+    2.37
+   ]
+  },
+  {
+   "catalog": "fw2627-enamel",
+   "type": "earring",
+   "pieces": 10,
+   "g14_total_now": [
+    0.6,
+    1.6
+   ],
+   "body_now": [
+    0.6,
+    1.6
+   ],
+   "note": "own geometry, never checked against the maker",
+   "body_likely": [
+    1.67,
+    4.45
+   ],
+   "body_high": [
+    1.75,
+    4.66
+   ],
+   "added_g14_likely": [
+    1.07,
+    2.85
+   ]
+  },
+  {
+   "catalog": "fw2627-enamel",
+   "type": "necklace",
+   "pieces": 10,
+   "g14_total_now": [
+    2.8,
+    3.3
+   ],
+   "body_now": [
+    0.8,
+    1.3
+   ],
+   "note": "own geometry, never checked against the maker",
+   "body_likely": [
+    0.97,
+    1.57
+   ],
+   "body_high": [
+    1.05,
+    1.7
+   ],
+   "added_g14_likely": [
+    0.17,
+    0.27
+   ]
+  },
+  {
+   "catalog": "fw2627-enamel",
+   "type": "ring",
+   "pieces": 10,
+   "g14_total_now": [
+    1.4,
+    2.3
+   ],
+   "body_now": null,
+   "note": "own geometry, never checked against the maker"
+  },
+  {
+   "catalog": "xmas26",
+   "type": "bracelet",
+   "pieces": 10,
+   "g14_total_now": [
+    3.25,
+    4.0
+   ],
+   "body_now": [
+    0.6,
+    0.8
+   ],
+   "note": "maker terms applied 2026-10-07 (rings from the band list, stations x3.75)",
+   "body_likely": [
+    0.98,
+    1.31
+   ],
+   "body_high": [
+    1.18,
+    1.57
+   ],
+   "added_g14_likely": [
+    0.38,
+    0.51
+   ]
+  },
+  {
+   "catalog": "xmas26",
+   "type": "necklace",
+   "pieces": 10,
+   "g14_total_now": [
+    2.3,
+    2.6
+   ],
+   "body_now": [
+    1.0,
+    1.3
+   ],
+   "note": "maker terms applied 2026-10-07 (rings from the band list, stations x3.75)",
+   "body_likely": [
+    1.21,
+    1.57
+   ],
+   "body_high": [
+    1.31,
+    1.7
+   ],
+   "added_g14_likely": [
+    0.21,
+    0.27
+   ]
+  },
+  {
+   "catalog": "xmas26",
+   "type": "ring",
+   "pieces": 10,
+   "g14_total_now": [
+    3.59,
+    4.79
+   ],
+   "body_now": null,
+   "note": "maker terms applied 2026-10-07 (rings from the band list, stations x3.75)"
+  },
+  {
+   "catalog": "him26",
+   "type": "bracelet",
+   "pieces": 10,
+   "g14_total_now": [
+    3.2,
+    6.8
+   ],
+   "body_now": [
+    0.0,
+    3.0
+   ],
+   "note": "bands from the maker list; chains and studs estimated"
+  },
+  {
+   "catalog": "him26",
+   "type": "earring",
+   "pieces": 10,
+   "g14_total_now": [
+    0.7,
+    1.8
+   ],
+   "body_now": [
+    0.7,
+    1.8
+   ],
+   "note": "bands from the maker list; chains and studs estimated",
+   "body_likely": [
+    1.95,
+    5.0
+   ],
+   "body_high": [
+    2.04,
+    5.24
+   ],
+   "added_g14_likely": [
+    1.25,
+    3.2
+   ]
+  },
+  {
+   "catalog": "him26",
+   "type": "ring",
+   "pieces": 10,
+   "g14_total_now": [
+    3.6,
+    8.11
+   ],
+   "body_now": null,
+   "note": "bands from the maker list; chains and studs estimated"
+  },
+  {
+   "catalog": "evil-eye",
+   "type": "bracelet",
+   "pieces": 10,
+   "g14_total_now": [
+    2.0,
+    4.0
+   ],
+   "body_now": [
+    0.8,
+    3.6
+   ],
+   "note": "motif rings as a 3 mm list band; pendants and stations raised over geometry",
+   "body_likely": [
+    1.31,
+    5.9
+   ],
+   "body_high": [
+    1.57,
+    7.06
+   ],
+   "added_g14_likely": [
+    0.51,
+    2.3
+   ]
+  },
+  {
+   "catalog": "evil-eye",
+   "type": "necklace",
+   "pieces": 10,
+   "g14_total_now": [
+    2.3,
+    4.3
+   ],
+   "body_now": [
+    0.4,
+    1.8
+   ],
+   "note": "motif rings as a 3 mm list band; pendants and stations raised over geometry",
+   "body_likely": [
+    0.48,
+    2.18
+   ],
+   "body_high": [
+    0.52,
+    2.36
+   ],
+   "added_g14_likely": [
+    0.08,
+    0.38
+   ]
+  },
+  {
+   "catalog": "evil-eye",
+   "type": "ring",
+   "pieces": 10,
+   "g14_total_now": [
+    3.59,
+    3.59
+   ],
+   "body_now": null,
+   "note": "motif rings as a 3 mm list band; pendants and stations raised over geometry"
+  }
+ ]
+}
