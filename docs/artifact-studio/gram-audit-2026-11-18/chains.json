@@ -1,0 +1,76 @@
+{
+ "density_14k_over_925": 1.262,
+ "note": "14K grams per inch. Scaling between widths uses width squared; it holds for chains of the same link shape.",
+ "chains": [
+  {
+   "chain": "cable 1.0 mm",
+   "used_on": "39 anklets",
+   "panel_g_per_in": 0.0942,
+   "evidence_g_per_in": "0.061 to 0.117",
+   "evidence": "retail 18 in: 1.1 g, 1.4 g, 2.1 g; maker: thinnest cable chain 150 to 170 USD",
+   "verdict": "ok, keep; high case 0.117"
+  },
+  {
+   "chain": "cable 1.1 mm",
+   "used_on": "FW necklaces and bracelets",
+   "panel_g_per_in": 0.114,
+   "evidence_g_per_in": "0.094",
+   "evidence": "retail diamond-cut 1.1 mm: 1.70 g at 18 in",
+   "verdict": "ok, slightly high"
+  },
+  {
+   "chain": "box 2 mm",
+   "used_on": "For Him B01",
+   "panel_g_per_in": 0.42,
+   "evidence_g_per_in": "0.35 to 0.64",
+   "evidence": "retail solid: 6.91 g at 20 in, 8.96 g at 16 in, 11.5 g at 18 in",
+   "verdict": "uncertain: depends on which box chain the maker buys; high case 0.64"
+  },
+  {
+   "chain": "flat curb 3 mm",
+   "used_on": "For Him B02",
+   "panel_g_per_in": 0.62,
+   "evidence_g_per_in": 0.44,
+   "evidence": "own supplier catalog: silver curb 3.3 mm 0.422 g/in, scaled to 14K and 3 mm; retail solid 4.7 mm curb 0.61 g/in",
+   "verdict": "mine is about 40% high"
+  },
+  {
+   "chain": "figaro 2.5 mm",
+   "used_on": "For Him B06",
+   "panel_g_per_in": 0.45,
+   "evidence_g_per_in": 0.27,
+   "evidence": "own supplier catalog: silver figaro 3.4 mm 0.395 g/in, scaled; retail solid 3.8 mm 0.50 g/in",
+   "verdict": "mine is about 65% high"
+  },
+  {
+   "chain": "wheat 2 mm",
+   "used_on": "For Him B07",
+   "panel_g_per_in": 0.45,
+   "evidence_g_per_in": 0.44,
+   "evidence": "retail solid 2.25 mm wheat 13.3 g at 24 in",
+   "verdict": "ok"
+  },
+  {
+   "chain": "mariner 3 mm",
+   "used_on": "For Him B08",
+   "panel_g_per_in": 0.5,
+   "evidence_g_per_in": 0.19,
+   "evidence": "retail solid 4.5 mm mariner 7.6 g at 18 in, scaled",
+   "verdict": "mine is about 2.6 x; scaling by width is rough for open links"
+  },
+  {
+   "chain": "franco 1.5 mm",
+   "used_on": "Jade set, check only",
+   "panel_g_per_in": 0.356,
+   "evidence_g_per_in": 0.42,
+   "evidence": "own supplier catalog: silver franco 2.2 mm 0.716 g/in, scaled",
+   "verdict": "ok, within 15%"
+  }
+ ],
+ "not_found": [
+  "rope 2 mm solid",
+  "elongated cable 3 mm",
+  "box 1.5 mm",
+  "cable 1.5 mm"
+ ]
+}
