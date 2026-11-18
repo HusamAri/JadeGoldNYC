@@ -2128,6 +2128,20 @@ repodaki hedefidir.
   düzeltmeyi uygulamadan önce fotoğrafına ve durum alanlarına bak (özel mi, taslak mı, hangi kategori); (2) onaylanan
   iş yanlış bir sınıflandırmaya dayanıyorsa işi daralt ve neyi neden yapmadığını söyle; (3) kardeş listing'in metnini
   kopyalarken yalnız bu listing için doğrulanabilen iddiaları taşı.
+  **Güçlendirme-2 (aynı iş, fotoğraf kopyası): dış sunucudan inen bayt kimlik değildir; mührü kendi sunduğun dosyaya
+  koy ve yazacak makinenin kuru çalışmasında sına.** Stub'a ana listing'in on karesini kopyalarken kareleri Etsy'nin
+  görsel adresinden indirip gözle inceledim ve sha256'larını spec'e mühürledim. Kuru çalışma on karenin altısında
+  tutmadı ve hiçbir şey yazılmadı: Etsy aynı adresi iki ağdan sunuyor ve istemciye göre farklı dosya döndürüyor (aynı
+  kare 687.857 bayt, 671.934 bayt, tarayıcıya AVIF). Mühür olmasaydı sunucu, benim bakmadığım baytları yükleyecekti.
+  Özgün dosyalar repodaydı (`public/artifact/him26/B10`); canlı karelerle ölçüldü (256 px'te ortalama fark 0,36 ile
+  0,63; iki farklı kare 57 ile 90) ve kaynak onlara çevrildi. Kanarya bunu ayrıca kanıtladı: Etsy kopyayı ana
+  listing'in karesiyle bayt bayt aynı sundu. Kural: (1) görseli `listing_image_id` ile tanı, bayt mührünü yalnız
+  kendi alan adından sunduğun dosyaya koy; (2) mührü kendi indirdiğin kopyayla değil, yazımı yapacak makinenin
+  okumasıyla sına; (3) repodaki özgün ile canlı kopyanın aynı resim olduğunu ölç ve eşiği bir kontrol çiftiyle
+  göster; (4) her yazım çağrısı tek aşama yapsın (yükle, sonra ayrı çağrıda sil): 11 görselli ara durum taze token'la
+  okunmadan yer tutucu silinmedi. Sıra dersi yine tuttu: silmeden hemen sonra 2..11, dakikalar sonra 1..10, diziliş
+  aynı. Yan not: `package.json`'a aynı adla ikinci bir script eklemişim; JSON'da son anahtar kazanır ve hiçbir araç
+  uyarmaz, script eklerken adı grep'le.
 
 ## Ürün/UX dersleri
 

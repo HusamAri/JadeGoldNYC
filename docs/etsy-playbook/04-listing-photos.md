@@ -19,6 +19,8 @@ Kaynak: `source/04-*.txt` (M4), okuma 2026-10-22.
 - Kişiselleştirme metni 1-1.024 kr, ≤5 alan [M4 S5]; talimat 120 kr (UNVERIFIED). Ship-by uzatma bir kez, 21 gün [M4 S20]. Yorum penceresi 100 gün [M4 S24].
 - Varyasyon "2 özellik / 70 kombinasyon" yalnız 3. taraf kaynak [M4 S19]; CLAUDE.md 3 eksen / 400 kuralı canlıda çalışıyor, o geçerli.
 
+- **2026-11-17, Leander (ölçüldü):** Etsy görseli iki ağdan sunuyor; aynı `il_fullxfull` adresi istemciye göre farklı dosya döndürüyor (aynı kare: 687.857 bayt, 671.934 bayt, tarayıcıya AVIF). Görselin kimliği `listing_image_id`'dir, indirilen bayt değil. Aynı özgün dosya iki listing'e yüklenince Etsy çoğunda bayt bayt aynı dosyayı sunuyor (10 karenin 6'sı). Mesajlardan açılan özel sipariş listing'inin yer tutucusu sıradan bir görseldir (kendi id'si, sıra 1): başka kareler yüklendikten sonra silinir, aynı id ile geri bağlanabilir. Silmeden hemen sonra sıralar 2..11 okundu, dakikalar sonra 1..10; diziliş değişmedi. Bir listing'in karelerini başka bir listing'e taşıyan yol: `ops/photos-copy`.
+
 ## Panelde açık çelişkiler (2026-10-22)
 - Düzenlenmemiş gerçek fotoğraf kontrolü hiçbir kodda yok; Higgsfield setleri AI. Hangi listing'de gerçek fotoğraf olmadığı listelenmeli (sahip kararı + fotoğraf bankası).
 - `lib/etsy/listing-audit.ts:98,196,298` "10 foto slotu" diyor (doğrusu 20); `LOW_IMAGE_THRESHOLD = 5` (set önerisi 10).

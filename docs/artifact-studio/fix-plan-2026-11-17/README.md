@@ -143,6 +143,9 @@ A private listing is not in search and not in the shop, so 13 tags and a section
 is what the buyer who opens the link sees: the text and the picture. The missing return policy is the likely
 reason Etsy marks it "Update required"; that is set in the editor.
 
+Photos, 17 Nov (step P9): the parent listing's ten photos are on the stub and the placeholder is removed. The
+listing still names no metal color anywhere. Nine photos show yellow gold, photo 9 shows yellow, white and rose.
+
 ## 3. Steps
 
 Owner steps happen in Etsy Shop Manager or Alura. Panel steps run through the ops routes with the usual chain:
@@ -157,7 +160,8 @@ dry run, canary, apply, read back with a fresh token, audit check.
 | O5 | owner | One line on the 18 Oct order: who asked for the refund | 2 min | |
 | P1 | panel | DONE 17 Nov. Quantity 20 on the 20 Evil Eye listings and on 4590704706 (19), through `ops/quantity-set` | | |
 | P2 | panel | DONE 17 Nov. Stub 4612132585: title and description written through `ops/listing-text`. No tags and no section, the listing is private (2.9) | | |
-| O12 | owner | Stub 4612132585: replace the placeholder picture with the bracelet photos, attach a return policy in the editor, send the link to the buyer who asked for 7 inch | 5 min | |
+| P9 | panel | DONE 17 Nov. Stub 4612132585: the parent listing's ten photos copied through `ops/photos-copy`, placeholder removed; the bracelet on grey stone is the first photo | | |
+| O12 | owner | Stub 4612132585: attach a return policy in the editor, then send the link to the buyer who asked for 7 inch. Name the metal color in that message, the listing does not state one | 5 min | |
 | P3 | panel | One copy pass over the live text of all 217: photo clauses (30+), "listed as" (5), dash characters (85 descriptions, 5 titles), one production line, weight line on the 28 listings with firm grams | half a day, one dry run to read | O3, O4 |
 | P4 | panel | 2027 enamel set, 20 listings: break-even rule, buyer price about 38% lower. Mirror refresh first (`price-sync ?mirror=1`) | 1 h | owner confirms quotes 350, 375, 380, 365 |
 | P6 | panel | Quote sheet for the maker: anklet, stud, evil eye bracelet and enamel ring archetypes with our assumed grams and labor | 30 min | |
@@ -204,3 +208,27 @@ whether any listing has a real photo.
   1 `etsy.rewrite` audit row holding the old title and the old one-line description, 0 open tokens.
   Left out on purpose: metal color, production days and a free shipping claim, none of which can be read
   for this listing; tags, section, quantity and price untouched.
+- 2026-11-17: P9 applied on the owner's "Photos". Route `app/api/ops/photos-copy` (commits f018a06 and 99b2ddd,
+  tests `tests/photos-copy.test.ts` 11 of 11), spec `photos-copy.json` key `elongated-cable-7in`.
+  Before: all ten parent photos were viewed. No text, no length and no karat on any of them; photo 9 shows the
+  three metal colors. The parent's ten alt texts are all its old title, so the stub got its own alt text per
+  photo, with no karat and no length.
+  First dry run stopped before any write. The files fetched from Etsy's image address did not match the viewed
+  files for six of the ten photos: Etsy serves the same address through two networks and returns a different
+  file per client (one photo: 687,857 bytes, 671,934 bytes, AVIF to a browser). The source was changed to the
+  original files in `public/artifact/him26/B10`. Each original was measured against the live photo it stands
+  for: mean pixel difference 0.36 to 0.63 of 255 at 256 px, against 57 to 90 for two different photos. The
+  panel domain serves the originals byte for byte.
+  Second dry run: 10 of 10 originals equal the pinned hash, target holds only the placeholder at rank 1.
+  Canary: photo 1 to rank 2, fresh-token re-read, public page 2 images; Etsy served the copy byte for byte
+  equal to the parent's photo 1. Then photos 2 to 10 to ranks 3 to 11, each read back in order; fresh-token
+  re-read and public page: 11 images in order. Then the placeholder, image 8815913736, was removed.
+  Read back in the same call: ten photos at ranks 2 to 11. Fresh-token re-read minutes later: ranks 1 to 10 in
+  the same order, Etsy closed the gap on its own. Read again about seven hours later (18 Nov 05:20 UTC) with a
+  fresh token and on the public page: ten photos, same order, first photo 8878554182, title and the 340.00
+  sale price unchanged, still private and active. The ten photos as served match the originals (0.36 to 0.63);
+  six of them come back byte for byte equal to the parent's files.
+  Panel row: cover photo and image count (10) updated. Audit: 2 `etsy.image_upload` rows (1 and 9 photos) and
+  1 `etsy.image_delete` row, source `ops/photos-copy`; the removed image can be attached again by its id.
+  11 tokens minted, 9 used, 2 closed, 0 open. Not done here: return policy, metal color, sending the link (O12).
+  Side fix: `package.json` held two scripts named `test:listing-text`; the spec test is `test:listing-text-spec`.
