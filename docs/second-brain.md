@@ -2143,6 +2143,22 @@ repodaki hedefidir.
   aynı. Yan not: `package.json`'a aynı adla ikinci bir script eklemişim; JSON'da son anahtar kazanır ve hiçbir araç
   uyarmaz, script eklerken adı grep'le.
 
+- **Tahmin hatası ürün tipine göre değişir; üreticinin kendi gramını tip başına ORAN olarak kullan, ve "çalışmıyor"
+  şikâyetinde fiyatı maliyet tabanına bölerek oku (2026-11-18, Leander gram denetimi):** Sahip "fiyatlar çalışmıyor,
+  130 USD işçilik + altın, zarar yok, kâr düşük" dedi. 13.524 varyantın %18'i tabanın altında, %38'i tabanın 1,5 katının
+  üstündeydi: fiyatlar tahmini gramla 2 x maliyet ve 4.178 spotla kurulmuştu, spot 3.733'e inmişti. Tek bir emniyet
+  çarpanı işe yaramazdı. Üreticinin 32 parçadaki gramı benim tahminime bölününce oran tipe göre ayrıştı: küpe çifti
+  2,78, bileklik istasyonu 1,64, kolye ucu 1,21. Rakip listing'lerin beyan ettiği gramlar (halhal 1,0 ile 1,8 g)
+  üreticininkinden hafifti; faturayı gramla kesen taraf üretici olduğu için onun oranı gramı, piyasa alt sınırı
+  belirledi. Blender modeli bağımsız çapa oldu: 6,5 mm mine yüzük 3,59 g çıktı, üreticinin 3 mm bant rakamıyla aynı.
+  Kural: (1) kalibrasyonu ürün tipi başına kur, tek çarpanla değil; (2) her gram kaynağına güven notu ver ve tabloda
+  göster; (3) oransal gram yazımını `weight_source` etiketiyle koru (`+ga1118`), ikinci koşu hiçbir satır bulmaz;
+  (4) fiyat gramdan mutlak kuruluyorsa eski fiyata bağımlı değildir, ama ayna yine tazelenir, çünkü kuru koşunun
+  "panelde karşılığı olmayan offering 0" demesi ancak taze aynayla anlam taşır. Araç notları: `pip install bpy`
+  Python 3.11'de kurulur ama içe aktarılamaz (`PyDict_GetItemStringRef`), 3.13 ile çalışır; "kurulamadı" demeden
+  önce diğer yorumlayıcıyı dene. Etsy'de aynı SKU iki offering'de durursa ayna upsert'ü "cannot affect row a second
+  time" ile düşer; fiyat itişi SKU ile çalıştığı için ikisi de aynı fiyatı alır, gramı ağır olana göre kur.
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması

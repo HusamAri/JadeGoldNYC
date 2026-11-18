@@ -1,0 +1,147 @@
+{
+ "BAS-S01-CRT@US7": {
+  "mm3": 636.5,
+  "g14": 8.32,
+  "note": "oval 11 x 9 face 2.0 mm thick, 4 mm shank, 1.6 mm thick at the back; head height and shoulder thickness assumed"
+ },
+ "BAS-S01-CRT@US4": {
+  "mm3": 575.1,
+  "g14": 7.52,
+  "note": "same, US 4"
+ },
+ "BAS-W02@US7": {
+  "mm3": 654.7,
+  "g14": 8.56,
+  "note": "table 13 x 11, shank 3 mm; thicknesses assumed"
+ },
+ "BAS-HM-R03@US9": {
+  "mm3": 655.3,
+  "g14": 8.56,
+  "note": "square face 9 x 9; shank 3.5 x 1.7 assumed"
+ },
+ "BAS-HM-R04@US9": {
+  "mm3": 446.1,
+  "g14": 5.83,
+  "note": "bar face 12 x 4; shank 3 x 1.7 assumed"
+ },
+ "BAS-F26-SIGNET@US7": {
+  "mm3": 612.6,
+  "g14": 8.01,
+  "note": "no stated dimensions; round 10 mm face assumed from the photos"
+ },
+ "BAS-27-MINE-R01@US7": {
+  "mm3": 274.3,
+  "g14": 3.59,
+  "note": "face 6.5 x 6.5 (R03 to R05 faces assumed), 2.0 x 1.3 shank assumed"
+ },
+ "BAS-27-MINE-R02@US7": {
+  "mm3": 234.3,
+  "g14": 3.06,
+  "note": "face 8 x 4.2 (R03 to R05 faces assumed), 2.0 x 1.3 shank assumed"
+ },
+ "BAS-27-MINE-R03@US7": {
+  "mm3": 257.0,
+  "g14": 3.36,
+  "note": "face 7 x 5.5 (R03 to R05 faces assumed), 2.0 x 1.3 shank assumed"
+ },
+ "BAS-27-MINE-R04@US7": {
+  "mm3": 241.6,
+  "g14": 3.16,
+  "note": "face 8 x 4.5 (R03 to R05 faces assumed), 2.0 x 1.3 shank assumed"
+ },
+ "BAS-27-MINE-R05@US7": {
+  "mm3": 277.9,
+  "g14": 3.63,
+  "note": "face 8 x 6 (R03 to R05 faces assumed), 2.0 x 1.3 shank assumed"
+ },
+ "BAS-I03-INF@US7": {
+  "mm3": 253.0,
+  "g14": 3.31,
+  "note": "band 1.9 x 1.6, infinity 16 x 6.2 in 1.7 mm wire, a quarter shared with the band"
+ },
+ "BAS-M03-ROSETTE@US7": {
+  "mm3": 288.9,
+  "g14": 3.78,
+  "note": "band 2.0 x 1.7, open rosette 11 x 11: five petal loops and a centre ring in 1.2 mm wire"
+ },
+ "BAS-M03S-ROSETTE@US7": {
+  "mm3": 336.4,
+  "g14": 4.4,
+  "note": "band 2.1 x 1.8, solid flower head 11 x 11 x 1.6, 72% fill for the petal notches and recess"
+ },
+ "BAS-M05-SUNRISE@US7": {
+  "mm3": 303.5,
+  "g14": 3.97,
+  "note": "band 2.1 x 1.8, peak motif 12 x 7 rising 2.4, 70% fill"
+ },
+ "BAS-F26-OPENARC@US7": {
+  "mm3": 244.5,
+  "g14": 3.2,
+  "note": "no stated dimensions; band 2.0 x 1.7 with two 8 mm arcs in 1.6 mm wire assumed"
+ },
+ "BAS-M11-LION": {
+  "mm3": 82.4,
+  "g14": 1.08,
+  "note": "open lion 17 x 14: outline, mane line, 5 x 4 cheek and bail in about 1 mm wire"
+ },
+ "BAS-I13-INF": {
+  "mm3": 100.1,
+  "g14": 1.31,
+  "note": "wide infinity 17 x 7.8 in 1.5 mm wire with two eyelets"
+ },
+ "BAS-I13": {
+  "mm3": 82.0,
+  "g14": 1.07,
+  "note": "Mobius ribbon 18 mm high: 2.2 mm wide, about 1 mm thick, 1.9 x its height in developed length"
+ },
+ "BAS-MOTH-N01": {
+  "mm3": 73.7,
+  "g14": 0.96,
+  "note": "moth 14 x 11 x 1 mm, openwork at 55% fill, 3 mm bail"
+ },
+ "BAS-M11": {
+  "mm3": 68.7,
+  "g14": 0.9,
+  "note": "open rectangle about 12 x 8 in 1.4 mm wire with a 3 mm bezel; size assumed from the photos"
+ },
+ "BAS-E08-EYE": {
+  "mm3": 42.0,
+  "g14": 0.55,
+  "note": "open eye 11.8 x 5.8 in 1.2 mm wire, 3 mm bezel"
+ },
+ "BAS-E10": {
+  "mm3": 42.7,
+  "g14": 0.56,
+  "note": "eye 9 x 4.2 x 1.8 solid, 80% fill for the dome and the stone seat"
+ },
+ "BAS-I06": {
+  "mm3": 53.0,
+  "g14": 0.69,
+  "note": "infinity loop 16 x 5.2 in 1.3 mm wire"
+ },
+ "BAS-I10": {
+  "mm3": 53.6,
+  "g14": 0.7,
+  "note": "infinity loop 14 x 4.8 with a small inlay seat"
+ },
+ "BAS-H08-CERCLE": {
+  "mm3": 67.7,
+  "g14": 0.88,
+  "note": "open circle 11 mm in 1.6 mm pave wire; diamonds not weighed"
+ },
+ "BAS-F26-SUNRAY": {
+  "mm3": 69.8,
+  "g14": 0.91,
+  "note": "no stated dimensions; 18 mm arc in 1.4 mm wire with seven 4 mm rays assumed"
+ },
+ "BAS-TWIG-B01": {
+  "mm3": 44.9,
+  "g14": 0.59,
+  "note": "twig 20 mm in 1.5 mm wire, 4.6 mm pearl cup; pearl not gold"
+ },
+ "BAS-FW26-L07": {
+  "mm3": 164.9,
+  "g14": 2.41,
+  "note": "pair of 15 mm hoops in 1.6 mm wire"
+ }
+}

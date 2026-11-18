@@ -1,0 +1,1310 @@
+{
+ "set14": {
+  "BAS-M11-16": 3.11,
+  "BAS-M11-18": 3.34,
+  "BAS-M11-20": 3.58
+ },
+ "default": {
+  "mult": 1.15,
+  "add14": 0,
+  "why": "no anchor: + 15%"
+ },
+ "rows": [
+  {
+   "sku": "BAS-SS-A01",
+   "mult": 1,
+   "add14": 0.32,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A02",
+   "mult": 1,
+   "add14": 0.288,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A03",
+   "mult": 1,
+   "add14": 0.224,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A04",
+   "mult": 1,
+   "add14": 0.384,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A05",
+   "mult": 1,
+   "add14": 0.288,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A06",
+   "mult": 1,
+   "add14": 0.288,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A07",
+   "mult": 1,
+   "add14": 0.32,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A08",
+   "mult": 1,
+   "add14": 0.352,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A09",
+   "mult": 1,
+   "add14": 0.352,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A10",
+   "mult": 1,
+   "add14": 0.288,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A11",
+   "mult": 1,
+   "add14": 0.288,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A12",
+   "mult": 1,
+   "add14": 0.288,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A13",
+   "mult": 1,
+   "add14": 0.288,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A14",
+   "mult": 1,
+   "add14": 0.384,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A15",
+   "mult": 1,
+   "add14": 0.352,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A16",
+   "mult": 1,
+   "add14": 0.32,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A17",
+   "mult": 1,
+   "add14": 0.352,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A18",
+   "mult": 1,
+   "add14": 0.288,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A19",
+   "mult": 1,
+   "add14": 0.288,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A20",
+   "mult": 1,
+   "add14": 0.288,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A21",
+   "mult": 1,
+   "add14": 0.32,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A22",
+   "mult": 1,
+   "add14": 0.352,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A23",
+   "mult": 1,
+   "add14": 0.384,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A24",
+   "mult": 1,
+   "add14": 0.384,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A25",
+   "mult": 1,
+   "add14": 0.48,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A26",
+   "mult": 1,
+   "add14": 0.448,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A27",
+   "mult": 1,
+   "add14": 0.512,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A28",
+   "mult": 1,
+   "add14": 0.448,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A29",
+   "mult": 1,
+   "add14": 0.288,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A30",
+   "mult": 1,
+   "add14": 0.352,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A31",
+   "mult": 1,
+   "add14": 0.32,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A32",
+   "mult": 1,
+   "add14": 0.288,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A33",
+   "mult": 1,
+   "add14": 0.352,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A34",
+   "mult": 1,
+   "add14": 0.32,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A35",
+   "mult": 1,
+   "add14": 0.384,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A36",
+   "mult": 1,
+   "add14": 0.32,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A37",
+   "mult": 1,
+   "add14": 0.32,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A38",
+   "mult": 1,
+   "add14": 0.256,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A39",
+   "mult": 1,
+   "add14": 0.48,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-SS-A40",
+   "mult": 1,
+   "add14": 0.512,
+   "why": "charm x maker station ratio"
+  },
+  {
+   "sku": "BAS-FW-R01",
+   "mult": 1,
+   "add14": 1.39,
+   "why": "motif ring raised to the maker's 3 mm band"
+  },
+  {
+   "sku": "BAS-FW-N01",
+   "mult": 1,
+   "add14": 0.189,
+   "why": "pendant x maker ratio"
+  },
+  {
+   "sku": "BAS-FW-E01",
+   "mult": 2.78,
+   "add14": 0,
+   "why": "earring body x maker ratio"
+  },
+  {
+   "sku": "BAS-FW-B01",
+   "mult": 1,
+   "add14": 0.384,
+   "why": "stations x maker ratio; cuff + 15%"
+  },
+  {
+   "sku": "BAS-FW-R02",
+   "mult": 1,
+   "add14": 1.39,
+   "why": "motif ring raised to the maker's 3 mm band"
+  },
+  {
+   "sku": "BAS-FW-N02",
+   "mult": 1,
+   "add14": 0.21,
+   "why": "pendant x maker ratio"
+  },
+  {
+   "sku": "BAS-FW-E02",
+   "mult": 2.78,
+   "add14": 0,
+   "why": "earring body x maker ratio"
+  },
+  {
+   "sku": "BAS-FW-B02",
+   "mult": 1,
+   "add14": 0.832,
+   "why": "stations x maker ratio; cuff + 15%"
+  },
+  {
+   "sku": "BAS-FW-R03",
+   "mult": 1,
+   "add14": 1.89,
+   "why": "motif ring raised to the maker's 3 mm band"
+  },
+  {
+   "sku": "BAS-FW-N03",
+   "mult": 1,
+   "add14": 0.189,
+   "why": "pendant x maker ratio"
+  },
+  {
+   "sku": "BAS-FW-E03",
+   "mult": 1.39,
+   "add14": 0,
+   "why": "earring body x maker ratio"
+  },
+  {
+   "sku": "BAS-FW-B03",
+   "mult": 1,
+   "add14": 0.32,
+   "why": "stations x maker ratio; cuff + 15%"
+  },
+  {
+   "sku": "BAS-FW-R04",
+   "mult": 1,
+   "add14": 1.39,
+   "why": "motif ring raised to the maker's 3 mm band"
+  },
+  {
+   "sku": "BAS-FW-N04",
+   "mult": 1,
+   "add14": 0.273,
+   "why": "pendant x maker ratio"
+  },
+  {
+   "sku": "BAS-FW-E04",
+   "mult": 2.78,
+   "add14": 0,
+   "why": "earring body x maker ratio"
+  },
+  {
+   "sku": "BAS-FW-B04",
+   "mult": 1,
+   "add14": 0.64,
+   "why": "stations x maker ratio; cuff + 15%"
+  },
+  {
+   "sku": "BAS-FW-R05",
+   "mult": 1,
+   "add14": 1.69,
+   "why": "motif ring raised to the maker's 3 mm band"
+  },
+  {
+   "sku": "BAS-FW-N05",
+   "mult": 1,
+   "add14": 0.252,
+   "why": "pendant x maker ratio"
+  },
+  {
+   "sku": "BAS-FW-E05",
+   "mult": 2.78,
+   "add14": 0,
+   "why": "earring body x maker ratio"
+  },
+  {
+   "sku": "BAS-FW-B05",
+   "mult": 1,
+   "add14": 0.512,
+   "why": "stations x maker ratio; cuff + 15%"
+  },
+  {
+   "sku": "BAS-FW-R06",
+   "mult": 1,
+   "add14": 1.29,
+   "why": "motif ring raised to the maker's 3 mm band"
+  },
+  {
+   "sku": "BAS-FW-N06",
+   "mult": 1,
+   "add14": 0.21,
+   "why": "pendant x maker ratio"
+  },
+  {
+   "sku": "BAS-FW-E06",
+   "mult": 2.78,
+   "add14": 0,
+   "why": "earring body x maker ratio"
+  },
+  {
+   "sku": "BAS-FW-B06",
+   "mult": 1,
+   "add14": 0.512,
+   "why": "stations x maker ratio; cuff + 15%"
+  },
+  {
+   "sku": "BAS-FW-R07",
+   "mult": 1,
+   "add14": 2.19,
+   "why": "motif ring raised to the maker's 3 mm band"
+  },
+  {
+   "sku": "BAS-FW-N07",
+   "mult": 1,
+   "add14": 0.21,
+   "why": "pendant x maker ratio"
+  },
+  {
+   "sku": "BAS-FW-E07",
+   "mult": 2.78,
+   "add14": 0,
+   "why": "earring body x maker ratio"
+  },
+  {
+   "sku": "BAS-FW-B07",
+   "mult": 1.15,
+   "add14": 0,
+   "why": "stations x maker ratio; cuff + 15%"
+  },
+  {
+   "sku": "BAS-FW-R08",
+   "mult": 1,
+   "add14": 1.49,
+   "why": "motif ring raised to the maker's 3 mm band"
+  },
+  {
+   "sku": "BAS-FW-N08",
+   "mult": 1,
+   "add14": 0.252,
+   "why": "pendant x maker ratio"
+  },
+  {
+   "sku": "BAS-FW-E08",
+   "mult": 2.78,
+   "add14": 0,
+   "why": "earring body x maker ratio"
+  },
+  {
+   "sku": "BAS-FW-B08",
+   "mult": 1,
+   "add14": 0.32,
+   "why": "stations x maker ratio; cuff + 15%"
+  },
+  {
+   "sku": "BAS-FW-R09",
+   "mult": 1,
+   "add14": 1.69,
+   "why": "motif ring raised to the maker's 3 mm band"
+  },
+  {
+   "sku": "BAS-FW-N09",
+   "mult": 1,
+   "add14": 0.273,
+   "why": "pendant x maker ratio"
+  },
+  {
+   "sku": "BAS-FW-E09",
+   "mult": 2.78,
+   "add14": 0,
+   "why": "earring body x maker ratio"
+  },
+  {
+   "sku": "BAS-FW-B09",
+   "mult": 1,
+   "add14": 0.576,
+   "why": "stations x maker ratio; cuff + 15%"
+  },
+  {
+   "sku": "BAS-FW-R10",
+   "mult": 1,
+   "add14": 2.19,
+   "why": "motif ring raised to the maker's 3 mm band"
+  },
+  {
+   "sku": "BAS-FW-N10",
+   "mult": 1,
+   "add14": 0.168,
+   "why": "pendant x maker ratio"
+  },
+  {
+   "sku": "BAS-FW-E10",
+   "mult": 2.78,
+   "add14": 0,
+   "why": "earring body x maker ratio"
+  },
+  {
+   "sku": "BAS-FW-B10",
+   "mult": 1,
+   "add14": 0.512,
+   "why": "stations x maker ratio; cuff + 15%"
+  },
+  {
+   "sku": "BAS-XM-R01",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-B01",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-N01",
+   "mult": 1,
+   "add14": 0.231,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-R02",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-B02",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-N02",
+   "mult": 1,
+   "add14": 0.21,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-R03",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-B03",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-N03",
+   "mult": 1,
+   "add14": 0.252,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-R04",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-B04",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-N04",
+   "mult": 1,
+   "add14": 0.252,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-R05",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-B05",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-N05",
+   "mult": 1,
+   "add14": 0.273,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-R06",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-B06",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-N06",
+   "mult": 1,
+   "add14": 0.273,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-R07",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-B07",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-N07",
+   "mult": 1,
+   "add14": 0.21,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-R08",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-B08",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-N08",
+   "mult": 1,
+   "add14": 0.273,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-R09",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-B09",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-N09",
+   "mult": 1,
+   "add14": 0.252,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-R10",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-B10",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-XM-N10",
+   "mult": 1,
+   "add14": 0.231,
+   "why": "maker terms already applied; pendant x ratio"
+  },
+  {
+   "sku": "BAS-HM-R01",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker band list or chain kept"
+  },
+  {
+   "sku": "BAS-HM-R02",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker band list or chain kept"
+  },
+  {
+   "sku": "BAS-HM-R05",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker band list or chain kept"
+  },
+  {
+   "sku": "BAS-HM-R06",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker band list or chain kept"
+  },
+  {
+   "sku": "BAS-HM-R07",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker band list or chain kept"
+  },
+  {
+   "sku": "BAS-HM-R08",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker band list or chain kept"
+  },
+  {
+   "sku": "BAS-HM-R09",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker band list or chain kept"
+  },
+  {
+   "sku": "BAS-HM-R10",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker band list or chain kept"
+  },
+  {
+   "sku": "BAS-HM-B01",
+   "mult": 1.5238,
+   "add14": 0,
+   "why": "box chain on the heavy retail case"
+  },
+  {
+   "sku": "BAS-HM-B02",
+   "mult": 0.7097,
+   "add14": 0,
+   "why": "curb chain from the supplier catalog"
+  },
+  {
+   "sku": "BAS-HM-B03",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker band list or chain kept"
+  },
+  {
+   "sku": "BAS-HM-B04",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker band list or chain kept"
+  },
+  {
+   "sku": "BAS-HM-B05",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker band list or chain kept"
+  },
+  {
+   "sku": "BAS-HM-B06",
+   "mult": 0.6,
+   "add14": 0,
+   "why": "figaro chain from the supplier catalog"
+  },
+  {
+   "sku": "BAS-HM-B07",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker band list or chain kept"
+  },
+  {
+   "sku": "BAS-HM-B08",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker band list or chain kept"
+  },
+  {
+   "sku": "BAS-HM-B09",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker band list or chain kept"
+  },
+  {
+   "sku": "BAS-HM-B10",
+   "mult": 1,
+   "add14": 0,
+   "why": "maker band list or chain kept"
+  },
+  {
+   "sku": "BAS-HM-E01",
+   "mult": 2.78,
+   "add14": 0,
+   "why": "earring body x maker ratio"
+  },
+  {
+   "sku": "BAS-HM-E02",
+   "mult": 2.78,
+   "add14": 0,
+   "why": "earring body x maker ratio"
+  },
+  {
+   "sku": "BAS-HM-E03",
+   "mult": 2.78,
+   "add14": 0,
+   "why": "earring body x maker ratio"
+  },
+  {
+   "sku": "BAS-HM-E04",
+   "mult": 2.78,
+   "add14": 0,
+   "why": "earring body x maker ratio"
+  },
+  {
+   "sku": "BAS-HM-E05",
+   "mult": 2.78,
+   "add14": 0,
+   "why": "earring body x maker ratio"
+  },
+  {
+   "sku": "BAS-HM-E06",
+   "mult": 1.39,
+   "add14": 0,
+   "why": "earring body x maker ratio"
+  },
+  {
+   "sku": "BAS-HM-E07",
+   "mult": 1.39,
+   "add14": 0,
+   "why": "earring body x maker ratio"
+  },
+  {
+   "sku": "BAS-HM-E08",
+   "mult": 1.39,
+   "add14": 0,
+   "why": "earring body x maker ratio"
+  },
+  {
+   "sku": "BAS-HM-E09",
+   "mult": 2.78,
+   "add14": 0,
+   "why": "earring body x maker ratio"
+  },
+  {
+   "sku": "BAS-HM-E10",
+   "mult": 2.78,
+   "add14": 0,
+   "why": "earring body x maker ratio"
+  },
+  {
+   "sku": "BAS-EE-R01",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-N01",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-B01",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-R02",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-N02",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-B02",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-R03",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-N03",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-B03",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-R04",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-N04",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-B04",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-R05",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-N05",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-B05",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-R06",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-N06",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-B06",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-R07",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-N07",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-B07",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-R08",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-N08",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-B08",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-R09",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-N09",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-B09",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-R10",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-N10",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-EE-B10",
+   "mult": 1,
+   "add14": 0,
+   "why": "already raised over geometry to maker terms"
+  },
+  {
+   "sku": "BAS-W01",
+   "mult": 1.15,
+   "add14": 0,
+   "why": "no anchor: + 15%"
+  },
+  {
+   "sku": "BAS-W03",
+   "mult": 1.15,
+   "add14": 0,
+   "why": "no anchor: + 15%"
+  },
+  {
+   "sku": "BAS-W04",
+   "mult": 1.15,
+   "add14": 0,
+   "why": "no anchor: + 15%"
+  },
+  {
+   "sku": "BAS-W05",
+   "mult": 1.15,
+   "add14": 0,
+   "why": "no anchor: + 15%"
+  },
+  {
+   "sku": "BAS-S01-CRT",
+   "mult": 1.0,
+   "add14": 0,
+   "why": "Blender model 8.32 g at the reference size x 1.15; panel 9.57"
+  },
+  {
+   "sku": "BAS-F26-SIGNET",
+   "mult": 1.3749,
+   "add14": 0,
+   "why": "Blender model 8.01 g at the reference size x 1.15; panel 6.7"
+  },
+  {
+   "sku": "BAS-I03-INF",
+   "mult": 1.7705,
+   "add14": 0,
+   "why": "Blender model 3.31 g at the reference size x 1.15; panel 2.15"
+  },
+  {
+   "sku": "BAS-M03-ROSETTE",
+   "mult": 1.932,
+   "add14": 0,
+   "why": "Blender model 3.78 g at the reference size x 1.15; panel 2.25"
+  },
+  {
+   "sku": "BAS-M03S-ROSETTE",
+   "mult": 1.6323,
+   "add14": 0,
+   "why": "Blender model 4.4 g at the reference size x 1.15; panel 3.1"
+  },
+  {
+   "sku": "BAS-M05-SUNRISE",
+   "mult": 1.4494,
+   "add14": 0,
+   "why": "Blender model 3.97 g at the reference size x 1.15; panel 3.15"
+  },
+  {
+   "sku": "BAS-F26-OPENARC",
+   "mult": 1.6356,
+   "add14": 0,
+   "why": "Blender model 3.2 g at the reference size x 1.15; panel 2.25"
+  },
+  {
+   "sku": "BAS-FW26-L07",
+   "mult": 1.1086,
+   "add14": 0,
+   "why": "Blender model 2.41 g at the reference size x 1.15; panel 2.5"
+  },
+  {
+   "sku": "BAS-27-MINE-R01",
+   "mult": 1.6318,
+   "add14": 0,
+   "why": "Blender model 3.59 g at the reference size x 1.0; panel 2.2"
+  },
+  {
+   "sku": "BAS-27-MINE-R02",
+   "mult": 1.795,
+   "add14": 0,
+   "why": "Blender model 3.06 g at the reference size x 1.0; panel 2.0"
+  },
+  {
+   "sku": "BAS-27-MINE-R03",
+   "mult": 1.8895,
+   "add14": 0,
+   "why": "Blender model 3.36 g at the reference size x 1.0; panel 1.9"
+  },
+  {
+   "sku": "BAS-27-MINE-R04",
+   "mult": 1.795,
+   "add14": 0,
+   "why": "Blender model 3.16 g at the reference size x 1.0; panel 2.0"
+  },
+  {
+   "sku": "BAS-27-MINE-R05",
+   "mult": 1.7286,
+   "add14": 0,
+   "why": "Blender model 3.63 g at the reference size x 1.0; panel 2.1"
+  },
+  {
+   "sku": "BAS-M11-LION",
+   "mult": 1,
+   "add14": 1.114,
+   "why": "Blender motif 1.08 g x 1.15 + findings + chain; panel 2.2 at 16 in"
+  },
+  {
+   "sku": "BAS-I13-INF",
+   "mult": 1,
+   "add14": 1.279,
+   "why": "Blender motif 1.31 g x 1.15 + findings + chain; panel 2.3 at 16 in"
+  },
+  {
+   "sku": "BAS-I13",
+   "mult": 1,
+   "add14": 0.233,
+   "why": "Blender motif 1.07 g x 1.15 + findings + chain; panel 3.07 at 16 in"
+  },
+  {
+   "sku": "BAS-MOTH-N01",
+   "mult": 1,
+   "add14": 0.716,
+   "why": "Blender motif 0.96 g x 1.15 + findings + chain; panel 2.46 at 16 in"
+  },
+  {
+   "sku": "BAS-E08-EYE",
+   "mult": 1,
+   "add14": 0.002,
+   "why": "Blender motif 0.55 g x 1.15 + findings + chain; panel 1.65 at 7 in"
+  },
+  {
+   "sku": "BAS-E10",
+   "mult": 1,
+   "add14": 0.523,
+   "why": "Blender motif 0.56 g x 1.15 + findings + chain; panel 1.14 at 7 in"
+  },
+  {
+   "sku": "BAS-I06",
+   "mult": 1,
+   "add14": 0.093,
+   "why": "Blender motif 0.69 g x 1.15 + findings + chain; panel 1.72 at 7 in"
+  },
+  {
+   "sku": "BAS-I10",
+   "mult": 1,
+   "add14": 0.0,
+   "why": "Blender motif 0.7 g x 1.15 + findings + chain; panel 1.88 at 7 in"
+  },
+  {
+   "sku": "BAS-H08-CERCLE",
+   "mult": 1,
+   "add14": 0.551,
+   "why": "Blender motif 0.88 g x 1.15 + findings + chain; panel 1.48 at 7 in"
+  },
+  {
+   "sku": "BAS-F26-SUNRAY",
+   "mult": 1,
+   "add14": 0.0,
+   "why": "Blender motif 0.91 g x 1.15 + findings + chain; panel 2.8 at 7 in"
+  },
+  {
+   "sku": "BAS-TWIG-B01",
+   "mult": 1,
+   "add14": 0.0,
+   "why": "Blender motif 0.59 g x 1.15 + findings + chain; panel 2.0 at 7 in"
+  },
+  {
+   "sku": "BAS-27-MINE-E01",
+   "mult": 2.78,
+   "add14": 0,
+   "why": "enamel stud pair x maker earring ratio"
+  },
+  {
+   "sku": "BAS-27-MINE-N01",
+   "mult": 1,
+   "add14": 0.461,
+   "why": "pendant about 1.3 g x maker pendant ratio; one SKU covers 16 and 18 in on Etsy, weighed at 18"
+  },
+  {
+   "sku": "BAS-27-MINE-B01",
+   "mult": 1,
+   "add14": 0.32,
+   "why": "bar about 0.5 g x maker station ratio"
+  },
+  {
+   "sku": "BAS-27-MINE-E02",
+   "mult": 2.78,
+   "add14": 0,
+   "why": "enamel stud pair x maker earring ratio"
+  },
+  {
+   "sku": "BAS-27-MINE-N02",
+   "mult": 1,
+   "add14": 0.461,
+   "why": "pendant about 1.3 g x maker pendant ratio; one SKU covers 16 and 18 in on Etsy, weighed at 18"
+  },
+  {
+   "sku": "BAS-27-MINE-B02",
+   "mult": 1,
+   "add14": 0.32,
+   "why": "bar about 0.5 g x maker station ratio"
+  },
+  {
+   "sku": "BAS-27-MINE-E03",
+   "mult": 2.78,
+   "add14": 0,
+   "why": "enamel stud pair x maker earring ratio"
+  },
+  {
+   "sku": "BAS-27-MINE-N03",
+   "mult": 1,
+   "add14": 0.461,
+   "why": "pendant about 1.3 g x maker pendant ratio; one SKU covers 16 and 18 in on Etsy, weighed at 18"
+  },
+  {
+   "sku": "BAS-27-MINE-B03",
+   "mult": 1,
+   "add14": 0.32,
+   "why": "bar about 0.5 g x maker station ratio"
+  },
+  {
+   "sku": "BAS-27-MINE-E04",
+   "mult": 2.78,
+   "add14": 0,
+   "why": "enamel stud pair x maker earring ratio"
+  },
+  {
+   "sku": "BAS-27-MINE-N04",
+   "mult": 1,
+   "add14": 0.461,
+   "why": "pendant about 1.3 g x maker pendant ratio; one SKU covers 16 and 18 in on Etsy, weighed at 18"
+  },
+  {
+   "sku": "BAS-27-MINE-B04",
+   "mult": 1,
+   "add14": 0.32,
+   "why": "bar about 0.5 g x maker station ratio"
+  },
+  {
+   "sku": "BAS-27-MINE-E05",
+   "mult": 2.78,
+   "add14": 0,
+   "why": "enamel stud pair x maker earring ratio"
+  },
+  {
+   "sku": "BAS-27-MINE-N05",
+   "mult": 1,
+   "add14": 0.461,
+   "why": "pendant about 1.3 g x maker pendant ratio; one SKU covers 16 and 18 in on Etsy, weighed at 18"
+  },
+  {
+   "sku": "BAS-27-MINE-B05",
+   "mult": 1,
+   "add14": 0.32,
+   "why": "bar about 0.5 g x maker station ratio"
+  },
+  {
+   "sku": "BAS-B14",
+   "mult": 1,
+   "add14": 0,
+   "why": "band on the maker's list geometry"
+  },
+  {
+   "sku": "BAS-C01-FRZ",
+   "mult": 1,
+   "add14": 0,
+   "why": "cuff: width x 1.5 mm x flat length, checked against the listing"
+  },
+  {
+   "sku": "BAS-W02",
+   "mult": 1.3411,
+   "add14": 0,
+   "why": "Blender model 8.56 g at the reference size x 1.15; panel 7.34"
+  },
+  {
+   "sku": "BAS-HM-R03",
+   "mult": 1.2138,
+   "add14": 0,
+   "why": "Blender model 8.56 g at the reference size x 1.15; panel 8.11"
+  },
+  {
+   "sku": "BAS-HM-R04",
+   "mult": 1.0,
+   "add14": 0,
+   "why": "Blender model 5.83 g at the reference size x 1.15; panel 6.75"
+  }
+ ]
+}
