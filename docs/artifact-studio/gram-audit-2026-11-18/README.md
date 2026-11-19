@@ -44,3 +44,10 @@ Break-even at a 25% sale with 9.5% Etsy fees. Karat density against 14K: 10K x 0
 - Stones (Cercle pave, V necklace) are not in the cost.
 - Offsite Ads fee is not in the floor. Gold is fixed at the day's spot.
 - `weight_grams` on the panel now holds the careful pricing gram, not a measured weight. Replace with real weights as pieces are made.
+
+## Etsy push, 2026-11-18
+- Canary 4586539516: 27 written, fresh-token read 27 of 27 equal.
+- Remaining 207 listings: 13,499 offerings written, 0 errors, every listing `synced` on the route's own read-back.
+- Independent read with fresh tokens: 208 listings `unchanged`, 13,529 offerings, 0 mismatches, 13,524 panel variants in the map.
+- Audit: 208 `etsy.reprice` rows, 203 `etsy.variant_sync` rows. Panel seal after the push still `7bb4058e17d612e5632275279517f4e0`.
+- Tokens: 90 issued, 89 used, 1 burned, 0 open; the token file is deleted.
