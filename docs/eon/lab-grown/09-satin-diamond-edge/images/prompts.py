@@ -1,5 +1,5 @@
-"""EON-SDE6 (6,0 × 1,8 mm düz bant, fırçalı saten yüz, BİR kenarda 45° cilalı pah ve pahta tam tur tek sıra ~1,3 mm
-round lab-grown taş, öbür kenar dar cilalı pah) Etsy galerisi: 9 Higgsfield prompt'u + yerelde dizilen ölçü kartı
+"""EON-SDE6 (6,0 × 1,8 mm düz bant, ortası fırçalı saten, İKİ kenarda 45° cilalı pah ve her pahta tam tur tek sıra
+~1,3 mm round lab-grown taş; sahip kartı 2026-11-21 "Both edges") Etsy galerisi: 9 Higgsfield prompt'u + yerelde dizilen ölçü kartı
 (10. kare, kredisiz) + sahibin düzenlenmemiş gerçek fotoğrafı (11. kare, Etsy'nin "en az bir gerçek fotoğraf" kuralı).
 
 Run: python3 -I docs/eon/lab-grown/09-satin-diamond-edge/images/prompts.py   -> prompts.json + PROMPTS-REVIEW.md
@@ -25,16 +25,17 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 
 DESIGN = (
-    "about 6 mm wide and about 1.8 mm thick: a flat band with a flat outer face and squared shoulders. The whole outer "
-    "face has a fine brushed satin finish: soft, matte and even, made of very fine parallel brush lines that run around "
-    "the ring along the band, never across it. Along ONE edge of the band only, the corner between the outer face and "
-    "the side of the band is cut off at 45 degrees into a narrow, flat, polished slope, and set into this slope sits one "
-    "single row of small round brilliant cut stones, side by side and close together, with one tiny round polished gold "
-    "bead between each pair of stones holding them. The row runs all the way around the ring without a gap and without "
-    "an end, so this edge is one continuous circle of small stones. Each stone is tiny, about 1.3 mm across, about a "
-    "fifth of the band's width, so about forty of them fit around the circle. On the inner side of the row a thin "
-    "polished gold lip borders the hole of the ring. The other edge of the band has no stones at all: only a very narrow "
-    "polished bevel, a thin bright line. The inside of the band is smooth, high-polished gold."
+    "about 6 mm wide and about 1.8 mm thick: a flat band with a flat outer face and squared shoulders. Both edges of "
+    "the band are the same: on each edge the corner between the outer face and the side of the band is cut off at 45 "
+    "degrees into a narrow, flat, polished slope, and set into each slope sits one single row of small round brilliant "
+    "cut stones, side by side and close together, with one tiny round polished gold bead between each pair of stones "
+    "holding them. Each row runs all the way around the ring without a gap and without an end, so each edge is one "
+    "continuous circle of small stones: two parallel circles of stones, one along each edge. Each stone is tiny, about "
+    "1.3 mm across, about a fifth of the band's width, so about forty of them fit around each circle. On the inner side "
+    "of each row a thin polished gold lip borders the hole of the ring. Between the two rows, the middle of the outer "
+    "face, about two thirds of the band's width, has a fine brushed satin finish: soft, matte and even, made of very "
+    "fine parallel brush lines that run around the ring along the band, never across it. The inside of the band is "
+    "smooth, high-polished gold."
 )
 METAL = {
     "Y": "The gold is warm, soft yellow gold; the brushed face is a pale, even satin yellow and the polished parts are "
@@ -48,9 +49,9 @@ METAL = {
 }
 DIAMONDS = "The stones are colourless lab-grown diamonds, bright and clear, each showing crisp white and dark facets."
 ONLY = (
-    "These are the only stones on the ring: one single row of small stones along one edge only, no stones on the "
-    "brushed outer face, no second row on the other edge, no larger centre stone, no stones inside the band, no "
-    "engraving, no hallmark, no text."
+    "These are the only stones on the ring: exactly two rows of small stones, one along each edge, no stones on the "
+    "brushed middle of the face, no third row, no larger centre stone, no stones inside the band, no engraving, no "
+    "hallmark, no text."
 )
 PROPORTION = "The band's 6 mm width is about a quarter of the ring's outer diameter of about 22 mm."
 
@@ -73,10 +74,11 @@ PHOTO = (
     "No text, no logo, no watermark, no packaging."
 )
 # Referanslar: sahibin gerçek fotoğraflarından sıkı kırpımlar; tasarım alınır, sahne alınmaz.
-_TAKE = ("Take only the ring's design: the brushed satin outer face, the polished 45 degree slope along one edge with its "
-         "row of small round stones and tiny gold beads, the thin polished lip inside the row, the plain narrow polished "
-         "bevel on the other edge and the polished inside. Do not take the photographs' setting: no towel, no white "
-         "fur, no dark cloth, not their lighting and not their camera angle.")
+_TAKE = ("Take only the ring's design: the brushed satin middle of the outer face, the polished 45 degree slopes along "
+         "both edges with their rows of small round stones and tiny gold beads, the thin polished lips inside the rows "
+         "and the polished inside. The photographs show the upper row most clearly; the other edge carries an identical "
+         "row. Do not take the photographs' setting: no towel, no white fur, no dark cloth, not their lighting and not "
+         "their camera angle.")
 _BW = (" The reference images are black and white on purpose: take only the ring's shape and design from them; the "
        "colour of the gold comes only from this text.")
 REF_WHOLE_TOP = ("Reference images: real photographs of this ring, cropped to the ring: the first shows the whole ring "
@@ -87,8 +89,8 @@ REF_TOP_SIDE = ("Reference images: real photographs of this ring, cropped to the
                 "on the polished slope up close, with the thin polished lip inside it; the second shows the brushed "
                 "outer face at eye level with the row of stones along its top edge. " + _TAKE)
 REF_SIDE_TOP = ("Reference images: real photographs of this ring, cropped to the ring: the first shows the brushed outer "
-                "face at eye level with the row of stones along its top edge and the narrow polished bevel along its "
-                "bottom edge; the second shows the row of stones on the polished slope up close. " + _TAKE)
+                "face at eye level with the row of stones along its top edge and, along its bottom edge, the second row "
+                "seen edge-on as a thin line; the second shows the row of stones on the polished slope up close. " + _TAKE)
 REF_WHOLE_BW = ("Reference images: real photographs of this ring, cropped to the ring: the first shows the whole ring "
                 "tilted, with the continuous circle of small stones around the beveled edge of the opening; the second "
                 "shows the row of stones on the polished slope up close. " + _TAKE + _BW)
@@ -96,17 +98,19 @@ REF_TOP_BW = ("Reference images: real photographs of this ring, cropped to the r
               "on the polished slope up close, with the thin polished lip inside it; the second shows the whole ring "
               "tilted, with the continuous circle of small stones around the opening. " + _TAKE + _BW)
 
-# Sıranın yeri: yatık pozlarda taşlı kenar YUKARI (açıklığın üst ağzını çevreler), plain kenar zeminde.
-UP = ("The ring lies flat with its stone edge facing up: the continuous circle of small stones runs all the way around "
-      "the top rim of the opening, and the plain edge rests on the surface underneath.")
+# Sıraların yeri: yatık pozlarda bir taşlı kenar YUKARI (açıklığın üst ağzını çevreler), öbürü zeminde (ön duvarın altında
+# ince ışık çizgisi). Sahip kartı 2026-11-21 "Both edges".
+UP = ("The ring lies flat: one of its two stone edges faces up, so a continuous circle of small stones runs all the way "
+      "around the top rim of the opening, and the other stone edge rests on the surface underneath, its row showing as a "
+      "fine line of light along the bottom of the band's front wall.")
 
 FRAMES = [
     ("01-hero", "the design at a glance (Etsy first photo: one product, no text)", "Y", REF_WHOLE_TOP,
      "The ring lies flat on a smooth, matte, pale blue-grey ceramic tile and is seen from the front and above, at about "
      "40 degrees, so the whole ring is in view and nothing is cut off. " + UP + " Seen this way the circle of stones is "
      "an ellipse around the opening; the brushed satin outer face forms the front wall of the band, facing the camera, "
-     "with the row of stones along its top edge; through the opening the polished inside of the back of the band "
-     "is visible. " + PROPORTION + " Daylight comes from a window on the left: the stones show crisp facets, the beads "
+     "with one row of stones along its top edge and the second along its bottom edge; through the opening the polished "
+     "inside of the back of the band is visible. " + PROPORTION + " Daylight comes from a window on the left: the stones show crisp facets, the beads "
      "catch tiny points of light and the brushed face stays soft and matte. The ring sits in the centre of the frame and "
      "fills about half of the frame's width, with generous space all around so that a square crop keeps the whole ring. "
      "Behind it a pale blue-grey plaster wall is softly out of focus. Colour: the tile and the wall are muted cool "
@@ -122,36 +126,37 @@ FRAMES = [
      "the face are visible. Behind the ring, blue-grey slate is out of focus. Colour: the slate is a muted cool blue-grey, "
      "so the warm yellow gold is the only warm colour in the image. The ring is the only object in the image."),
     ("03-profile", "the brushed face at eye level: 6 mm width, stones on one edge only", "Y", REF_SIDE_TOP,
-     "The ring lies flat on matte charcoal slate, its stone edge facing up, and the camera is low, level with the ring "
-     "and close to it, looking straight at the front of the band: the brushed satin outer face fills the middle of the "
-     "frame like a low curved wall about 6 mm tall. Along the top edge of this wall runs the row of small round stones on "
-     "its polished slope, with the thin polished lip above it; along the bottom edge, where the band rests on the slate, "
-     "there are no stones, only the narrow polished bevel, a thin bright line. Toward the left and the right the band "
-     "curves away and softens. Above the front of the band, the polished inside of the back of the ring is just "
+     "The ring lies flat on matte charcoal slate and the camera is low, level with the ring and close to it, looking "
+     "straight at the front of the band: the band fills the middle of the frame like a low curved wall about 6 mm tall. "
+     "Along the top edge of this wall runs one row of small round stones on its polished slope, with the thin polished "
+     "lip above it; along the bottom edge, where the band rests on the slate, runs the second, identical row on the "
+     "lower slope; between the two rows the brushed satin face is about 4 mm tall. Toward the left and the right the "
+     "band curves away and softens. Above the front of the band, the polished inside of the back of the ring is just "
      "visible. Daylight from the left draws one long soft sheen along the brushed face. Colour: the charcoal slate is a "
      "cool dark grey, so the gold reads warm and bright against it. The ring is the only object in the image."),
     ("04-hand", "how the band looks on a man's hand", "Y", REF_WHOLE_TOP,
      "A man's hand rests palm-down on soft charcoal-grey wool, seen from slightly above and from the side of the "
      "fingertips, fingers relaxed and slightly apart. The ring is worn on the ring finger, the fourth finger, between the "
      "middle finger and the little finger, near the base of the finger, with its brushed satin face across the top of "
-     "the finger and its stone edge toward the fingertips, so the row of small stones shows as a fine line of light "
-     "along the front edge of the band, facing the camera; the plain edge is toward the knuckle. It is the only ring; the "
+     "the finger, framed by its two stone edges: one row of small stones along the edge toward the fingertips, facing "
+     "the camera, and the other along the edge toward the knuckle, so two fine lines of light cross the finger. It is the only ring; the "
      "other fingers and the wrist are bare, no watch and no bracelet. The band sits firmly on the finger: its 6 mm width "
      "is about a third of the finger's width. Natural skin texture, short clean nails. Colour: the wool is a muted cool "
      "charcoal grey and the skin natural, so the gold is the warmest accent in the image."),
     ("05-three", "the band in yellow, white and rose gold", "3", REF_WHOLE_BW,
      "Three of these rings lie flat side by side in a row on a slab of pale, matte, neutral limestone, a little apart, "
-     "all three with their stone edges facing up, seen from the front and above at about 40 degrees: from left to right "
+     "each with one of its stone edges facing up, seen from the front and above at about 40 degrees: from left to right "
      "yellow gold, white gold and rose gold. Each ring shows the continuous circle of small stones around the top rim of "
-     "its opening, the brushed satin face as its front wall and the polished inside of its back. All three are "
+     "its opening, the brushed satin face as its front wall with the second row along its bottom edge, and the polished "
+     "inside of its back. All three are "
      "the same size and completely in view, evenly lit by daylight from the left. Colour: the limestone is a neutral pale "
      "grey-beige, so each gold keeps its own true colour. These three rings are the only objects in the image."),
     ("06-white", "white gold, the stone edge facing the camera", "W", REF_WHOLE_BW,
      "The white gold ring stands upright on its edge on a slab of warm, matte sandstone, turned three-quarters so that "
-     "its stone edge faces the camera: the camera looks from the front-left and slightly above, so on the left the "
-     "opening appears as a tall ellipse framed all the way around by the continuous circle of small stones on the "
-     "beveled edge, with the thin polished lip just inside it and the polished inside beyond; on the right the "
-     "brushed satin outer face curves away as a wall. " + PROPORTION + " Daylight from the left. Colour: the sandstone is "
+     "one stone edge faces the camera: the camera looks from the front-left and slightly above, so on the left the "
+     "opening appears as a tall ellipse framed all the way around by the continuous circle of small stones on the near "
+     "beveled edge, with the thin polished lip just inside it and the polished inside beyond; on the right the brushed "
+     "satin outer face curves away as a wall, with the second row of stones along its far edge. " + PROPORTION + " Daylight from the left. Colour: the sandstone is "
      "a warm, muted honey-beige, the complement of the cool white gold, so the silver-white metal and the clear stones "
      "stand out against it. The ring is the only object in the image."),
     ("07-rose", "rose gold, the full circle of stones from above", "R", REF_TOP_BW,
@@ -163,14 +168,15 @@ FRAMES = [
      "is the only warm colour in the image. The ring is the only object in the image."),
     ("08-scale", "real size in a man's palm", "Y", REF_WHOLE_TOP,
      "Real-size view. A man's open hand, palm up, is seen from slightly above, the fingers relaxed and slightly curled; "
-     "the ring lies flat in the middle of the palm with its stone edge facing up, so the continuous circle of small "
-     "stones runs around the top rim of the opening and the brushed satin face forms the front wall of the band. The ring "
+     "the ring lies flat in the middle of the palm with one stone edge facing up, so a continuous circle of small "
+     "stones runs around the top rim of the opening and the brushed satin face, with the second row along its bottom "
+     "edge, forms the front wall of the band. The ring "
      "sits on the palm at its real size: its whole width, about 22 mm, is about a quarter of the width of the palm, a "
      "little more than the width of one finger at its base. " + PROPORTION + " Natural skin texture, short clean nails. "
      "Behind the hand, soft blue-grey linen is out of focus."),
     ("09-circle", "the stone edge straight on: a complete circle of stones", "Y", REF_TOP_SIDE,
-     "The ring stands upright on its edge on a slab of matte black basalt, and the camera looks almost straight at its "
-     "stone edge, along the ring's axis and slightly from above: the opening appears as a nearly round hole, and around "
+     "The ring stands upright on its edge on a slab of matte black basalt, and the camera looks almost straight at one "
+     "of its two stone edges, along the ring's axis and slightly from above: the opening appears as a nearly round hole, and around "
      "it the polished slope with its row of small stones forms one complete, continuous circle of light, with the thin "
      "polished lip on its inner side and the polished inside of the band receding into the hole; only a thin "
      "sliver of the brushed satin face shows around the outside. A single soft window light comes from the right; the "
@@ -205,24 +211,30 @@ for fid, feature, metal, ref, frame in FRAMES:
     for bad in (r"\bred\b", r"\bpears?\b", r"\brails?\b"):
         assert not re.search(bad, low), (fid, bad)
     # tasarım pinleri (RING bloğu her karede bir kez)
-    for pin in ("along one edge of the band only", "cut off at 45 degrees", "one single row of small round brilliant cut",
-                "tiny round polished gold bead between each pair", "all the way around the ring without a gap",
-                "about 1.3 mm across", "about a fifth of the band's width", "about forty", "thin polished gold lip",
-                "the other edge of the band has no stones at all", "fine brushed satin finish", "never across it",
-                "about 6 mm wide and about 1.8 mm thick", "these are the only stones", "no stones on the brushed",
-                "high-polished gold", "no person, no camera and no hands"):
+    for pin in ("both edges of the band are the same", "cut off at 45 degrees", "one single row of small round brilliant",
+                "tiny round polished gold bead between each pair", "each row runs all the way around the ring without a gap",
+                "two parallel circles of stones, one along each edge", "about 1.3 mm across",
+                "about a fifth of the band's width", "about forty of them fit around each circle", "thin polished gold lip",
+                "fine brushed satin finish", "never across it", "about 6 mm wide and about 1.8 mm thick",
+                "these are the only stones", "exactly two rows of small stones, one along each edge",
+                "no stones on the brushed middle", "high-polished gold", "no person, no camera and no hands",
+                "the other edge carries an identical row"):
         assert pin in low, (fid, pin)
     # her kare taşlı kenarın bu pozda nerede olduğunu söyler
-    where = {"01-hero": "with its stone edge facing up", "07-rose": "with its stone edge facing up",
-             "03-profile": "along the top edge of this wall runs the row", "02-row": "the row of small round stones runs across the frame",
-             "04-hand": "its stone edge toward the fingertips", "05-three": "all three with their stone edges facing up",
-             "06-white": "its stone edge faces the camera", "08-scale": "with its stone edge facing up",
-             "09-circle": "looks almost straight at its stone edge"}[fid]
+    where = {"01-hero": "one of its two stone edges faces up", "07-rose": "one of its two stone edges faces up",
+             "03-profile": "along the top edge of this wall runs one row", "02-row": "the row of small round stones runs across the frame",
+             "04-hand": "framed by its two stone edges", "05-three": "each with one of its stone edges facing up",
+             "06-white": "one stone edge faces the camera", "08-scale": "with one stone edge facing up",
+             "09-circle": "looks almost straight at one of its two stone edges"}[fid]
     assert where in low, (fid, "taşlı kenarın yeri")
+    # tek kenar okumasının sızıntısı (sahip kartı 2026-11-21: iki kenar)
+    for bad in ("plain edge", "one edge only", "along one edge of the band only", "no second row", "has no stones at all",
+                "the narrow polished bevel"):
+        assert bad not in low, (fid, bad)
     if fid in ("01-hero", "07-rose"):
-        assert "the plain edge rests on the surface underneath" in low, fid
+        assert "the other stone edge rests on the surface underneath" in low, fid
     if fid == "03-profile":
-        assert "only the narrow polished bevel" in low and "where the band rests on the slate, there are no stones" in low, fid
+        assert "runs the second, identical row on the lower slope" in low and "about 4 mm tall" in low, fid
     # oran sayıyla
     assert ("a quarter of the ring's outer diameter" in low) == (fid in ("01-hero", "06-white", "07-rose", "08-scale")), (fid, "oran")
     if fid == "04-hand":

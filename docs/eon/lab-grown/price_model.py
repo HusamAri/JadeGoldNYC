@@ -624,12 +624,13 @@ SDE_STONE_USD = SDE_STONE_CT * 280         # üreticinin bilinen tek lab oranı 
 SDE_SETTING_EACH = 4       # üreticinin DSP notu "taş takma $4" (tırnak); boncuk (bead) takma için kalibre değil
 SDE_PITCH = 1.5            # taş 1,3 mm + boncuk ~0,2 mm (fotoğrafta adım/taş 1,13)
 SDE_ROW_OFFSET = 2.0       # sıranın çapı = iç çap + 2,0 mm (taş merkezi iç yüzeyden ~1,0 mm dışarıda, pahın ortası)
+SDE_ROWS = 2               # sahip kartı 2026-11-21 "Both edges": İKİ kenarda da pah + tam tur sıra (simetrik)
 SDE_KARATS = ("10K", "14K", "18K")
 SDE_SIZES = [4 + 0.5 * i for i in range(25)]   # US 4-16, yarım bedenler (25)
-SDE_LISTS = {              # aday tek fiyatlar (ayar başına, her beden)
-    "10K": [2100, 2250, 2300, 2350],
-    "14K": [2600, 2800, 2850, 2900],
-    "18K": [3250, 3500, 3550, 3600],
+SDE_LISTS = {              # aday tek fiyatlar (ayar başına, her beden); 2100/2600/3250 tek sıra için onaylanmıştı
+    "10K": [2100, 2550, 2600, 2950],
+    "14K": [2600, 3050, 3100, 3500],
+    "18K": [3250, 3700, 3750, 4150],
 }
 
 
@@ -645,7 +646,7 @@ def sde_g(us, karat):
 
 
 def sde_extras(us):
-    return sde_stones(us) * (SDE_STONE_USD + SDE_SETTING_EACH)
+    return SDE_ROWS * sde_stones(us) * (SDE_STONE_USD + SDE_SETTING_EACH)
 
 
 def sde_cost(us, karat):
@@ -671,9 +672,10 @@ def sde():
     print("$/g (derivePurchaseCentsPerGram): " + "  ".join(f"{k} {tmc_rate_cents(k, SPOT_SDE) / 100:.2f}" for k in SDE_KARATS))
     print(f"taş {SDE_STONE_MM} mm ≈ {SDE_STONE_CT} ct × $280/ct = ${SDE_STONE_USD:.2f} + takma ${SDE_SETTING_EACH} = "
           f"${SDE_STONE_USD + SDE_SETTING_EACH:.2f}/taş; adım {SDE_PITCH} mm, sıra çapı iç çap + {SDE_ROW_OFFSET} mm")
+    print(f"sıra sayısı {SDE_ROWS} (taş sütunu iki sıranın toplamı)")
     print("beden  taş   ct     ekler    " + "   ".join(f"{k}: gram  maliyet" for k in SDE_KARATS))
     for us in SDE_SIZES:
-        n = sde_stones(us)
+        n = SDE_ROWS * sde_stones(us)
         cells = "   ".join(f"{sde_g(us, k):6.2f} {sde_cost(us, k):8.2f}" for k in SDE_KARATS)
         print(f"  US{us:<4g} {n:3d}  {n * SDE_STONE_CT:.3f}  ${sde_extras(us):7.2f}   {cells}")
     for k in SDE_KARATS:
