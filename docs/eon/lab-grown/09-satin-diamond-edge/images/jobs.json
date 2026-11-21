@@ -1,0 +1,32 @@
+{
+  "product": "EON-SDE6",
+  "model": "nano_banana_2",
+  "aspect_ratio": "4:3",
+  "resolution": "2k",
+  "count": 1,
+  "why": "nano_banana_2 resolution varsayılanı 1k (second-brain 2026-09-13, 2026-10-13): 2k AÇIKÇA geçilir. count DAİMA 1 (CLAUDE.md). Tüm kareler 4:3 (2400x1792), 10. kare (ölçü kartı) de 2400x1792. İlk fotoğraf 1:1 kırpımda kesilmesin diye halka ortada, yanlarda boşluk. 11. kare sahibin gerçek fotoğrafı (1200x1600, düzenlenmeden; yalnız meta veri segmentleri söküldü, çözülen pikseller aynı).",
+  "costCreditsPerImage": 2,
+  "costSource": "EON-PEAR2 2026-11-14 (nano_banana_2, 2k, 4:3, 18 üretim = 36 kredi); üretimden önce bakiye yeniden okunur",
+  "artDirection": "TMC9/PEAR2 ile aynı: tek pencere gün ışığı; metal sahnedeki tek doygun öğe, zemin tamamlayıcısı düşük doygunlukta (sarı → mavi-gri karo/arduvaz, kömür grisi; beyaz → kumtaşı; rose → adaçayı; üçü → kireçtaşı; 09 siyah bazalt). Erkek bandı: el kareleri erkek eli. Ayrıntı prompts.py başlığında ve PROMPTS-REVIEW.md.",
+  "plan": "Önce yalnız 01 hero; sahibin fotoğraflarıyla yan yana kontrol (tek kenarda tam tur tek sıra küçük taş, taşlar arası boncuk, ince iç dudak, öbür kenar taşsız dar cilalı pah, fırçalı saten yüz, cilalı iç), sonra kalan 8 kare (en çok 7'lik gruplar). Kusurlu kareye yalnız o kare için yeniden çekim, tek kusur adlandırılarak.",
+  "references": {
+    "source": "Sahibin 4 gerçek fotoğrafı (2026-11-19, atölye; sohbet ekleri, 1200x1600). Repoya ALINMADI: sahibin fotoğrafı. Kırpımlar yalnız yüzüğü taşır; beyaz, rose ve üç-renk karelerinde siyah-beyaz kopya (renk yalnız metinden).",
+    "refWhole": "foto 1 (yatık halka, pahta tam tur taş dairesi + fırçalı yüz; halka sağ kenarda kesik), kırpım 330,230-1200,1150, 870x920",
+    "refTop": "foto 3 (pahtaki sıra yakın, ince iç dudak, cilalı iç), kırpım 120,150-1200,1210, 1080x1060",
+    "refSide": "foto 2 (göz hizası: fırçalı duvar, üst kenarda sıra, altta dar cilalı pah), kırpım 100,440-1200,1280, 1100x840 (üstteki lacivert kumaş dışarıda)",
+    "byFrame": {
+      "01-hero": ["refWhole", "refTop"],
+      "02-row": ["refTop", "refSide"],
+      "03-profile": ["refSide", "refTop"],
+      "04-hand": ["refWhole", "refTop"],
+      "05-three": ["refWhole_bw", "refTop_bw"],
+      "06-white": ["refWhole_bw", "refTop_bw"],
+      "07-rose": ["refTop_bw", "refWhole_bw"],
+      "08-scale": ["refWhole", "refTop"],
+      "09-circle": ["refTop", "refSide"]
+    }
+  },
+  "realPhoto": "foto 4 (kırmızı yüzük tutucu, beyaz havlu; halkanın tamamı kadrajda, sağ ve sol kenarda altın piksel yok), düzenlenmeden galeriye; foto 1 sağ kenarda kesik (kenar sütunlarının %34'ü altın), foto 2 ve 3 keskinleştirilmiş/rötuşlu görünüyor",
+  "qa": "her kare: yalnız BİR kenarda tek sıra küçük round taş (yüzeyde ve öbür kenarda taş yok), sıra tam tur (kesik/boşluk yok), taşlar arası boncuk, ince cilalı iç dudak, fırça yönü bant boyunca, iç yüzey cilalı ve yazısız, taş ~bant genişliğinin beşte biri (büyük taş = ret), el karelerinde yüzük parmağı (4. parmak; komşusu en kısa ve en dış parmak), 08'de ~22 mm ölçek, 05'te renkler doğru (soldan sarı, beyaz, rose); set kontak baskısında yan yana (kadraj kopyası, ölçek)",
+  "runs": []
+}

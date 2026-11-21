@@ -605,5 +605,91 @@ def dp():
         print(f"  {lbl}: kâr {base - dcost:+.0f} (taban {base:+.0f})")
 
 
+# ---- 09 Satin Diamond Edge, full circle (2026-11-21) --------------------------------------------------------
+# Girdi: sahibin 4 gerçek fotoğrafı + 6,8 sn video (2026-11-19, atölye: kırmızı yüzük tutucu, havlu) ve "new model.
+# this model do not accept resizing due to its diamonds are whole circle ... 3karat, all us and half sizes, 3 gold color".
+# Tasarım (fotoğraf 4 + video kareleri 1, 61, 114): düz bant, dış yüz fırçalı saten (çizgiler bant boyunca); BİR kenarda
+# köşe 45° cilalı bir pahla kesilmiş ve bu pahta tek sıra round taş, taşlar arasında küçük cilalı boncuk (bead), sıra
+# halkanın ÇEVRESİNİ TAM dolaşıyor (tam tur, resize olmaz); sıranın iç tarafında ince cilalı iç dudak; öbür kenar taşsız,
+# yalnız dar cilalı pah; iç yüzey cilalı. Ölçek nesnesi yok, oranla ölçüldü: fotoğraf 4'te taş ~32 px, merkezden
+# merkeze ~36 px (adım/taş 1,13), görünen yüz ~92-131 px (taş/yüz 0,25-0,35); 6 mm bant ve ~1,3 mm taşla tutarlı.
+# Görünen yarım yayda ~21 taş → tam turda ~42 (numune ~US 8½ ile uyumlu).
+# Üretici teklifi YOK. Konvansiyon (VB6/TMC9 ile aynı üretici): 14K gram × $100 (altın + işçilik), 10K/18K $/g
+# lib/gold-cost.ts derivePurchaseCentsPerGram; taş + taş başı takma ayrı. Gram tam dikdörtgen kesit (pah ve yuvalar
+# metal alır; tampon olarak maliyette kalır).
+SPOT_SDE = 3539.00         # gold-api.com 2026-11-21 07:44 UTC
+SDE_W, SDE_T = 6.0, 1.8
+SDE_STONE_MM, SDE_STONE_CT = 1.3, 0.009    # standart round tablosu: 1,3 mm ≈ 0,009 ct (HEP ile aynı)
+SDE_STONE_USD = SDE_STONE_CT * 280         # üreticinin bilinen tek lab oranı $280/ct → $2,52 (kalibre değil)
+SDE_SETTING_EACH = 4       # üreticinin DSP notu "taş takma $4" (tırnak); boncuk (bead) takma için kalibre değil
+SDE_PITCH = 1.5            # taş 1,3 mm + boncuk ~0,2 mm (fotoğrafta adım/taş 1,13)
+SDE_ROW_OFFSET = 2.0       # sıranın çapı = iç çap + 2,0 mm (taş merkezi iç yüzeyden ~1,0 mm dışarıda, pahın ortası)
+SDE_KARATS = ("10K", "14K", "18K")
+SDE_SIZES = [4 + 0.5 * i for i in range(25)]   # US 4-16, yarım bedenler (25)
+SDE_LISTS = {              # aday tek fiyatlar (ayar başına, her beden)
+    "10K": [2100, 2250, 2300, 2350],
+    "14K": [2600, 2800, 2850, 2900],
+    "18K": [3250, 3500, 3550, 3600],
+}
+
+
+def sde_stones(us):
+    """Tam tur taş sayısı (kötümser, yukarı yuvarlanır): sıra çevresi / adım; iç çap 11,63 + 0,8128 × US."""
+    d = 11.63 + 0.8128 * us
+    return math.ceil(math.pi * (d + SDE_ROW_OFFSET) / SDE_PITCH - 1e-9)
+
+
+def sde_g(us, karat):
+    """Üreticinin 14K bant listesi × kalınlık / 1,5 (tam kesit) × alaşım yoğunluk oranı."""
+    return SDE_W * (0.836 + 0.0515 * us) * SDE_T / 1.5 * DENS[karat]
+
+
+def sde_extras(us):
+    return sde_stones(us) * (SDE_STONE_USD + SDE_SETTING_EACH)
+
+
+def sde_cost(us, karat):
+    return sde_g(us, karat) * tmc_rate_cents(karat, SPOT_SDE) / 100 + sde_extras(us)
+
+
+def sde_profit(buyer, us, karat):
+    return 0.905 * buyer - min(0.15 * buyer, 100) - FIX - (sde_cost(us, karat) + PACK + SHIP)
+
+
+def sde_floor(karat, sale=0.75):
+    """Her bedende en kötü Offsite kârı ≥ MIN_PROFIT olan en düşük liste (5'in katı); bağlayan beden US 16."""
+    lst = 5
+    while min(sde_profit(lst * sale, us, karat) for us in SDE_SIZES) < MIN_PROFIT:
+        lst += 5
+    return lst
+
+
+def sde():
+    pure = SPOT_SDE / TROY
+    print(f"spot {SPOT_SDE}: saf ${pure:.4f}/g; 14K melt ${pure * 0.585:.2f}/g, $100/g içinde işçilik "
+          f"${100 - pure * 0.585:.2f}/g")
+    print("$/g (derivePurchaseCentsPerGram): " + "  ".join(f"{k} {tmc_rate_cents(k, SPOT_SDE) / 100:.2f}" for k in SDE_KARATS))
+    print(f"taş {SDE_STONE_MM} mm ≈ {SDE_STONE_CT} ct × $280/ct = ${SDE_STONE_USD:.2f} + takma ${SDE_SETTING_EACH} = "
+          f"${SDE_STONE_USD + SDE_SETTING_EACH:.2f}/taş; adım {SDE_PITCH} mm, sıra çapı iç çap + {SDE_ROW_OFFSET} mm")
+    print("beden  taş   ct     ekler    " + "   ".join(f"{k}: gram  maliyet" for k in SDE_KARATS))
+    for us in SDE_SIZES:
+        n = sde_stones(us)
+        cells = "   ".join(f"{sde_g(us, k):6.2f} {sde_cost(us, k):8.2f}" for k in SDE_KARATS)
+        print(f"  US{us:<4g} {n:3d}  {n * SDE_STONE_CT:.3f}  ${sde_extras(us):7.2f}   {cells}")
+    for k in SDE_KARATS:
+        landed = sde_cost(8.5, k) + PACK + SHIP
+        eng, lst, s, p = retail(landed, MULT_NARROW, 0.75)
+        print(f"  {k} US 8½: maliyet ${sde_cost(8.5, k):.2f} landed ${landed:.2f} | motor {eng} liste {lst} alıcı {s} "
+              f"kâr {p} | her beden ≥ ${MIN_PROFIT} tabanı (%25) {sde_floor(k)}, (%35) {sde_floor(k, 0.65)}")
+    print("\n-- aday tek fiyatlar: bedene göre kâr (en kötü Offsite) --")
+    for k in SDE_KARATS:
+        for lst in SDE_LISTS[k]:
+            for sale in (0.75, 0.65):
+                buyer = lst * sale
+                row = "  ".join(f"US{us:g} {sde_profit(buyer, us, k):+.0f}" for us in (4, 8.5, 12, 14, 16))
+                print(f"  {k} liste {lst} @ {1 - sale:.0%} (alıcı {buyer:.2f}): {row}")
+
+
 if __name__ == "__main__":
-    {"vb": vb, "fr": fr, "hs": hs, "hep": hep, "pc": pc, "tmc": tmc, "dp": dp}.get(sys.argv[1] if len(sys.argv) > 1 else "", dsp)()
+    {"vb": vb, "fr": fr, "hs": hs, "hep": hep, "pc": pc, "tmc": tmc, "dp": dp, "sde": sde}.get(
+        sys.argv[1] if len(sys.argv) > 1 else "", dsp)()

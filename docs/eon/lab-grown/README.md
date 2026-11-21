@@ -269,6 +269,27 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
   10 + 1. Paneldeki `listing_metadata.approval.blockers` içindeki ilk satır ("Photos come from a separate gallery
   migration…") 0193'ün kilitli gövdesinden gelir ve artık bayattır; panel bu listeyi göstermez ve itişi bloke etmez.
 
+## 09 Satin Diamond Edge, tam tur, resize olmaz (EON-SDE6), 2026-11-21
+- Girdi: sahibin 4 gerçek fotoğrafı + 6,8 sn video (2026-11-19, atölye: kırmızı tutucu, havlu; repoya alınmadı) + "new model.
+  but this model do not accept resizing due to its diamonds are whole circle ... 3karat, all us and half sizes, 3 gold color".
+- Tasarım: 6,0 × 1,8 mm düz bant, fırçalı saten yüz (çizgiler bant boyunca); BİR kenarda 45° cilalı pah ve pahta tam tur tek
+  sıra ~1,3 mm round lab-grown taş, taşlar arası küçük boncuk, sıranın içinde ince cilalı dudak; öbür kenar taşsız dar cilalı
+  pah; iç cilalı. Ölçek nesnesi yok, oranla ölçüldü (taş ~32 px, adım ~36 px, görünen yarım yayda ~21 taş). Taş sayısı bedenle:
+  US 4 36, US 8½ 44, US 16 56. Resize olmaz (açıklamada ayrı bölüm + gerekçe + beden ölçtürme önerisi).
+- Eksen Karat × Metal Color × Ring Size US 4-16 yarım bedenler = 225 varyant (Etsy üç eksen ≤ 400, slot 516/513/514),
+  `EON-SDE6-{10K,14K,18K}-{YG,WG,RG}-US040..160`, `ring_band`. Ortak modül `scripts/eon/lab_grown_karat_color_band.mjs`,
+  üreteç `scripts/eon/gen_lab_grown_sde_migration.mjs` → `0195_eon_lab_grown_sde6.sql` (onaysız kuru koşu; mühür
+  `a203b09b7421b7afe83c03751a1d06ab`, sorgu TMC9'unki gibi + `Metal Color`).
+- Fiyat önerisi (ayar başına her beden ve renkte tek fiyat, %25 vitrin): **10K $2.100 → $1.575, 14K $2.600 → $1.950, 18K $3.250
+  → $2.437,50**; her beden ≥ $50 tabanları 2.075 / 2.565 / 3.185 (en kötü Offsite, US 16 bağlar). Alternatif 2.350 / 2.900 /
+  3.600 %35 vitrinde de her bedende ≥ 0. Piyasa: Blue Nile 6,5 mm iki kenarda sıralı doğal 1/2 ct, resize olmaz, $2.541.
+  Kanıt: `2026-11-21-satin-diamond-edge-pricing.md` + `price_model.py sde`.
+- Metin kapıları: ortak lab-grown kapısı (niteliksiz "diamond" ilk taslakta resize bölümünde yakalandı ve düzeltildi), panelin
+  `specProblems` ve `publicTextProblem` kapıları temiz (AI görsel notuyla negatif kontrol reddedildi).
+- Galeri planı: `09-satin-diamond-edge/images/` (prompts.py → prompts.json, PROMPTS-REVIEW.md, jobs.json): 9 kare (hero, sıra
+  yakın, göz hizası profil, erkek eli, üç renk, beyaz, rose, avuçta ölçek, taşlı kenar karşıdan tam daire) + ölçü kartı +
+  sahibin foto 4'ü (halkanın tamamı kadrajda olan tek gerçek fotoğraf). Sahip kartı bekleniyor.
+
 ## Üreticiye açık sorular (cevap gelmeden Etsy'ye çıkmaz)
 0. **(2026-11-07, DSP canlı)** $550 (Model 1) ve $1.150 (Model 2) fiyatlarına taş ve taş takma dahil mi? Model 2'de
    11,5 g × $100 = $1.150 tam tuttuğu için konvansiyon "gram × $100 + taş + takma ayrı" görünüyor; DSP'de taş ve takma
