@@ -269,6 +269,39 @@ Studio'nun üreticisiyle aynı: 14K bant = gram × $100 işçilik dahil, ek kale
   10 + 1. Paneldeki `listing_metadata.approval.blockers` içindeki ilk satır ("Photos come from a separate gallery
   migration…") 0193'ün kilitli gövdesinden gelir ve artık bayattır; panel bu listeyi göstermez ve itişi bloke etmez.
 
+## 09 Satin Diamond Edge, iki kenar tam tur, resize olmaz (EON-SDE6), 2026-11-21
+- Girdi: sahibin 4 gerçek fotoğrafı + 6,8 sn video (2026-11-19, atölye: kırmızı tutucu, havlu; repoya alınmadı) + "new model.
+  but this model do not accept resizing due to its diamonds are whole circle ... 3karat, all us and half sizes, 3 gold color".
+- Tasarım: 6,0 × 1,8 mm düz bant, ortası fırçalı saten (çizgiler bant boyunca, ~4 mm); **İKİ** kenarda 45° cilalı pah ve her pahta
+  tam tur tek sıra ~1,3 mm round lab-grown taş, taşlar arası küçük boncuk, sıraların içinde ince cilalı dudak; iç cilalı. Ölçek
+  nesnesi yok, oranla ölçüldü (taş ~32 px, adım ~36 px). İlk okumam tek kenardı; sahip kartında (2026-11-21) "Both edges" dedi
+  (foto 2'nin alt kenarı ve video kareleri 131-137 ikinci sırayı kenardan gösteriyordu). Taş: 2 × (US 4 36, US 8½ 44, US 16 56).
+  Resize olmaz (açıklamada ayrı bölüm + gerekçe + beden ölçtürme önerisi).
+- Eksen Karat × Metal Color × Ring Size US 4-16 yarım bedenler = 225 varyant (Etsy üç eksen ≤ 400, slot 516/513/514),
+  `EON-SDE6-{10K,14K,18K}-{YG,WG,RG}-US040..160`, `ring_band`. Ortak modül `scripts/eon/lab_grown_karat_color_band.mjs`,
+  üreteç `scripts/eon/gen_lab_grown_sde_migration.mjs` → `0195_eon_lab_grown_sde6.sql` (onaysız kuru koşu; mühür
+  `caa0e2ed9f235d8e0682254b5df3feab`, sorgu TMC9'unki gibi + `Metal Color`).
+- Fiyat (iki sıra; ayar başına her beden ve renkte tek fiyat, %25 vitrin): sahip kartı 2 onaylı **10K $2.650 → $1.987,50,
+  14K $3.150 → $2.362,50, 18K $3.850 → $2.887,50**; tabanlar 2.615 / 3.105 / 3.720. Kart 1'de tek sıra için seçilen
+  2.100 / 2.600 / 3.250 iki sırada US 12'den zarar ediyordu, kullanılmadı. Piyasa: Blue Nile 6,5 mm iki kenarda sıralı doğal
+  1/2 ct, resize olmaz, $2.541. Kanıt: `2026-11-21-satin-diamond-edge-pricing.md` + `price_model.py sde`.
+- Panel taslağı **0195 canlıda** (`20261121083508`): 1 ürün + 225 varyant, mühür `caa0e2ed…` birebir, başlık/açıklama/tag md5
+  `listing.json` ile aynı, audit 1 + 225 insert. Etsy'ye yazılmadı.
+- Metin kapıları: ortak lab-grown kapısı (niteliksiz "diamond" ilk taslakta resize bölümünde yakalandı), tek kenar metni sızıntı
+  kapısı (eski metinle negatif kontrol), panelin `specProblems` ve `publicTextProblem` kapıları temiz.
+- Kart (2026-11-21): galeri 9 kare + ölçü kartı onaylı (~26 kredi, tavan 40); gerçek fotoğraf foto 4, son kare; tasarım iki kenar.
+  Galeri planı `09-satin-diamond-edge/images/` (prompts.py → prompts.json, PROMPTS-REVIEW.md, jobs.json), iki sıraya göre yeniden
+  yazıldı: hero, sıra yakın, göz hizası profil (iki sıra), erkek eli (iki ışık çizgisi), üç renk, beyaz, rose, avuçta ölçek, taşlı
+  kenar karşıdan tam daire.
+- Galeri (2026-11-21): 11 üretim, 22 kredi (tavan 40), 9 kabul. Hero v1 sahibin kırpımlarıyla yan yana tuttu. Set kontrolü: 05 v1
+  üst sırayı bandların iç duvarına çizdi → v2 kabul edilen hero'nun siyah-beyaz kırpımı referans + "üst sıra dışta, iç duvar
+  taşsız" cümlesi; 08 v1 avuçta ~%30 büyük ve sarı karede rose tonu (hue 25) → v2 ölçek tek parmak genişliğine sabitlendi
+  ("asla avucun üçte biri değil"), "yellow gold, not rose gold", sarı hero kırpımı referans. Yeniden çekimler `retakes.py`
+  (v1'den assert'li cümle değişimi). 10. kare `spec_card.py` (eksenden tam daire + 45° pahlı kesit, ölçekli, karat/gram yok),
+  11. kare sahibin foto 4'ü bayt bayt (meta veri segmenti yoktu). `public/eon/lab-grown-sde6/01-11.jpg`, kayıt `status.json`.
+  Galeri migration'ı `0196_eon_lab_grown_sde6_gallery.sql` (üreteç `scripts/eon/gen_lab_grown_sde_gallery_migration.mjs`):
+  **PR merge + prod deploy + 11 URL 200 olmadan uygulanmaz.**
+
 ## Üreticiye açık sorular (cevap gelmeden Etsy'ye çıkmaz)
 0. **(2026-11-07, DSP canlı)** $550 (Model 1) ve $1.150 (Model 2) fiyatlarına taş ve taş takma dahil mi? Model 2'de
    11,5 g × $100 = $1.150 tam tuttuğu için konvansiyon "gram × $100 + taş + takma ayrı" görünüyor; DSP'de taş ve takma

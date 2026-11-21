@@ -1,0 +1,167 @@
+{
+  "product": "EON-SDE6",
+  "model": "nano_banana_2",
+  "aspect_ratio": "4:3",
+  "resolution": "2k",
+  "count": 1,
+  "why": "nano_banana_2 resolution varsayılanı 1k (second-brain 2026-09-13, 2026-10-13): 2k AÇIKÇA geçilir. count DAİMA 1 (CLAUDE.md). Tüm kareler 4:3 (2400x1792), 10. kare (ölçü kartı) de 2400x1792. İlk fotoğraf 1:1 kırpımda kesilmesin diye halka ortada, yanlarda boşluk. 11. kare sahibin gerçek fotoğrafı (1200x1600, düzenlenmeden; yalnız meta veri segmentleri söküldü, çözülen pikseller aynı).",
+  "costCreditsPerImage": 2,
+  "costSource": "EON-PEAR2 2026-11-14 (nano_banana_2, 2k, 4:3, 18 üretim = 36 kredi); üretimden önce bakiye yeniden okunur",
+  "artDirection": "TMC9/PEAR2 ile aynı: tek pencere gün ışığı; metal sahnedeki tek doygun öğe, zemin tamamlayıcısı düşük doygunlukta (sarı → mavi-gri karo/arduvaz, kömür grisi; beyaz → kumtaşı; rose → adaçayı; üçü → kireçtaşı; 09 siyah bazalt). Erkek bandı: el kareleri erkek eli. Ayrıntı prompts.py başlığında ve PROMPTS-REVIEW.md.",
+  "plan": "Önce yalnız 01 hero; sahibin fotoğraflarıyla yan yana kontrol (İKİ kenarda da tam tur tek sıra küçük taş, taşlar arası boncuk, her sıranın içinde ince cilalı dudak, ortada fırçalı saten yüz, cilalı iç), sonra kalan 8 kare (en çok 7'lik gruplar). Kusurlu kareye yalnız o kare için yeniden çekim, tek kusur adlandırılarak. Sahip kartı 2026-11-21: 'Both edges'.",
+  "references": {
+    "source": "Sahibin 4 gerçek fotoğrafı (2026-11-19, atölye; sohbet ekleri, 1200x1600). Repoya ALINMADI: sahibin fotoğrafı. Kırpımlar yalnız yüzüğü taşır; beyaz, rose ve üç-renk karelerinde siyah-beyaz kopya (renk yalnız metinden).",
+    "refWhole": "foto 1 (yatık halka, pahta tam tur taş dairesi + fırçalı yüz; halka sağ kenarda kesik), kırpım 330,230-1200,1150, 870x920",
+    "refTop": "foto 3 (pahtaki sıra yakın, ince iç dudak, cilalı iç), kırpım 120,150-1200,1210, 1080x1060",
+    "refSide": "foto 2 (göz hizası: fırçalı duvar, üst kenarda sıra; alt kenardaki ince çizgi ikinci sıranın kenardan görünüşü), kırpım 100,440-1200,1280, 1100x840 (üstteki lacivert kumaş dışarıda)",
+    "byFrame": {
+      "01-hero": [
+        "refWhole",
+        "refTop"
+      ],
+      "02-row": [
+        "refTop",
+        "refSide"
+      ],
+      "03-profile": [
+        "refSide",
+        "refTop"
+      ],
+      "04-hand": [
+        "refWhole",
+        "refTop"
+      ],
+      "05-three": [
+        "refWhole_bw",
+        "refTop_bw"
+      ],
+      "06-white": [
+        "refWhole_bw",
+        "refTop_bw"
+      ],
+      "07-rose": [
+        "refTop_bw",
+        "refWhole_bw"
+      ],
+      "08-scale": [
+        "refWhole",
+        "refTop"
+      ],
+      "09-circle": [
+        "refTop",
+        "refSide"
+      ]
+    },
+    "mediaIds": {
+      "refWhole": "2db77f1b-ad23-434e-b37d-a48b919e7e26",
+      "refTop": "11bb702e-7e8c-4640-9fa1-f4d5407bfbe7",
+      "refSide": "28370256-dcfd-4419-9ebe-793491924ed3",
+      "refWhole_bw": "24fb2f5d-e2a8-4698-8fec-c75c44396edb",
+      "refTop_bw": "bf0322f4-f4b1-4cc5-9994-562735207449"
+    }
+  },
+  "realPhoto": "foto 4 (kırmızı yüzük tutucu, beyaz havlu; halkanın tamamı kadrajda, sağ ve sol kenarda altın piksel yok), düzenlenmeden galeriye; foto 1 sağ kenarda kesik (kenar sütunlarının %34'ü altın), foto 2 ve 3 keskinleştirilmiş/rötuşlu görünüyor",
+  "qa": "her kare: İKİ kenarda da tek sıra küçük round taş (fırçalı ortada, iç yüzeyde taş yok; üçüncü sıra yok), her sıra tam tur (kesik/boşluk yok), taşlar arası boncuk, her sıranın içinde ince cilalı dudak, fırça yönü bant boyunca, iç yüzey cilalı ve yazısız, taş ~bant genişliğinin beşte biri (büyük taş = ret), el karelerinde yüzük parmağı (4. parmak; komşusu en kısa ve en dış parmak) ve erkek eli, 08'de ~22 mm ölçek, 05'te renkler doğru (soldan sarı, beyaz, rose); set kontak baskısında yan yana (kadraj kopyası, ölçek)",
+  "runs": [
+    {
+      "frame": "01-hero",
+      "take": "v1",
+      "jobId": "f35e15b3-bc91-4eef-8ff9-1e5fbcc96e1b",
+      "promptMd5": "f5c965a039d8790c2ed1aa6b83bb0c7d",
+      "credits": 2,
+      "status": "ok",
+      "file": "public/eon/lab-grown-sde6/01.jpg"
+    },
+    {
+      "frame": "02-row",
+      "take": "v1",
+      "jobId": "ae8b6212-cc9d-4110-89d1-22f69813712e",
+      "promptMd5": "d5a71f1fb25fde8c872b56ea61fe1e63",
+      "credits": 2,
+      "status": "ok",
+      "file": "public/eon/lab-grown-sde6/02.jpg"
+    },
+    {
+      "frame": "03-profile",
+      "take": "v1",
+      "jobId": "d3fc3a71-7355-431c-a84f-12f6434deca3",
+      "promptMd5": "e291973e1f5f81118db6718a5192ac13",
+      "credits": 2,
+      "status": "ok",
+      "file": "public/eon/lab-grown-sde6/03.jpg"
+    },
+    {
+      "frame": "04-hand",
+      "take": "v1",
+      "jobId": "18d80bd6-bc45-4a71-8a91-9e94bba938ff",
+      "promptMd5": "6ffc784af529865f6d64c059a1f2fcc2",
+      "credits": 2,
+      "status": "ok",
+      "file": "public/eon/lab-grown-sde6/04.jpg"
+    },
+    {
+      "frame": "05-three",
+      "take": "v1",
+      "jobId": "3ee8daa9-5e38-48ec-a089-8d2ba3e3d2e1",
+      "promptMd5": "efc1c48813c2ff58540abd1a28101257",
+      "credits": 2,
+      "status": "redo",
+      "reason": "the upper row is drawn on the inside wall of each band (stones seen through the opening at the back) and the upper outer bevel at the front is plain polished"
+    },
+    {
+      "frame": "05-three",
+      "take": "v2",
+      "jobId": "f09e2628-d6e1-43d0-9d50-979c2e734456",
+      "promptMd5": "6520f13550d1293cf4878908caf2978e",
+      "credits": 2,
+      "status": "ok",
+      "file": "public/eon/lab-grown-sde6/05.jpg"
+    },
+    {
+      "frame": "06-white",
+      "take": "v1",
+      "jobId": "153c92b8-d780-4c14-8cd1-23e7caea6a8d",
+      "promptMd5": "ca8d9f8595ca1e13e30fc3515ae357b0",
+      "credits": 2,
+      "status": "ok",
+      "file": "public/eon/lab-grown-sde6/06.jpg"
+    },
+    {
+      "frame": "07-rose",
+      "take": "v1",
+      "jobId": "d3da85ff-6420-4744-9e2f-260a4d4c064c",
+      "promptMd5": "5f17a1875f38e564055bab71c10be9a9",
+      "credits": 2,
+      "status": "ok",
+      "file": "public/eon/lab-grown-sde6/07.jpg"
+    },
+    {
+      "frame": "08-scale",
+      "take": "v1",
+      "jobId": "155dd5e7-1b2f-4a2b-9304-bdf683774bd2",
+      "promptMd5": "4e41312b329b6aa3ce62ab657c059bb5",
+      "credits": 2,
+      "status": "redo",
+      "reason": "scale and colour: the ring is about 0.34 of the palm's width and about 1.4 widths of the curled fingertips (a real 22 mm ring is about 0.25 of a man's palm), and the brushed face measures hue 25, the same as the rose ring in 05 (yellow frames 33-37)"
+    },
+    {
+      "frame": "08-scale",
+      "take": "v2",
+      "jobId": "787c3b2f-9395-4645-a246-4e654cab06bd",
+      "promptMd5": "24447b565a7aded7d17569ec6747c2ae",
+      "credits": 2,
+      "status": "ok",
+      "file": "public/eon/lab-grown-sde6/08.jpg"
+    },
+    {
+      "frame": "09-circle",
+      "take": "v1",
+      "jobId": "2890c001-f651-45c3-92d2-a989980a615b",
+      "promptMd5": "782f73e7702115032e10987e86e04c20",
+      "credits": 2,
+      "status": "ok",
+      "file": "public/eon/lab-grown-sde6/09.jpg"
+    }
+  ],
+  "retakes": "retakes.py -> retakes.json (05 v2, 08 v2: asserted sentence swaps from the stored v1 prompts)"
+}
