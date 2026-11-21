@@ -1,0 +1,242 @@
+{
+  "product": "EON-SDE6",
+  "note": "Owner cards 2026-11-21: 9 Higgsfield frames from the two-row prompt sheet + typeset spec card, hero first and checked against the owner's photos, then the other 8 (cap 40 credits); the owner's photo 4 (red holder, whole ring in frame) is the last frame, unedited. Hero v1 matched the owner's crops (a row on each beveled edge, beads between the stones, thin polished lips, brushed face along the band). Set review: 05 v1 drew the upper row on the inside wall of the bands; v2 used the accepted hero cropped to the ring in black and white as the first reference and a sentence that keeps the inside plain, and held. 08 v1 drew the ring about 30% too large in the palm with a rose tint on a yellow frame; v2 pinned the size to one finger's width and said 'yellow gold, not rose gold', with the accepted yellow hero crop as the first reference: the colour reads yellow beside the skin and the scale matches the accepted TMC9 palm frame. 04 was measured, not eyeballed: band width about 0.35 of the finger's width (a 6 mm band on a man's finger is about 0.3).",
+  "references": {
+    "refWhole": "2db77f1b-ad23-434e-b37d-a48b919e7e26",
+    "refTop": "11bb702e-7e8c-4640-9fa1-f4d5407bfbe7",
+    "refSide": "28370256-dcfd-4419-9ebe-793491924ed3",
+    "refWhole_bw": "24fb2f5d-e2a8-4698-8fec-c75c44396edb",
+    "refTop_bw": "bf0322f4-f4b1-4cc5-9994-562735207449",
+    "heroCrop": "75f395ac-4fc8-454a-a6bd-8f303d545ddf",
+    "heroCrop_bw": "466c7c0e-6098-4200-a643-090ed26095e6"
+  },
+  "frames": [
+    {
+      "id": "01-hero",
+      "rejected": [],
+      "chosen": {
+        "take": "v1",
+        "job": "f35e15b3-bc91-4eef-8ff9-1e5fbcc96e1b",
+        "promptMd5": "f5c965a039d8790c2ed1aa6b83bb0c7d",
+        "file": "public/eon/lab-grown-sde6/01.jpg"
+      }
+    },
+    {
+      "id": "02-row",
+      "rejected": [],
+      "chosen": {
+        "take": "v1",
+        "job": "ae8b6212-cc9d-4110-89d1-22f69813712e",
+        "promptMd5": "d5a71f1fb25fde8c872b56ea61fe1e63",
+        "file": "public/eon/lab-grown-sde6/02.jpg"
+      }
+    },
+    {
+      "id": "03-profile",
+      "rejected": [],
+      "chosen": {
+        "take": "v1",
+        "job": "d3fc3a71-7355-431c-a84f-12f6434deca3",
+        "promptMd5": "e291973e1f5f81118db6718a5192ac13",
+        "file": "public/eon/lab-grown-sde6/03.jpg"
+      }
+    },
+    {
+      "id": "04-hand",
+      "rejected": [],
+      "chosen": {
+        "take": "v1",
+        "job": "18d80bd6-bc45-4a71-8a91-9e94bba938ff",
+        "promptMd5": "6ffc784af529865f6d64c059a1f2fcc2",
+        "file": "public/eon/lab-grown-sde6/04.jpg"
+      }
+    },
+    {
+      "id": "05-three",
+      "rejected": [
+        {
+          "take": "v1",
+          "job": "3ee8daa9-5e38-48ec-a089-8d2ba3e3d2e1",
+          "promptMd5": "efc1c48813c2ff58540abd1a28101257",
+          "reason": "the upper row is drawn on the inside wall of each band (stones seen through the opening at the back) and the upper outer bevel at the front is plain polished"
+        }
+      ],
+      "chosen": {
+        "take": "v2",
+        "job": "f09e2628-d6e1-43d0-9d50-979c2e734456",
+        "promptMd5": "6520f13550d1293cf4878908caf2978e",
+        "file": "public/eon/lab-grown-sde6/05.jpg"
+      }
+    },
+    {
+      "id": "06-white",
+      "rejected": [],
+      "chosen": {
+        "take": "v1",
+        "job": "153c92b8-d780-4c14-8cd1-23e7caea6a8d",
+        "promptMd5": "ca8d9f8595ca1e13e30fc3515ae357b0",
+        "file": "public/eon/lab-grown-sde6/06.jpg"
+      }
+    },
+    {
+      "id": "07-rose",
+      "rejected": [],
+      "chosen": {
+        "take": "v1",
+        "job": "d3da85ff-6420-4744-9e2f-260a4d4c064c",
+        "promptMd5": "5f17a1875f38e564055bab71c10be9a9",
+        "file": "public/eon/lab-grown-sde6/07.jpg"
+      }
+    },
+    {
+      "id": "08-scale",
+      "rejected": [
+        {
+          "take": "v1",
+          "job": "155dd5e7-1b2f-4a2b-9304-bdf683774bd2",
+          "promptMd5": "4e41312b329b6aa3ce62ab657c059bb5",
+          "reason": "scale and colour: the ring is about 0.34 of the palm's width and about 1.4 widths of the curled fingertips (a real 22 mm ring is about 0.25 of a man's palm), and the brushed face measures hue 25, the same as the rose ring in 05 (yellow frames 33-37)"
+        }
+      ],
+      "chosen": {
+        "take": "v2",
+        "job": "787c3b2f-9395-4645-a246-4e654cab06bd",
+        "promptMd5": "24447b565a7aded7d17569ec6747c2ae",
+        "file": "public/eon/lab-grown-sde6/08.jpg"
+      }
+    },
+    {
+      "id": "09-circle",
+      "rejected": [],
+      "chosen": {
+        "take": "v1",
+        "job": "2890c001-f651-45c3-92d2-a989980a615b",
+        "promptMd5": "782f73e7702115032e10987e86e04c20",
+        "file": "public/eon/lab-grown-sde6/09.jpg"
+      }
+    }
+  ],
+  "credits": {
+    "generations": 11,
+    "creditsAt2PerImage": 22,
+    "jobs": [
+      "f35e15b3-bc91-4eef-8ff9-1e5fbcc96e1b",
+      "ae8b6212-cc9d-4110-89d1-22f69813712e",
+      "d3fc3a71-7355-431c-a84f-12f6434deca3",
+      "18d80bd6-bc45-4a71-8a91-9e94bba938ff",
+      "3ee8daa9-5e38-48ec-a089-8d2ba3e3d2e1",
+      "f09e2628-d6e1-43d0-9d50-979c2e734456",
+      "153c92b8-d780-4c14-8cd1-23e7caea6a8d",
+      "d3da85ff-6420-4744-9e2f-260a4d4c064c",
+      "155dd5e7-1b2f-4a2b-9304-bdf683774bd2",
+      "787c3b2f-9395-4645-a246-4e654cab06bd",
+      "2890c001-f651-45c3-92d2-a989980a615b"
+    ],
+    "balanceReadAfterHero": 4872.15,
+    "difference": "the balance is not used as evidence (other sessions spend on the same account); this job's spends are its 11 job ids, 2 credits each",
+    "cap": "owner card 1: about 26 credits, cap 40"
+  },
+  "accepted": 9,
+  "rejected": 2,
+  "typeset": {
+    "frame": 10,
+    "script": "docs/eon/lab-grown/09-satin-diamond-edge/images/spec_card.py",
+    "note": "drawn locally from listing.json (no model, no credits); text gated (lab grown qualifier, no carat, no grams)"
+  },
+  "ownerPhoto": {
+    "frame": 11,
+    "source": "the owner's photo 4 of the four sent on 2026-11-19 (1200x1600 progressive JPEG, red holder, white towel, wooden bench)",
+    "processing": "none: the file carries only APP0 (JFIF), no EXIF/XMP/APP13 and no data after EOI, so it is copied byte for byte (md5 7c58645be01c2a447a6aca60d2a545f1)",
+    "decision": "owner card 1 (2026-11-21): photo 4 as the last frame, unedited"
+  },
+  "gallery": [
+    {
+      "position": 0,
+      "file": "public/eon/lab-grown-sde6/01.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-sde6/01.jpg",
+      "source": "01-hero v1",
+      "alt": "Gold band lying on a pale blue-grey tile: a brushed satin face between two beveled edges, each set with a row of small round lab-grown diamonds all the way around.",
+      "md5": "1bab0298f7dbf51cba2371329d8416ff"
+    },
+    {
+      "position": 1,
+      "file": "public/eon/lab-grown-sde6/02.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-sde6/02.jpg",
+      "source": "02-row v1",
+      "alt": "Close view of a beveled edge: small round lab-grown diamonds side by side with tiny gold beads between them, the thin polished lip above and the brushed satin face below, over blue-grey slate.",
+      "md5": "2275de85de62c29bd53ef042ab0d1e4d"
+    },
+    {
+      "position": 2,
+      "file": "public/eon/lab-grown-sde6/03.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-sde6/03.jpg",
+      "source": "03-profile v1",
+      "alt": "The band lying on charcoal slate, seen from the front: a row of round lab-grown diamonds along its top edge, a second row along its bottom edge and the brushed satin face between them.",
+      "md5": "a8a01a326a192bca96cfbc592d014452"
+    },
+    {
+      "position": 3,
+      "file": "public/eon/lab-grown-sde6/04.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-sde6/04.jpg",
+      "source": "04-hand v1",
+      "alt": "A man's hand on charcoal grey wool wearing the band on the ring finger, its two rows of lab-grown diamonds crossing the finger on either side of the brushed face.",
+      "md5": "a6de1adc6647ccc720950d329d512f19"
+    },
+    {
+      "position": 4,
+      "file": "public/eon/lab-grown-sde6/05.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-sde6/05.jpg",
+      "source": "05-three v2",
+      "alt": "The band in yellow, white and rose gold side by side on pale limestone, each with a row of round lab-grown diamonds along both of its beveled edges.",
+      "md5": "ff7bce65e6390de2efe5572166e57635"
+    },
+    {
+      "position": 5,
+      "file": "public/eon/lab-grown-sde6/06.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-sde6/06.jpg",
+      "source": "06-white v1",
+      "alt": "The white gold band standing on sandstone, its opening framed by the full circle of round lab-grown diamonds on the near edge and the brushed face curving away.",
+      "md5": "99f687e5527cf2a1239c8ae7b2cb2dcc"
+    },
+    {
+      "position": 6,
+      "file": "public/eon/lab-grown-sde6/07.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-sde6/07.jpg",
+      "source": "07-rose v1",
+      "alt": "The rose gold band on sage green linen seen from above: a complete circle of round lab-grown diamonds around the opening, the thin polished lip inside it and the brushed face outside.",
+      "md5": "3edcb996f1a96b0c1986d1c0a26316d1"
+    },
+    {
+      "position": 7,
+      "file": "public/eon/lab-grown-sde6/08.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-sde6/08.jpg",
+      "source": "08-scale v2",
+      "alt": "The band resting in a man's open palm to show its size, a row of lab-grown diamonds along its top edge and another along its bottom edge.",
+      "md5": "fe9988a797373adf0edefa3aa834121a"
+    },
+    {
+      "position": 8,
+      "file": "public/eon/lab-grown-sde6/09.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-sde6/09.jpg",
+      "source": "09-circle v1",
+      "alt": "The band standing on black basalt, seen along its axis: the row of round lab-grown diamonds forms one continuous circle around the opening, the polished inside beyond.",
+      "md5": "42844fe415dc4189bacede6670ecf71e"
+    },
+    {
+      "position": 9,
+      "file": "public/eon/lab-grown-sde6/10.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-sde6/10.jpg",
+      "source": "spec card (typeset)",
+      "alt": "Drawing of the band from the side and in cross-section: about 6 mm wide and 1.8 mm thick, a row of round lab-grown diamonds of about 1.3 mm on each beveled edge, all the way round.",
+      "md5": "761bab8232c9b5742be6420ed7f3e17b"
+    },
+    {
+      "position": 10,
+      "file": "public/eon/lab-grown-sde6/11.jpg",
+      "url": "https://amuletta.artifactstudio.info/eon/lab-grown-sde6/11.jpg",
+      "source": "owner photo 4",
+      "alt": "The ring on a red holder over a white towel on the workbench: the brushed satin face and a beveled edge with its row of small round lab-grown diamonds running around the band.",
+      "md5": "7c58645be01c2a447a6aca60d2a545f1"
+    }
+  ]
+}

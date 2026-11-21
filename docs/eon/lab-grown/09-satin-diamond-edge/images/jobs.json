@@ -65,17 +65,103 @@
   "runs": [
     {
       "frame": "01-hero",
-      "version": 1,
+      "take": "v1",
       "jobId": "f35e15b3-bc91-4eef-8ff9-1e5fbcc96e1b",
       "promptMd5": "f5c965a039d8790c2ed1aa6b83bb0c7d",
-      "refs": [
-        "refWhole",
-        "refTop"
-      ],
       "credits": 2,
-      "size": "2400x1792",
       "status": "ok",
-      "qa": "iki kenarda tam tur sıra, taşlar arası boncuk, ince iç dudak, fırçalı yüz bant boyunca, cilalı iç; taş/bant oranı sahibin kırpımlarıyla uyumlu (yan yana kontrol 2026-11-21)"
+      "file": "public/eon/lab-grown-sde6/01.jpg"
+    },
+    {
+      "frame": "02-row",
+      "take": "v1",
+      "jobId": "ae8b6212-cc9d-4110-89d1-22f69813712e",
+      "promptMd5": "d5a71f1fb25fde8c872b56ea61fe1e63",
+      "credits": 2,
+      "status": "ok",
+      "file": "public/eon/lab-grown-sde6/02.jpg"
+    },
+    {
+      "frame": "03-profile",
+      "take": "v1",
+      "jobId": "d3fc3a71-7355-431c-a84f-12f6434deca3",
+      "promptMd5": "e291973e1f5f81118db6718a5192ac13",
+      "credits": 2,
+      "status": "ok",
+      "file": "public/eon/lab-grown-sde6/03.jpg"
+    },
+    {
+      "frame": "04-hand",
+      "take": "v1",
+      "jobId": "18d80bd6-bc45-4a71-8a91-9e94bba938ff",
+      "promptMd5": "6ffc784af529865f6d64c059a1f2fcc2",
+      "credits": 2,
+      "status": "ok",
+      "file": "public/eon/lab-grown-sde6/04.jpg"
+    },
+    {
+      "frame": "05-three",
+      "take": "v1",
+      "jobId": "3ee8daa9-5e38-48ec-a089-8d2ba3e3d2e1",
+      "promptMd5": "efc1c48813c2ff58540abd1a28101257",
+      "credits": 2,
+      "status": "redo",
+      "reason": "the upper row is drawn on the inside wall of each band (stones seen through the opening at the back) and the upper outer bevel at the front is plain polished"
+    },
+    {
+      "frame": "05-three",
+      "take": "v2",
+      "jobId": "f09e2628-d6e1-43d0-9d50-979c2e734456",
+      "promptMd5": "6520f13550d1293cf4878908caf2978e",
+      "credits": 2,
+      "status": "ok",
+      "file": "public/eon/lab-grown-sde6/05.jpg"
+    },
+    {
+      "frame": "06-white",
+      "take": "v1",
+      "jobId": "153c92b8-d780-4c14-8cd1-23e7caea6a8d",
+      "promptMd5": "ca8d9f8595ca1e13e30fc3515ae357b0",
+      "credits": 2,
+      "status": "ok",
+      "file": "public/eon/lab-grown-sde6/06.jpg"
+    },
+    {
+      "frame": "07-rose",
+      "take": "v1",
+      "jobId": "d3da85ff-6420-4744-9e2f-260a4d4c064c",
+      "promptMd5": "5f17a1875f38e564055bab71c10be9a9",
+      "credits": 2,
+      "status": "ok",
+      "file": "public/eon/lab-grown-sde6/07.jpg"
+    },
+    {
+      "frame": "08-scale",
+      "take": "v1",
+      "jobId": "155dd5e7-1b2f-4a2b-9304-bdf683774bd2",
+      "promptMd5": "4e41312b329b6aa3ce62ab657c059bb5",
+      "credits": 2,
+      "status": "redo",
+      "reason": "scale and colour: the ring is about 0.34 of the palm's width and about 1.4 widths of the curled fingertips (a real 22 mm ring is about 0.25 of a man's palm), and the brushed face measures hue 25, the same as the rose ring in 05 (yellow frames 33-37)"
+    },
+    {
+      "frame": "08-scale",
+      "take": "v2",
+      "jobId": "787c3b2f-9395-4645-a246-4e654cab06bd",
+      "promptMd5": "24447b565a7aded7d17569ec6747c2ae",
+      "credits": 2,
+      "status": "ok",
+      "file": "public/eon/lab-grown-sde6/08.jpg"
+    },
+    {
+      "frame": "09-circle",
+      "take": "v1",
+      "jobId": "2890c001-f651-45c3-92d2-a989980a615b",
+      "promptMd5": "782f73e7702115032e10987e86e04c20",
+      "credits": 2,
+      "status": "ok",
+      "file": "public/eon/lab-grown-sde6/09.jpg"
     }
-  ]
+  ],
+  "retakes": "retakes.py -> retakes.json (05 v2, 08 v2: asserted sentence swaps from the stored v1 prompts)"
 }
