@@ -2010,6 +2010,14 @@ repodaki hedefidir.
   yazmadan önce kontrol et; (4) ölçek oranını hesaplamadan önce referans uzvun hangi boyutunun kadrajda olduğunu
   belirle. Yan not: iki üreteç (taslak SQL, galeri SQL) ortak modüle taşındı; 0176 ve 0177'nin bayt bayt aynı çıkması,
   yeniden düzenlemenin davranışı değiştirmediğinin kanıtıydı. 15 üretim, 30 kredi, 10 kabul.
+  **Güçlendirme (2026-11-21, EON-SDE6) — QA'da oranı gözle değil koordinatla ölç; yapay elde uzuvlar birbiriyle tutarsızdır:**
+  04'te gözle "bant parmağın yarısı" deyip yeniden çekecektim; sıraların doğrusu ve parmak siluetiyle ölçünce 0,35 çıktı
+  (6 mm bant erkek parmağında ~0,3), kare kabul edildi. 08'de aynı halka avuca göre ~0,3, parmağa göre ~2,0 ölçüldü: model
+  parmakları dar, avucu geniş çizmişti ve hiçbir uzuv tek başına karar veremedi; kararı kabul edilmiş emsal kare (TMC9 08)
+  verdi. Renkte de öyle: yeniden çekimde fırçalı yüzün hue'su ten yansımasıyla 26'da kaldı (sarı kareler 33-37), setin kendi
+  sarı ve rose kareleriyle yan yana konunca sarı okundu. Kural: (1) oranı halkanın derinliğindeki uzuvla, koordinatla ölç;
+  (2) uzuvlar çelişirse kabul edilmiş emsal kareye kalibre et; (3) renk metriği ortam yansımasıyla kirlenir, son hakem setin
+  kendi renk kareleridir.
 
 - **Kontrol döngüsünün kendisi de çürütülür: kanıt alanının dolu olduğunu, okuduğu tablonun RLS'te
   görünür olduğunu ve iki yöndeki hatasını ölçmeden "kuruldu" deme (2026-11-09):** 0178'in 11 muhasebe
@@ -2743,6 +2751,13 @@ repodaki hedefidir.
   Boyanmış kareyi listing metninde AÇIKÇA söyle ("recolored from the
   visualization made for another metal color"); eski "not recolored" cümlesi
   artık yalan olurdu.
+  **Güçlendirme-4 (2026-11-21, EON-SDE6) — yanlış okunan geometri FİYATA da girer; tasarım sorusu fiyatla aynı kartta
+  sorulursa fiyat cevabı o okumaya koşuludur:** fotoğraflardan "tek kenarda tam tur sıra" okudum (keskin karelerde yalnız
+  yakın sıra vardı, ikinci sıra yalnız bulanık video karelerinde kenardan seçiliyordu). Kart 1'de sahip tasarıma "Both edges"
+  dedi ve AYNI kartta tek sıraya göre kurulmuş 2.100 / 2.600 / 3.250'yi seçti; iki sırada taş ikiye katlanınca o fiyatlar
+  US 12'den zarar ediyordu (14K US 16 −$291). Onayı taşımadım, fiyatı iki sırayla kurup ikinci kartta sordum
+  (2.650 / 3.150 / 3.850). Kural: maliyeti değiştiren bir okumadan emin değilsen tasarımı fiyattan ÖNCE sor ya da her okuma
+  için fiyatı yan yana koy; yanlış spec'e verilmiş fiyat onayı doğru spec'e geçmez.
 
 - **Renk listing'leri aynı sahnenin renk edit'i olamaz; ve başarısız kareyi
   tarifle değil, setin BAŞARILI kardeş karesiyle düzelt (2026-10-15, Tideline):**
