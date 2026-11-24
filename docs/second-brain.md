@@ -2167,6 +2167,17 @@ repodaki hedefidir.
   önce diğer yorumlayıcıyı dene. Etsy'de aynı SKU iki offering'de durursa ayna upsert'ü "cannot affect row a second
   time" ile düşer; fiyat itişi SKU ile çalıştığı için ikisi de aynı fiyatı alır, gramı ağır olana göre kur.
 
+- **Dış sisteme yazacak işte ilk sorgu altyapının DURUMUdur; "veritabanına erişilemiyor" geçici hata değil, durum
+  sorusudur (2026-11-24, Leander yüzük fiyatları):** 10.194 varyantlık plan hazırken iki SQL çağrısı "Database is possibly
+  not accessible" döndü. `get_project` sebebi tek çağrıda verdi: proje `INACTIVE` (duraklatılmış); geri yükleme ise
+  "organization has unpaid invoices" ile reddedildi. Bu yalnız sahibin çözebileceği bir faturalama adımıdır, yeniden deneme
+  ya da başka bir yazma yolu (Etsy'ye panelsiz yazmak) değil. Kural: (1) DB hatasında yeniden denemeden önce projenin
+  durumunu oku; (2) plan veri olarak repoya yazılır ve yazım zinciri sonraya kalır, iş rehin alınmaz; (3) altyapıyı geri
+  getirmek sahibe sorulur, faturalama reddi açıkça raporlanır. Aynı işte gram dersi: iki Blender temelinden ağır olanı almak
+  bazı fiyatları üçe katladı; "as pictured" temeli AI render'ı US 7 sayıyordu ve hiçbir ölçüm onu desteklemiyordu, iki
+  gerçek kontrol (EON faturası, 11-12 g'lık mühür yüzük) "listing ölçüleri" temeline uyuyordu. Temel, kanıtın tuttuğu
+  model olur; kötümser olan değil. İstisna sayıyla gerekçelenir (ataş yüzükte 0,44 mm tel dökülemez, fotoğraf 1,0 mm).
+
 ## Ürün/UX dersleri
 
 - **Aksiyon sinyali ana sayfada flaglenir (2026-07):** Kullanıcının aksiyon alması
