@@ -2,9 +2,17 @@
 
 Source: "Leander Ring Gold Weights" sheet (Blender models), Variants tab. Rule and choices are in `plan.py`.
 
-**Status: not pushed.** The Supabase project is paused and its restore is refused for unpaid invoices on the
-organization. Once billing is settled: restore, refresh the mirror (`price-sync ?mirror=1`), write `plan.csv`
-prices to the panel by SKU, then dry run, canary, apply and a fresh-token re-read, as on 2026-11-18.
+**Status: pushed 2026-11-24 (UTC evening).** Log:
+- Mirror refresh 52/52. Live Etsy prices were exactly 1.25 x the 2026-11-18 push (owner markup by hand); the
+  "Price now" column below is the 11-18 price, so live before = 1.25 x that. Panel before: 10,194 variants,
+  $8,931,135, seal `7a3d46837a51b98475fa9162aea4ed17`.
+- Panel write: the plan was served once from the panel domain (`/api/ops/ring-prices-2026-11-24.json`, removed
+  in the next commit), fetched with `pg_net`, staged, checked (10,194 rows, 1 panel variant per SKU, stage seal =
+  repo file seal), then written by SKU inside a seal precondition. After: $7,883,930, seal
+  `a2d60be72eeabdf0edb3c68540a3b099`; `weight_grams` set to the plan grams, `weight_source` tagged `+rc1124`.
+- Etsy: dry run 10,180 offerings differ, 0 unmatched SKUs; canary 4576009060 225 written, fresh read 0 diff;
+  51 more listings 9,955 written; independent fresh-token read 52/52 unchanged, 0 diff, 10,194 panel variants.
+- Audit 20,388 rows (mirror + write). Leftover tokens burned, token file deleted.
 
 Not in the plan: 4621119403 (one-off pinky signet, not in the panel).
 

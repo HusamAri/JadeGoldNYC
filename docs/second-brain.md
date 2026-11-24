@@ -2177,6 +2177,14 @@ repodaki hedefidir.
   bazı fiyatları üçe katladı; "as pictured" temeli AI render'ı US 7 sayıyordu ve hiçbir ölçüm onu desteklemiyordu, iki
   gerçek kontrol (EON faturası, 11-12 g'lık mühür yüzük) "listing ölçüleri" temeline uyuyordu. Temel, kanıtın tuttuğu
   model olur; kötümser olan değil. İstisna sayıyla gerekçelenir (ataş yüzükte 0,44 mm tel dökülemez, fotoğraf 1,0 mm).
+  **Devamı (aynı gün, yazım) — 10 bin satırı MCP'ye yapıştırma, veriyi kendi alan adından sun ve DB'ye `pg_net` ile
+  çektir:** formüle indirgenemeyen 10.194 fiyat+gram ~93 KB elle aktarım demekti. Dosya bir commit'le
+  `public/api/ops/` altına kondu (yol `proxy` herkese açık önekinde; `/ops/` olsaydı login'e düşerdi), canlı bayt
+  md5'i repoyla eşitlendi, `net.http_get` + `net._http_response` ile staging tablosuna alındı, stage mührü repo
+  dosyasının mührüne birebir tuttu ve yazım canlı ön mühür koşuluyla tek DO bloğunda yapıldı; dosya sonraki
+  commit'le silindi. Aynı tur ikinci bir şey gösterdi: mirror tazelemesi sahibin 6 günde tüm yüzükleri elle ×1,25
+  yaptığını ortaya çıkardı. Fiyat maliyetten mutlak kurulduğu için plan değişmedi, ama "önce" mührü ve dry-run
+  beklentisi canlıdan yeniden kuruldu; yarım dolarlık yuvarlama 6 satırlık farkı açıkladı.
 
 ## Ürün/UX dersleri
 
